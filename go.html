@@ -106,7 +106,7 @@
     <p class="md-body" style="color: var(--md-sys-color-error); margin-bottom: 8px;">
       Ocorreu um atraso no redirecionamento.
     </p>
-    <a id="fallback-link" href="#" class="md-button">Continuar para o Checkout</a>
+    <a id="fallback-link" href="#" class="md-button">Continuar para a Página</a>
   </div>
 
   <script>
@@ -121,7 +121,7 @@
       produto: "Desconhecido",
       urlDestino: "",
       urlCookie: "",
-      texto1: "Aguarde! Procurando pela Melhor Página",
+      texto1: "Espere! Procurando pela Melhor Página",
       texto2: "Redirecionando para Página Oficial",
       parametro: "src"
     };
@@ -130,7 +130,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     let idCampanha = "";
     let gclid = "";
-    let origem = "";
 
     for (const [chave, valor] of urlParams.entries()) {
       const chaveMinusc = chave.toLowerCase();
@@ -139,12 +138,8 @@
         idCampanha = valor;
       } else if (chaveMinusc === 'gclid' || chaveMinusc === 'fbclid') {
         gclid = valor;
-      } else if (chaveMinusc === 'utm_source') {
-        origem = valor;
       }
     }
-
-    if (!origem) origem = document.referrer ? "Referrer: " + document.referrer : "Acesso Direto";
 
     const elTitulo = document.getElementById("message-title");
     const elSubtitulo = document.getElementById("message-subtitle");
@@ -159,11 +154,11 @@
         status: status,
         produto: dadosCampanha.produto,
         gclid: gclid,
-        origem: origem,
+        origem: document.referrer ? "Referrer: " + document.referrer : "Direto",
         tempoPagina: tempoDecorrido + "ms"
       };
 
-      if (status === "FUGA DE PÁGINA") {
+      if (status === "Fuga de página") {
         const blob = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
         navigator.sendBeacon(`${WORKER_URL}/api/log`, blob);
       } else {
@@ -175,17 +170,17 @@
       }
     }
 
-    enviarLog("INÍCIO: ACESSO AO REDTRACKER");
+    enviarLog("Acesso ao RedTracker");
 
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === 'hidden' && !fluxoConcluido && !fugaBloqueada) {
-        enviarLog("FUGA DE PÁGINA");
+        enviarLog("Fuga de página");
       }
     });
 
     elFallbackLink.addEventListener("click", () => {
       fugaBloqueada = true;
-      enviarLog("SUCESSO: REDIRECIONADO VIA FALLBACK");
+      enviarLog("Redirecionado via fallback");
     });
 
     function alterarTextoBase(novoTitulo, novoSubtitulo = "") {
@@ -203,7 +198,7 @@
     async function iniciarRedTracker() {
       if (!idCampanha) {
         alterarTextoBase("Erro de Parâmetro", "ID da campanha não foi encontrado.");
-        enviarLog("ERRO: SEM ID NO URL");
+        enviarLog("Sem ID no URL");
         return;
       }
 
@@ -233,7 +228,7 @@
             document.getElementById("spinner").style.display = "none";
             alterarTextoBase("Tempo limite excedido", "Ocorreu um atraso na verificação.");
             elFallbackContainer.style.display = "block";
-            enviarLog("ERRO: TIMEOUT NO CARREGAMENTO");
+            enviarLog("Timeout no carregamento");
           }
         }, 8000);
 
@@ -241,7 +236,7 @@
         fluxoConcluido = true;
         document.getElementById("spinner").style.display = "none";
         alterarTextoBase("Página Indisponível", "A campanha solicitada não está ativa.");
-        enviarLog(`ERRO CRÍTICO 404: ${erro.message}`);
+        enviarLog(`Página indisponível: ${erro.message}`);
       }
     }
 
@@ -250,7 +245,7 @@
       fluxoConcluido = true; 
       
       alterarTextoBase(dadosCampanha.texto2);
-      enviarLog("SUCESSO: CARREGADO E INJETADO");
+      enviarLog("Carregado e injetado");
 
       setTimeout(() => {
         try {
