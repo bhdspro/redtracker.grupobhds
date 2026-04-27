@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedTracker</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --md-sys-color-background: #FDFDFD;
+      --md-sys-color-on-background: #1A1C1E;
+      --md-sys-color-primary: #006874; 
+      --md-sys-color-secondary: #4A6267;
+      --md-sys-color-error: #BA1A1A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--md-sys-color-background);
+      color: var(--md-sys-color-on-background);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .md-spinner {
+      width: 48px;
+      height: 48px;
+      border: 5px solid rgba(0, 104, 116, 0.2);
+      border-top-color: var(--md-sys-color-primary);
+      border-radius: 50%;
+      animation: md-spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      margin-bottom: 24px;
+    }
+
+    @keyframes md-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .md-headline {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 36px;
+      letter-spacing: -0.25px;
+      margin-bottom: 12px;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      will-change: opacity, transform;
+    }
+
+    .md-body {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--md-sys-color-secondary);
+      max-width: 400px;
+    }
+
+    #fallback-container {
+      display: none;
+      margin-top: 32px;
+      animation: fade-in 0.5s ease-in;
+    }
+
+    .md-button {
+      display: inline-block;
+      background-color: var(--md-sys-color-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 100px;
+      transition: background-color 0.2s, box-shadow 0.2s;
+      margin-top: 16px;
+    }
+
+    .md-button:hover {
+      background-color: #004f58;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .text-hidden { opacity: 0; transform: translateY(-5px); }
+  </style>
+</head>
+<body>
+
+  <div class="md-spinner" id="spinner"></div>
+  <h1 id="message-title" class="md-headline">A ligar ao servidor...</h1>
+  <p id="message-subtitle" class="md-body">Por favor, aguarde um momento.</p>
+
+  <iframe id="cookieFrame" src="" style="display:none;" tabindex="-1"></iframe>
+
+  <div id="fallback-container">
+    <p class="md-body" style="color: var(--md-sys-color-error); margin-bottom: 8px;">
+      Ocorreu um atraso no redirecionamento.
+    </p>
+    <a id="fallback-link" href="#" class="md-button">Continuar para a Página</a>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURAÇÕES GERAIS (REDTRACKER)
+    // ==========================================
+    const WORKER_URL = "https://redtracker.grupo-bhds.workers.dev";
+    
+    const startTime = Date.now();
+    let fluxoConcluido = false; 
+    let fugaBloqueada = false; // Impede Falsos Positivos de Fuga
+    
+    let dadosCampanha = {
+      produto: "Desconhecido",
+      urlDestino: "",
+      urlCookie: "",
+      texto1: "Aguarde! A procurar o Melhor Desconto",
+      texto2: "A redirecionar para a Página de Pagamento",
+      parametro: "src"
+    };
+
+    // Lê os parâmetros. Agora usamos 'red' em vez de 'id'
+    const urlParams = new URLSearchParams(window.location.search);
+    const idCampanha = urlParams.get('red'); 
+    const gclid = urlParams.get('gclid') || urlParams.get('fbclid') || "";
+    let origem = urlParams.get('utm_source') || "";
+    if (!origem) origem = document.referrer ? "Referrer: " + document.referrer : "Acesso Direto";
+
+    const elTitulo = document.getElementById("message-title");
+    const elSubtitulo = document.getElementById("message-subtitle");
+    const elIframe = document.getElementById("cookieFrame");
+    const elFallbackContainer = document.getElementById("fallback-container");
+    const elFallbackLink = document.getElementById("fallback-link");
+
+    // ==========================================
+    // FUNÇÃO DE LOGS PARA O WORKER
+    // ==========================================
+    function enviarLog(status) {
+      const tempoDecorrido = Date.now() - startTime;
+      const payload = {
+        campanha: idCampanha || "Sem ID",
+        status: status,
+        produto: dadosCampanha.produto,
+        gclid: gclid,
+        origem: origem,
+        tempoPagina: tempoDecorrido + "ms"
+      };
+
+      if (status === "⛔ FUGA DE PÁGINA") {
+        // CORREÇÃO CRÍTICA (Bypass CORS): text/plain garante a entrega pelo sendBeacon
+        const blob = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
+        navigator.sendBeacon(`${WORKER_URL}/api/log`, blob);
+      } else {
+        fetch(`${WORKER_URL}/api/log`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' }, // Usa text/plain para evitar Preflight options no Worker
+          body: JSON.stringify(payload)
+        }).catch(console.error);
+      }
+    }
+
+    // Ping Inicial - Oculta a cegueira de cliques perdidos
+    enviarLog("🔵 REDTRACKER INICIADO");
+
+    // Regista Fuga (Se o utilizador fechar a janela antes do redirecionamento)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === 'hidden' && !fluxoConcluido && !fugaBloqueada) {
+        enviarLog("⛔ FUGA DE REDTRACKER");
+      }
+    });
+
+    // Anula a fuga se o utilizador clicar manualmente no botão de fallback
+    elFallbackLink.addEventListener("click", () => {
+      fugaBloqueada = true;
+      enviarLog("✅ REDIRECIONADO VIA BOTÃO");
+    });
+
+    function alterarTextoBase(novoTitulo, novoSubtitulo = "") {
+      elTitulo.classList.add("text-hidden");
+      elSubtitulo.classList.add("text-hidden");
+      
+      setTimeout(() => {
+        elTitulo.textContent = novoTitulo;
+        elSubtitulo.textContent = novoSubtitulo;
+        elTitulo.classList.remove("text-hidden");
+        elSubtitulo.classList.remove("text-hidden");
+      }, 500); 
+    }
+
+    // ==========================================
+    // LÓGICA DE INJEÇÃO E VERIFICAÇÃO DO COOKIE
+    // ==========================================
+    async function iniciarRedTracker() {
+      if (!idCampanha) {
+        alterarTextoBase("Erro de Parâmetro", "ID da campanha (red) não foi encontrado.");
+        enviarLog("❌ SEM PARAMETRO RED NO URL");
+        return;
+      }
+
+      try {
+        const resposta = await fetch(`${WORKER_URL}/api/get?red=${idCampanha}`);
+        if (!resposta.ok) throw new Error("Campanha não encontrada ou Inativa (404)");
+
+        dadosCampanha = await resposta.json();
+        alterarTextoBase(dadosCampanha.texto1, "A verificar disponibilidade...");
+        elFallbackLink.href = dadosCampanha.urlDestino;
+        elIframe.src = dadosCampanha.urlCookie;
+
+        elIframe.onload = () => {
+          setTimeout(() => {
+            try {
+              const teste = elIframe.contentWindow.location.href;
+              processarSucesso();
+            } catch (e) {
+              processarSucesso();
+            }
+          }, 800); 
+        };
+
+        setTimeout(() => {
+          if (!fluxoConcluido) {
+            fluxoConcluido = true;
+            document.getElementById("spinner").style.display = "none";
+            alterarTextoBase("Tempo limite excedido", "Ocorreu um atraso na verificação.");
+            elFallbackContainer.style.display = "block";
+            enviarLog("⚠️ TIMEOUT NO CARREGAMENTO (IFRAME LENTO)");
+          }
+        }, 8000);
+
+      } catch (erro) {
+        fluxoConcluido = true;
+        document.getElementById("spinner").style.display = "none";
+        alterarTextoBase("Página Indisponível", "A campanha solicitada não está ativa.");
+        enviarLog(`❌ ERRO CRÍTICO 404 - ${erro.message}`);
+      }
+    }
+
+    // ==========================================
+    // SUCESSO E REPASSE BLINDADO DE PARÂMETROS
+    // ==========================================
+    function processarSucesso() {
+      if (fluxoConcluido) return;
+      fluxoConcluido = true; 
+      
+      alterarTextoBase(dadosCampanha.texto2);
+      enviarLog("✅ IFRAME CARREGADO E COOKIE INJETADO");
+
+      setTimeout(() => {
+        try {
+          const destinoFinal = new URL(dadosCampanha.urlDestino);
+          
+          // 1. REPASSE TOTAL: Injeta GCLID e UTMs, mas exclui o nosso '?red=' para não sujar a Hotmart
+          urlParams.forEach((valor, chave) => {
+            if (chave !== 'red') {
+              destinoFinal.searchParams.set(chave, valor);
+            }
+          });
+          
+          // 2. EMPACOTAMENTO: Junta a Campanha e o GCLID. Ex: camp01|GCLID_AQUI
+          let valorRastreio = idCampanha;
+          if (gclid) valorRastreio = idCampanha + "|" + gclid;
+
+          // 3. PARÂMETRO DINÂMICO: src, sck, tid, etc.
+          const nomeDoParametro = dadosCampanha.parametro || "src";
+          destinoFinal.searchParams.set(nomeDoParametro, valorRastreio);
+          
+          window.location.href = destinoFinal.toString();
+        } catch(e) {
+          window.location.href = dadosCampanha.urlDestino;
+        }
+      }, 1000); 
+    }
+
+    iniciarRedTracker();
+  </script>
+</body>
+</html>
