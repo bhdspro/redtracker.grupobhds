@@ -8,7 +8,7 @@
     <!-- Favicon ⚡ -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
     
-    <!-- Google Fonts: Plus Jakarta Sans (Elegante, Moderna e Expressiva) -->
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,6 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        // Paleta Material 3 Red
                         m3: {
                             primary: '#BA1A1A',
                             onPrimary: '#FFFFFF',
@@ -58,13 +57,12 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Material 3 Ripple Effect Base */
         .btn-m3 {
             position: relative;
             overflow: hidden;
             transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
         }
-        .btn-m3:active { transform: scale(0.98); }
+        .btn-m3:not(:disabled):active { transform: scale(0.98); }
         .btn-m3::after {
             content: "";
             position: absolute;
@@ -77,32 +75,20 @@
             transition: transform 0.4s, opacity 0.4s;
         }
         .btn-m3.tonal::after { background: rgba(186, 26, 26, 0.15); }
-        .btn-m3:active::after {
+        .btn-m3:not(:disabled):active::after {
             transform: translate(-50%, -50%) scale(2.5);
             opacity: 1;
             transition: 0s;
         }
 
-        /* Modals & Animations */
         .hide { display: none !important; }
         
-        .modal-overlay {
-            animation: fadeIn 0.2s cubic-bezier(0.2, 0, 0, 1) forwards;
-        }
-        .modal-content {
-            animation: slideUp 0.3s cubic-bezier(0.2, 0, 0, 1) forwards;
-        }
+        .modal-overlay { animation: fadeIn 0.2s cubic-bezier(0.2, 0, 0, 1) forwards; }
+        .modal-content { animation: slideUp 0.3s cubic-bezier(0.2, 0, 0, 1) forwards; }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* Expressive Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #F5DDDA; border-radius: 10px; }
@@ -128,7 +114,6 @@
         
         <!-- ================= ETAPA 1: INPUT DE DADOS ================= -->
         <section id="step-input" class="flex flex-col md:flex-row justify-center gap-4 md:gap-6 transition-all duration-300 w-full max-w-4xl mx-auto">
-            <!-- Arquivo Oculto -->
             <input type="file" id="fileInput" accept=".html,.htm,.txt" class="hidden" onchange="app.handleFileUpload(event)">
             
             <button onclick="document.getElementById('fileInput').click()" class="btn-m3 flex-1 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 group">
@@ -163,12 +148,12 @@
         <!-- ================= ETAPA 3: DASHBOARD DE ANÁLISE ================= -->
         <section id="step-dashboard" class="hide mt-4 w-full">
             
-            <!-- Injeção Header/Footer -->
+            <!-- Injeções Globais e Pixels -->
             <div class="bg-m3-surface border border-m3-surfaceVariant rounded-m3-xl p-6 md:p-8 mb-8 shadow-sm">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                     <div>
                         <h3 class="text-xl md:text-2xl font-extrabold text-[#1F1B1A] tracking-tight mb-1">Injeções Globais</h3>
-                        <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Adicione códigos estruturais diretamente no documento.</p>
+                        <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Adicione scripts estruturais e rastreadores globalmente.</p>
                     </div>
                     <div class="flex flex-col sm:flex-row flex-wrap gap-3 w-full lg:w-auto">
                         <button onclick="app.openInjectModal('header')" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
@@ -179,24 +164,28 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16M4 12h16M4 6h16"></path></svg>
                             Rodapé
                         </button>
+                        <button onclick="app.openInjectModal('pixels')" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            Pixels & Trackers
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Grid de Resultados (Responsivo: 1 col mobile, 2 tablet, 3 PC) -->
+            <!-- Grid de Resultados -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="analysisResults"></div>
 
             <!-- Botões de Ação Final -->
             <div class="mt-10 md:mt-12 flex flex-col md:flex-row justify-center gap-3 md:gap-4 bg-m3-surface p-4 md:p-6 rounded-m3-xl border border-m3-surfaceVariant">
-                <button onclick="app.updateCode()" class="btn-m3 bg-[#1F1B1A] text-white hover:bg-black px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2">
+                <button onclick="app.updateCode()" class="btn-m3 bg-[#1F1B1A] text-white hover:bg-black px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 transition-colors">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     Atualizar Código
                 </button>
-                <button onclick="app.downloadCode()" class="btn-m3 bg-green-700 text-white hover:bg-green-800 px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2">
+                <button id="btnDownload" disabled onclick="app.downloadCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     Baixar Código
                 </button>
-                <button onclick="app.copyCode()" class="btn-m3 bg-blue-700 text-white hover:bg-blue-800 px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2">
+                <button id="btnCopy" disabled onclick="app.copyCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                     Copiar Código
                 </button>
@@ -204,7 +193,7 @@
         </section>
     </main>
 
-    <!-- ================= MODALS (Leves e Responsivos) ================= -->
+    <!-- ================= MODALS ================= -->
 
     <!-- Modal: Colar Código -->
     <div id="pasteModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -229,23 +218,24 @@
     <!-- Modal: Substituir Item -->
     <div id="itemModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('itemModal')"></div>
-        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-lg overflow-hidden modal-content relative z-10 max-h-[90vh] flex flex-col">
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-4xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
             <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]" id="itemModalTitle">Configurar Elemento</h3>
                 <button onclick="app.closeModal('itemModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="p-4 md:p-6 bg-white overflow-y-auto">
-                <p class="text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Alvo Encontrado</p>
-                <div class="bg-m3-surfaceVariant p-3 md:p-4 rounded-m3-lg mb-5 text-[#1F1B1A] font-semibold text-xs md:text-sm break-all border border-m3-surfaceVariant/50 max-h-24 md:max-h-32 overflow-y-auto" id="itemModalOriginal"></div>
+            <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
+                <p class="text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Identificador (Alvo)</p>
+                <div class="bg-m3-surfaceVariant p-3 md:p-4 rounded-m3-lg mb-5 text-[#1F1B1A] font-semibold text-xs md:text-sm break-all border border-m3-surfaceVariant/50 max-h-24 overflow-y-auto" id="itemModalOriginal"></div>
                 
-                <label class="block text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Nova Substituição</label>
-                <textarea id="itemModalInput" class="w-full p-3 md:p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-medium text-[#1F1B1A] min-h-[100px] md:min-h-[120px]" placeholder="Deixe em branco para REMOVER completamente."></textarea>
+                <label class="block text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Código / Valor (Edite como desejar)</label>
+                <!-- Preenchido automaticamente via JS -->
+                <textarea id="itemModalInput" class="w-full flex-1 p-4 md:p-5 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-mono text-[#1F1B1A] min-h-[150px] md:min-h-[250px] shadow-inner" placeholder="Deixe em branco para REMOVER completamente."></textarea>
                 
-                <div class="mt-3 flex items-start gap-2 text-m3-primary bg-m3-primaryContainer/30 p-3 rounded-lg">
+                <div class="mt-3 flex items-start gap-2 text-m3-primary bg-m3-primaryContainer/30 p-3 rounded-lg shrink-0">
                     <svg class="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <p class="text-xs md:text-sm font-bold leading-tight">Salvar com este campo vazio removerá o alvo selecionado de todo o documento.</p>
+                    <p class="text-xs md:text-sm font-bold leading-tight">Apagar tudo e salvar vazio removerá este elemento ou atributo permanentemente.</p>
                 </div>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
@@ -255,7 +245,7 @@
         </div>
     </div>
 
-    <!-- Modal: Injeção Header/Footer -->
+    <!-- Modal: Injeção Header/Footer/Pixels -->
     <div id="injectModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('injectModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 max-h-[90vh] flex flex-col">
@@ -267,7 +257,7 @@
             </div>
             <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
                 <p class="text-sm md:text-base font-medium text-m3-onSurfaceVariant mb-4" id="injectModalDesc">Adicione scripts, estilos ou metas aqui.</p>
-                <textarea id="injectModalInput" class="w-full flex-1 p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] border-none rounded-m3-lg focus:ring-2 focus:ring-m3-primary focus:outline-none transition-all text-sm md:text-base font-medium min-h-[150px] md:min-h-[200px]" placeholder="Insira o conteúdo a ser injetado..."></textarea>
+                <textarea id="injectModalInput" class="w-full flex-1 p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] border-none rounded-m3-lg focus:ring-2 focus:ring-m3-primary focus:outline-none transition-all text-sm font-mono min-h-[150px] md:min-h-[200px]" placeholder="Insira o conteúdo a ser injetado..."></textarea>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
                 <button onclick="app.closeModal('injectModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
@@ -284,16 +274,71 @@
     <!-- ================= SCRIPT CORE DE ALTA PERFORMANCE ================= -->
     <script>
         const app = (function() {
+            // Script Default para Header
+            const defaultHeaderScript = `<!-- ========================================== -->
+<!-- ⚡ REDTRACKER MONITOR                      -->
+<!-- ========================================== -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const paramsURL = new URLSearchParams(window.location.search);
+    
+    if (paramsURL.toString() !== "") {
+      const blindarLinksRedTracker = () => {
+        const todosLinks = document.querySelectorAll("a");
+        
+        todosLinks.forEach(link => {
+          if (link.href && link.href.includes("red=")) {
+            try {
+              const urlDestino = new URL(link.href);
+              
+              if (urlDestino.searchParams.has("red")) {
+                paramsURL.forEach((valor, chave) => {
+                  if (chave !== 'red') {
+                    urlDestino.searchParams.set(chave, valor);
+                  }
+                });
+                link.href = urlDestino.toString();
+              }
+            } catch (e) {
+              // Ignora
+            }
+          }
+        });
+      };
+
+      blindarLinksRedTracker();
+
+      const observadorDeDOM = new MutationObserver((mutations) => {
+        let detetouNovoLink = false;
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes.length > 0) detetouNovoLink = true;
+        });
+        
+        if (detetouNovoLink) blindarLinksRedTracker();
+      });
+
+      observadorDeDOM.observe(document.body, { childList: true, subtree: true });
+    }
+  });
+<\/script>`;
+
             // Estado
             let originalHTMLString = "";
-            let parsedDocument = null;
             let currentFileName = "redtracker_export.html";
             
-            // Novas categorias: images, videos, documents
-            let replacements = { links: {}, anchors: {}, scripts: {}, divs: {}, images: {}, videos: {}, documents: {} };
-            let injections = { header: "", footer: "" };
+            // Registro de Itens para performance (evita strings gigantes no DOM)
+            let itemsRegistry = [];
 
-            let currentEditTarget = { category: null, originalValue: null };
+            // Categorias Expandidas
+            let replacements = { 
+                pixels: {}, forms: {}, links: {}, sections: {}, buttons: {}, 
+                iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} 
+            };
+            
+            // Estado de Injeção inclui o novo Pixels
+            let injections = { header: defaultHeaderScript, footer: "", pixels: "" };
+
+            let currentEditIndex = null;
             let currentInjectTarget = null;
 
             // UI Utils
@@ -303,9 +348,29 @@
             const toast = (message, isError = false) => {
                 const el = document.getElementById('toast');
                 el.textContent = message;
-                el.style.backgroundColor = isError ? '#B3261E' : '#313033'; // M3 Error Color
+                el.style.backgroundColor = isError ? '#B3261E' : '#313033'; 
                 el.style.opacity = '1';
                 setTimeout(() => el.style.opacity = '0', 3500);
+            };
+
+            const toggleExportButtons = (enabled) => {
+                const btnDownload = document.getElementById('btnDownload');
+                const btnCopy = document.getElementById('btnCopy');
+                if (enabled) {
+                    btnDownload.disabled = false;
+                    btnCopy.disabled = false;
+                    btnDownload.classList.remove('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
+                    btnDownload.classList.add('bg-green-700', 'hover:bg-green-800');
+                    btnCopy.classList.remove('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
+                    btnCopy.classList.add('bg-blue-700', 'hover:bg-blue-800');
+                } else {
+                    btnDownload.disabled = true;
+                    btnCopy.disabled = true;
+                    btnDownload.classList.add('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
+                    btnDownload.classList.remove('bg-green-700', 'hover:bg-green-800');
+                    btnCopy.classList.add('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
+                    btnCopy.classList.remove('bg-blue-700', 'hover:bg-blue-800');
+                }
             };
 
             // Modals
@@ -319,6 +384,7 @@
                     return;
                 }
                 originalHTMLString = htmlStr;
+                toggleExportButtons(false); 
                 hide('step-input');
                 show('step-actions');
                 toast("Estrutura carregada na memória. Pronto para análise!");
@@ -338,19 +404,20 @@
             const submitPaste = () => {
                 const textarea = document.getElementById('pasteInput');
                 const val = textarea.value;
-                textarea.value = ""; // Libera RAM imediatamente
+                textarea.value = ""; 
                 closeModal('pasteModal');
                 processHTMLString(val);
             };
 
             const resetApp = () => {
                 originalHTMLString = "";
-                parsedDocument = null;
-                replacements = { links: {}, anchors: {}, scripts: {}, divs: {}, images: {}, videos: {}, documents: {} };
-                injections = { header: "", footer: "" };
+                itemsRegistry = [];
+                replacements = { pixels: {}, forms: {}, links: {}, sections: {}, buttons: {}, iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} };
+                injections = { header: defaultHeaderScript, footer: "", pixels: "" };
                 
                 document.getElementById('fileInput').value = "";
                 document.getElementById('analysisResults').innerHTML = "";
+                toggleExportButtons(false);
                 
                 show('step-input');
                 hide('step-actions');
@@ -365,7 +432,7 @@
                 setTimeout(() => {
                     try {
                         const parser = new DOMParser();
-                        parsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
+                        const parsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
                         
                         extractData(parsedDocument);
                         renderAnalysisDashboard();
@@ -376,103 +443,147 @@
                     } catch (error) {
                         toast("Erro de processamento interno.", true);
                     }
-                }, 50); // Dá tempo para o Toast aparecer antes de travar a thread
+                }, 50); 
             };
 
-            let analysisData = { links: new Set(), anchors: new Set(), scripts: new Set(), divs: new Set(), images: new Set(), videos: new Set(), documents: new Set() };
+            let analysisData = {};
 
             const extractData = (doc) => {
-                analysisData = { links: new Set(), anchors: new Set(), scripts: new Set(), divs: new Set(), images: new Set(), videos: new Set(), documents: new Set() };
+                // Estrutura Map preserva a ordem e a chave é o valor real completo.
+                analysisData = { 
+                    pixels: new Map(), forms: new Map(), links: new Map(), anchors: new Map(), 
+                    documents: new Map(), images: new Map(), videos: new Map(), iframes: new Map(),
+                    scripts: new Map(), sections: new Map(), divs: new Map(), buttons: new Map() 
+                };
 
-                // Expressão regular para detectar documentos comuns via link
                 const docRegex = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|zip|rar|7z)(\?.*)?$/i;
+                const pixelKeywords = /fbq|gtag|google-analytics\.com|googletagmanager\.com|tiktok\.com|fbevents\.js|pixel|hotjar|clarity/i;
 
-                // Links e Documentos
+                // Links e Docs (Pegamos o href)
                 doc.querySelectorAll('a[href]').forEach(el => {
                     const href = el.getAttribute('href');
                     if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
-                        if (docRegex.test(href)) {
-                            analysisData.documents.add(href);
-                        } else {
-                            analysisData.links.add(href);
-                        }
+                        if (docRegex.test(href)) analysisData.documents.set(href, href);
+                        else analysisData.links.set(href, href);
                     }
                 });
 
-                // Anchors
+                // Anchors (href)
                 doc.querySelectorAll('a[href^="#"]').forEach(el => {
                     const href = el.getAttribute('href');
-                    if(href.length > 1) analysisData.anchors.add(href);
+                    if(href.length > 1) analysisData.anchors.set(href, href);
                 });
 
-                // Scripts
+                // Forms (action)
+                doc.querySelectorAll('form[action]').forEach(el => {
+                    const action = el.getAttribute('action');
+                    if (action) analysisData.forms.set(action, action);
+                });
+
+                // Scripts e Pixels detectados no código do cliente (src ou innerHTML)
                 doc.querySelectorAll('script').forEach(el => {
                     const src = el.getAttribute('src');
+                    const content = el.innerHTML;
+                    
+                    let isPixel = false;
+                    if ((src && pixelKeywords.test(src)) || (content && pixelKeywords.test(content))) {
+                        isPixel = true;
+                    }
+
                     if (src) {
-                        analysisData.scripts.add(src);
-                    } else if (el.innerHTML.trim() !== "") {
-                        const snippet = el.innerHTML.trim().substring(0, 60) + "...";
-                        analysisData.scripts.add("[Script Interno] " + snippet);
+                        if (isPixel) analysisData.pixels.set(src, `[Tracker Externo] ${src}`);
+                        else analysisData.scripts.set(src, src);
+                    } else if (content.trim() !== "") {
+                        const snippet = content.trim().substring(0, 50).replace(/\n/g, " ") + "...";
+                        const label = isPixel ? `[Pixel Embutido] ${snippet}` : `[Script Interno] ${snippet}`;
+                        
+                        if (isPixel) analysisData.pixels.set(content, label);
+                        else analysisData.scripts.set(content, label);
                     }
                 });
 
-                // Divs
-                doc.querySelectorAll('div[id]').forEach(el => {
-                    analysisData.divs.add(el.getAttribute('id'));
+                // Buttons (outerHTML)
+                doc.querySelectorAll('button').forEach(el => {
+                    let label = "Botão";
+                    if(el.className) label += ` class="${el.className}"`;
+                    else if(el.innerText) label += ` "${el.innerText.substring(0, 20)}"`;
+                    analysisData.buttons.set(el.outerHTML, label);
                 });
 
-                // Imagens (apenas tags <img> por otimização de performance)
+                // Divs (outerHTML, exibe label com ID)
+                doc.querySelectorAll('div[id]').forEach(el => {
+                    const id = el.getAttribute('id');
+                    analysisData.divs.set(el.outerHTML, `<div id="${id}">`);
+                });
+
+                // Imagens (src)
                 doc.querySelectorAll('img[src]').forEach(el => {
                     const src = el.getAttribute('src');
-                    if (src && !src.startsWith('data:image')) analysisData.images.add(src);
+                    if (src && !src.startsWith('data:image')) analysisData.images.set(src, src);
                 });
 
-                // Vídeos (Tag <video>, <source> dentro de video, e <iframe> do youtube/vimeo)
-                doc.querySelectorAll('video[src], video > source[src], iframe[src]').forEach(el => {
+                // Videos (src)
+                doc.querySelectorAll('video[src], video > source[src]').forEach(el => {
+                    const src = el.getAttribute('src');
+                    if (src) analysisData.videos.set(src, src);
+                });
+
+                // Iframes (src)
+                doc.querySelectorAll('iframe[src]').forEach(el => {
                     const src = el.getAttribute('src');
                     if (!src) return;
-                    
-                    if (el.tagName.toLowerCase() === 'iframe') {
-                        // Verifica se o iframe parece ser de vídeo
-                        if (/youtube|youtu\.be|vimeo|player/i.test(src)) {
-                            analysisData.videos.add(src);
-                        }
+                    if (/youtube|youtu\.be|vimeo|player/i.test(src)) {
+                        analysisData.videos.set(src, `[Iframe Vídeo] ${src}`);
                     } else {
-                        analysisData.videos.add(src);
+                        analysisData.iframes.set(src, src);
                     }
+                });
+
+                // Seções (ESTRITO PARA <section>) - Pega o outerHTML completo
+                doc.querySelectorAll('section').forEach(el => {
+                    let idAttr = el.getAttribute('id');
+                    let classAttr = el.getAttribute('class');
+                    
+                    let label = "<section";
+                    if (idAttr) label += ` id="${idAttr}"`;
+                    if (classAttr) label += ` class="${classAttr.substring(0, 30)}${classAttr.length > 30 ? '...' : ''}"`;
+                    label += ">";
+                    
+                    analysisData.sections.set(el.outerHTML, label);
                 });
             };
 
             // Renderização da Interface
-            const createCategoryCard = (title, iconSvg, categoryKey, itemsSet) => {
+            const createCategoryCard = (title, iconSvg, categoryKey, mapSet) => {
                 let itemsHTML = '';
-                const itemsArray = Array.from(itemsSet);
+                const entries = Array.from(mapSet.entries()); 
                 
-                if (itemsArray.length === 0) {
+                if (entries.length === 0) {
                     itemsHTML = `<div class="p-6 text-center text-m3-outline font-medium text-sm">Nenhum elemento encontrado.</div>`;
                 } else {
-                    const displayItems = itemsArray.slice(0, 100); 
+                    const displayItems = entries.slice(0, 100); 
                     
-                    itemsHTML = displayItems.map(item => {
-                        const hasReplacement = replacements[categoryKey] && replacements[categoryKey][item] !== undefined;
+                    itemsHTML = displayItems.map(([fullValue, displayLabel]) => {
+                        const hasReplacement = replacements[categoryKey] && replacements[categoryKey][fullValue] !== undefined;
                         
-                        // M3 States
                         const bgClass = hasReplacement ? 'bg-m3-primaryContainer text-m3-onPrimaryContainer border-m3-primary/30' : 'bg-white text-[#1F1B1A] border-m3-surfaceVariant hover:bg-m3-surfaceVariant';
                         const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Editado</span>` : '';
 
-                        const safeItem = item.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        const safeLabel = displayLabel.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        
+                        const index = itemsRegistry.length;
+                        itemsRegistry.push({ category: categoryKey, fullValue, displayLabel });
 
-                        // Renderiza Botão Desfazer se houver alteração
                         const undoBtn = hasReplacement ? `
-                            <button onclick="app.undoItemReplacement(event, '${categoryKey}', \`${safeItem}\`)" title="Desfazer" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 transition-colors ml-2 shadow-sm border border-m3-primary/20">
+                            <button onclick="app.undoItemReplacement(event, ${index})" title="Desfazer" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 transition-colors ml-2 shadow-sm border border-m3-primary/20">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
                             </button>
                         ` : '';
 
                         return `
                             <div class="flex items-center justify-between p-3 rounded-m3-lg border ${bgClass} transition-colors mb-2 shadow-sm">
-                                <button onclick="app.openItemModal('${categoryKey}', \`${safeItem}\`)" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group">
-                                    <span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2">${safeItem}</span>
+                                <button onclick="app.openItemModalByIndex(${index})" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group">
+                                    <span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2">${safeLabel}</span>
                                     ${badge}
                                 </button>
                                 ${undoBtn}
@@ -480,8 +591,8 @@
                         `;
                     }).join('');
 
-                    if(itemsArray.length > 100) {
-                         itemsHTML += `<div class="p-2 md:p-3 mt-2 text-xs md:text-sm text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${itemsArray.length - 100} itens em background</div>`;
+                    if(entries.length > 100) {
+                         itemsHTML += `<div class="p-2 md:p-3 mt-2 text-xs md:text-sm text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${entries.length - 100} itens ocultados</div>`;
                     }
                 }
 
@@ -492,7 +603,7 @@
                                 <div class="bg-m3-primaryContainer text-m3-onPrimaryContainer p-2 md:p-3 rounded-full shrink-0">${iconSvg}</div>
                                 <h3 class="text-lg md:text-xl font-bold text-[#1F1B1A] truncate">${title}</h3>
                             </div>
-                            <span class="bg-[#1F1B1A] text-white text-xs md:text-sm font-bold px-3 py-1 md:px-4 md:py-1.5 rounded-full shrink-0 ml-2">${itemsArray.length}</span>
+                            <span class="bg-[#1F1B1A] text-white text-xs md:text-sm font-bold px-3 py-1 md:px-4 md:py-1.5 rounded-full shrink-0 ml-2">${entries.length}</span>
                         </div>
                         <div class="p-3 md:p-4 overflow-y-auto bg-m3-surface/50 flex-1 custom-scrollbar">
                             ${itemsHTML}
@@ -503,72 +614,110 @@
 
             const renderAnalysisDashboard = () => {
                 const container = document.getElementById('analysisResults');
+                itemsRegistry = []; // Reset registry
+
                 const icons = {
+                    pixels: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`,
+                    forms: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>`,
                     links: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>`,
+                    sections: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2zM4 21a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2z"></path></svg>`,
+                    buttons: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>`,
+                    iframes: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 10h16"></path></svg>`,
+                    videos: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`,
+                    images: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`,
+                    documents: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
                     anchors: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>`,
                     scripts: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>`,
                     divs: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>`,
-                    images: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`,
-                    videos: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`,
-                    documents: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`
                 };
 
                 let html = '';
+                html += createCategoryCard("Pixels no Código (Remover)", icons.pixels, "pixels", analysisData.pixels);
+                html += createCategoryCard("Formulários (Actions)", icons.forms, "forms", analysisData.forms);
                 html += createCategoryCard("Links de Páginas", icons.links, "links", analysisData.links);
+                html += createCategoryCard("Seções (<section>)", icons.sections, "sections", analysisData.sections);
+                html += createCategoryCard("Botões (<button>)", icons.buttons, "buttons", analysisData.buttons);
+                html += createCategoryCard("Widgets & Iframes", icons.iframes, "iframes", analysisData.iframes);
                 html += createCategoryCard("Vídeos & Players", icons.videos, "videos", analysisData.videos);
                 html += createCategoryCard("Imagens & Logos", icons.images, "images", analysisData.images);
                 html += createCategoryCard("Arquivos & Docs", icons.documents, "documents", analysisData.documents);
                 html += createCategoryCard("Âncoras Internas", icons.anchors, "anchors", analysisData.anchors);
-                html += createCategoryCard("Scripts Embutidos", icons.scripts, "scripts", analysisData.scripts);
+                html += createCategoryCard("Scripts Diversos", icons.scripts, "scripts", analysisData.scripts);
                 html += createCategoryCard("Divisões (IDs)", icons.divs, "divs", analysisData.divs);
 
                 container.innerHTML = html;
             };
 
-            // Interações de Edição
-            const openItemModal = (category, originalValue) => {
-                currentEditTarget = { category, originalValue };
+            // Interações de Edição via Registry Index
+            const openItemModalByIndex = (index) => {
+                const item = itemsRegistry[index];
+                if (!item) return;
+
+                currentEditIndex = index;
+                const { category, fullValue, displayLabel } = item;
                 
                 const titles = { 
-                    links: 'Editar Link', 
+                    pixels: 'Configurar Pixel/Tracker Original',
+                    forms: 'Configurar Destino de Form',
+                    links: 'Editar URL', 
+                    sections: 'Editar Bloco (Seção Completa)',
+                    buttons: 'Editar Botão',
+                    iframes: 'Editar Iframe/Widget',
+                    videos: 'Editar Fonte de Vídeo',
+                    images: 'Editar Imagem',
+                    documents: 'Editar Documento (href)',
                     anchors: 'Editar Âncora', 
                     scripts: 'Editar Script', 
-                    divs: 'Editar Elemento Div',
-                    images: 'Editar Imagem (src)',
-                    videos: 'Editar Vídeo (src)',
-                    documents: 'Editar Documento (href)'
+                    divs: 'Editar Elemento Div'
                 };
                 
                 document.getElementById('itemModalTitle').textContent = titles[category] || 'Editar Item';
-                document.getElementById('itemModalOriginal').textContent = originalValue;
+                document.getElementById('itemModalOriginal').textContent = displayLabel;
                 
-                const existingVal = replacements[category][originalValue];
-                document.getElementById('itemModalInput').value = existingVal !== undefined ? existingVal : '';
+                const existingVal = replacements[category][fullValue];
+                
+                // Preenchimento automático com original ou alteração salva
+                document.getElementById('itemModalInput').value = existingVal !== undefined ? existingVal : fullValue;
                 
                 show('itemModal');
             };
 
             const saveItemReplacement = () => {
-                const { category, originalValue } = currentEditTarget;
+                const item = itemsRegistry[currentEditIndex];
+                if (!item) return;
+
                 const newValue = document.getElementById('itemModalInput').value.trim();
                 
-                replacements[category][originalValue] = newValue;
+                replacements[item.category][item.fullValue] = newValue;
                 closeModal('itemModal');
                 renderAnalysisDashboard();
-                toast("Regra cadastrada com sucesso.");
+                toggleExportButtons(false); 
+                toast("Regra cadastrada com sucesso. Atualize o código para exportar.");
             };
 
-            const undoItemReplacement = (event, category, originalValue) => {
-                event.stopPropagation(); // Evita que abra o modal de edição ao clicar no botão desfazer
-                delete replacements[category][originalValue];
+            const undoItemReplacement = (event, index) => {
+                event.stopPropagation(); 
+                const item = itemsRegistry[index];
+                if (!item) return;
+
+                delete replacements[item.category][item.fullValue];
                 renderAnalysisDashboard();
-                toast("Alteração desfeita. O item voltou ao estado original.");
+                toggleExportButtons(false); 
+                toast("Alteração desfeita. O código original foi restaurado.");
             };
 
             const openInjectModal = (type) => {
                 currentInjectTarget = type;
-                document.getElementById('injectModalTitle').textContent = type === 'header' ? 'Injeção Estrutural: <head>' : 'Injeção Estrutural: <body>';
-                document.getElementById('injectModalDesc').textContent = type === 'header' ? 'Será executado antes do início da página visível.' : 'Será executado no final do carregamento da página.';
+                if (type === 'header') {
+                    document.getElementById('injectModalTitle').textContent = 'Injeção Estrutural: <head>';
+                    document.getElementById('injectModalDesc').textContent = 'Será executado antes do início da página visível.';
+                } else if (type === 'footer') {
+                    document.getElementById('injectModalTitle').textContent = 'Injeção Estrutural: <body>';
+                    document.getElementById('injectModalDesc').textContent = 'Será executado no final do carregamento da página.';
+                } else if (type === 'pixels') {
+                    document.getElementById('injectModalTitle').textContent = 'Pixels & Trackers';
+                    document.getElementById('injectModalDesc').textContent = 'Cole códigos do Facebook Pixel, GTM, TikTok, etc. Eles serão injetados com segurança no <head>.';
+                }
                 document.getElementById('injectModalInput').value = injections[type] || '';
                 
                 show('injectModal');
@@ -577,85 +726,105 @@
             const saveInjection = () => {
                 injections[currentInjectTarget] = document.getElementById('injectModalInput').value;
                 closeModal('injectModal');
-                toast("Bloco de injeção salvo.");
+                toggleExportButtons(false); 
+                toast("Bloco de injeção salvo. Atualize o código para exportar.");
             };
 
-            // Processamento DOM Desanexado (Performance Extrema)
-            const applyUpdatesToDOM = () => {
-                if (!parsedDocument) return false;
+            // Aplicação DOM Robusta
+            const applyUpdatesToDOM = (targetDoc) => {
+                if (!targetDoc) return false;
 
-                // Auxiliar para aplicar trocas comuns de atributos
                 const applyAttributeReplacement = (selectorFunc, categoryObj, attrName) => {
                     Object.keys(categoryObj).forEach(original => {
                         const newVal = categoryObj[original];
-                        parsedDocument.querySelectorAll(selectorFunc(original)).forEach(el => {
-                            if (newVal === "") el.remove(); 
-                            else el.setAttribute(attrName, newVal);
+                        targetDoc.querySelectorAll(selectorFunc(original)).forEach(el => {
+                            if (el.getAttribute(attrName) === original) {
+                                if (newVal === "") el.remove(); 
+                                else el.setAttribute(attrName, newVal);
+                            }
                         });
                     });
                 };
 
-                // Links e Docs (href)
+                const applyHTMLReplacement = (selector, categoryObj, useOuter) => {
+                    Object.keys(categoryObj).forEach(original => {
+                        const newVal = categoryObj[original];
+                        targetDoc.querySelectorAll(selector).forEach(el => {
+                            const compareVal = useOuter ? el.outerHTML : el.innerHTML;
+                            if (compareVal === original) {
+                                if (newVal === "") el.remove(); 
+                                else {
+                                    if(useOuter) el.outerHTML = newVal;
+                                    else el.innerHTML = newVal;
+                                }
+                            }
+                        });
+                    });
+                };
+
+                // Atributos Simples
                 applyAttributeReplacement(orig => `a[href="${orig}"]`, replacements.links, 'href');
                 applyAttributeReplacement(orig => `a[href="${orig}"]`, replacements.documents, 'href');
                 applyAttributeReplacement(orig => `a[href="${orig}"]`, replacements.anchors, 'href');
-
-                // Imagens (src)
+                applyAttributeReplacement(orig => `form[action="${orig}"]`, replacements.forms, 'action');
                 applyAttributeReplacement(orig => `img[src="${orig}"]`, replacements.images, 'src');
+                applyAttributeReplacement(orig => `iframe[src="${orig}"]`, replacements.iframes, 'src');
 
-                // Vídeos (src em video, source ou iframe)
+                // Videos
                 Object.keys(replacements.videos).forEach(original => {
                     const newVal = replacements.videos[original];
                     const selectors = `video[src="${original}"], source[src="${original}"], iframe[src="${original}"]`;
-                    parsedDocument.querySelectorAll(selectors).forEach(el => {
-                        if (newVal === "") el.remove();
-                        else el.setAttribute('src', newVal);
+                    targetDoc.querySelectorAll(selectors).forEach(el => {
+                        if (newVal === "") el.remove(); else el.setAttribute('src', newVal);
                     });
                 });
 
-                // Scripts
-                Object.keys(replacements.scripts).forEach(original => {
-                    const newVal = replacements.scripts[original];
-                    if (original.startsWith("[Script Interno]")) {
-                        const snippet = original.replace("[Script Interno] ", "").replace("...", "");
-                        parsedDocument.querySelectorAll('script:not([src])').forEach(el => {
-                            if (el.innerHTML.trim().startsWith(snippet)) {
+                // Pixels & Scripts (Mesclado: pode ser src ou innerHTML)
+                const processScriptLikeObj = (obj) => {
+                    Object.keys(obj).forEach(original => {
+                        const newVal = obj[original];
+                        // Testa src
+                        targetDoc.querySelectorAll(`script[src="${original}"]`).forEach(el => {
+                            if (newVal === "") el.remove(); else el.setAttribute('src', newVal);
+                        });
+                        // Testa innerHTML
+                        targetDoc.querySelectorAll('script:not([src])').forEach(el => {
+                            if (el.innerHTML === original) {
                                 if (newVal === "") el.remove(); else el.innerHTML = newVal;
                             }
                         });
-                    } else {
-                        parsedDocument.querySelectorAll(`script[src="${original}"]`).forEach(el => {
-                            if (newVal === "") el.remove(); else el.setAttribute('src', newVal);
-                        });
-                    }
-                });
+                    });
+                };
+                processScriptLikeObj(replacements.pixels);
+                processScriptLikeObj(replacements.scripts);
 
-                // Divs (por ID, altera a tag toda)
-                Object.keys(replacements.divs).forEach(original => {
-                    const newVal = replacements.divs[original];
-                    const el = parsedDocument.getElementById(original);
-                    if (el) {
-                        if (newVal === "") el.remove(); else el.outerHTML = newVal;
-                    }
-                });
+                // Estruturais HTML (OuterHTML)
+                applyHTMLReplacement('section', replacements.sections, true);
+                applyHTMLReplacement('button', replacements.buttons, true);
+                applyHTMLReplacement('div[id]', replacements.divs, true);
 
                 // Injeções
+                const head = targetDoc.head || targetDoc.documentElement;
+                if (injections.pixels.trim() !== "") {
+                    head.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT PIXELS -->\n' + injections.pixels + '\n');
+                }
                 if (injections.header.trim() !== "") {
-                    const head = parsedDocument.head || parsedDocument.documentElement;
-                    head.insertAdjacentHTML('beforeend', '\n<!-- RT HEADER -->\n' + injections.header + '\n');
+                    head.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT HEAD -->\n' + injections.header + '\n');
                 }
+                
+                const body = targetDoc.body || targetDoc.documentElement;
                 if (injections.footer.trim() !== "") {
-                    const body = parsedDocument.body || parsedDocument.documentElement;
-                    body.insertAdjacentHTML('beforeend', '\n<!-- RT FOOTER -->\n' + injections.footer + '\n');
+                    body.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT FOOTER -->\n' + injections.footer + '\n');
                 }
-
-                return true;
             };
 
             const getFinalHTMLString = () => {
-                applyUpdatesToDOM();
+                const parser = new DOMParser();
+                const tempDoc = parser.parseFromString(originalHTMLString, 'text/html');
+                applyUpdatesToDOM(tempDoc);
+                
                 const serializer = new XMLSerializer();
-                let finalStr = serializer.serializeToString(parsedDocument);
+                let finalStr = serializer.serializeToString(tempDoc);
                 
                 if (originalHTMLString.trim().toLowerCase().startsWith("<!doctype")) {
                     const doctypeMatch = originalHTMLString.match(/^<!doctype[^>]*>/i);
@@ -667,22 +836,13 @@
             };
 
             const updateCode = () => {
-                toast("Aplicando regras e otimizando...");
-                // Recarrega o parser do original para garantir que "desfazer" funcione perfeitamente
-                const parser = new DOMParser();
-                parsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
-                
-                applyUpdatesToDOM();
-                extractData(parsedDocument);
-                renderAnalysisDashboard();
-                
-                toast("Código virtual atualizado com as novas regras!");
+                toast("Aplicando substituições globais...");
+                toggleExportButtons(true);
+                toast("Virtualização atualizada! Arquivo pronto para exportação.");
             };
 
             const downloadCode = () => {
-                toast("Compilando arquivo final...");
-                const parser = new DOMParser();
-                parsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
+                toast("Compilando pacote final...");
                 const finalCode = getFinalHTMLString();
 
                 const blob = new Blob([finalCode], { type: 'text/html;charset=utf-8' });
@@ -694,13 +854,11 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                toast("Download processado com sucesso.");
+                toast("Download processado com sucesso!");
             };
 
             const copyCode = async () => {
-                toast("Formatando para área de transferência...");
-                const parser = new DOMParser();
-                parsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
+                toast("Preparando buffer de memória...");
                 const finalCode = getFinalHTMLString();
 
                 try {
@@ -717,9 +875,9 @@
                         document.execCommand('copy');
                         textArea.remove();
                     }
-                    toast("Código capturado para a área de transferência.");
+                    toast("Código clonado para a área de transferência.");
                 } catch (err) {
-                    toast("Volume de dados excede o limite da área de transferência.", true);
+                    toast("Volume excede a capacidade da área de transferência.", true);
                 }
             };
 
@@ -729,7 +887,7 @@
                 submitPaste,
                 analyzeCode,
                 resetApp,
-                openItemModal,
+                openItemModalByIndex,
                 closeModal,
                 saveItemReplacement,
                 undoItemReplacement,
