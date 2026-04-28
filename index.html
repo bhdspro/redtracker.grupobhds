@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚡ RedTracker Monitor</title>
+    <title>RedTracker Monitor</title>
     
-    <!-- Favicon ⚡ -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
     
     <!-- Google Fonts: Plus Jakarta Sans -->
@@ -106,7 +105,7 @@
             RedTracker <span class="text-m3-primary">Monitor</span>
         </h1>
         <p class="text-lg md:text-xl text-m3-onSurfaceVariant font-medium max-w-2xl mx-auto px-4">
-            Alta performance em análise estrutural e injeção de código.
+            Análise e injeção de código de forma fácil e inteligente
         </p>
     </header>
 
@@ -154,7 +153,7 @@
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                     <div>
                         <h3 class="text-xl md:text-2xl font-extrabold text-[#1F1B1A] tracking-tight mb-1">Injeções e Otimizações</h3>
-                        <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Modifique a estrutura global da página, adicione scripts ou tune o SEO.</p>
+                        <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Modifique a estrutura da página, adicione scripts ou otimize o SEO.</p>
                     </div>
                     
                     <!-- GRID DE AÇÕES ORGANIZADA -->
@@ -173,7 +172,7 @@
                         </button>
                         <button onclick="app.openPixelsModal()" class="btn-m3 tonal flex justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-4 py-3 rounded-full font-bold items-center gap-2">
                             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            <span class="truncate">Pixels & Trackers</span>
+                            <span class="truncate">Pixels</span>
                         </button>
                     </div>
                 </div>
@@ -274,7 +273,7 @@
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('pixelsModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-4xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
             <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-white">
-                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]">Pixels & Trackers</h3>
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]">Pixels</h3>
                 <button onclick="app.closeModal('pixelsModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -356,7 +355,7 @@
     <!-- ================= SCRIPT CORE DE ALTA PERFORMANCE ================= -->
     <script>
         const app = (function() {
-            const defaultHeaderScript = `<!-- ========================================== -->\n<!-- ⚡ REDTRACKER MONITOR                      -->\n<!-- ========================================== -->\n<script>\n  document.addEventListener("DOMContentLoaded", function() {\n    const paramsURL = new URLSearchParams(window.location.search);\n    \n    if (paramsURL.toString() !== "") {\n      const blindarLinksRedTracker = () => {\n        const todosLinks = document.querySelectorAll("a");\n        \n        todosLinks.forEach(link => {\n          if (link.href && link.href.includes("red=")) {\n            try {\n              const urlDestino = new URL(link.href);\n              \n              if (urlDestino.searchParams.has("red")) {\n                paramsURL.forEach((valor, chave) => {\n                  if (chave !== 'red') {\n                    urlDestino.searchParams.set(chave, valor);\n                  }\n                });\n                link.href = urlDestino.toString();\n              }\n            } catch (e) {\n              // Ignora links malformados\n            }\n          }\n        });\n      };\n\n      blindarLinksRedTracker();\n\n      const observadorDeDOM = new MutationObserver((mutations) => {\n        let detetouNovoLink = false;\n        mutations.forEach((mutation) => {\n          if (mutation.addedNodes.length > 0) detetouNovoLink = true;\n        });\n        \n        if (detetouNovoLink) blindarLinksRedTracker();\n      });\n\n      observadorDeDOM.observe(document.body, { childList: true, subtree: true });\n    }\n  });\n<\/script>`;
+            const defaultHeaderScript = `<!-- ========================================== -->\n<!-- ⚡ REDTRACKER MONITOR CODE                      -->\n<!-- ========================================== -->\n<script>\n  document.addEventListener("DOMContentLoaded", function() {\n    const paramsURL = new URLSearchParams(window.location.search);\n    \n    if (paramsURL.toString() !== "") {\n      const blindarLinksRedTracker = () => {\n        const todosLinks = document.querySelectorAll("a");\n        \n        todosLinks.forEach(link => {\n          if (link.href && link.href.includes("red=")) {\n            try {\n              const urlDestino = new URL(link.href);\n              \n              if (urlDestino.searchParams.has("red")) {\n                paramsURL.forEach((valor, chave) => {\n                  if (chave !== 'red') {\n                    urlDestino.searchParams.set(chave, valor);\n                  }\n                });\n                link.href = urlDestino.toString();\n              }\n            } catch (e) {\n              // Ignora links malformados\n            }\n          }\n        });\n      };\n\n      blindarLinksRedTracker();\n\n      const observadorDeDOM = new MutationObserver((mutations) => {\n        let detetouNovoLink = false;\n        mutations.forEach((mutation) => {\n          if (mutation.addedNodes.length > 0) detetouNovoLink = true;\n        });\n        \n        if (detetouNovoLink) blindarLinksRedTracker();\n      });\n\n      observadorDeDOM.observe(document.body, { childList: true, subtree: true });\n    }\n  });\n<\/script>`;
 
             let originalHTMLString = "";
             let masterParsedDocument = null; 
@@ -540,7 +539,7 @@
                     itemsHTML = displayItems.map(([fullValue, displayLabel]) => {
                         const hasReplacement = replacements[categoryKey] && replacements[categoryKey][fullValue] !== undefined;
                         const bgClass = hasReplacement ? 'bg-m3-primaryContainer text-m3-onPrimaryContainer border-m3-primary/30' : 'bg-white text-[#1F1B1A] border-m3-surfaceVariant hover:bg-m3-surfaceVariant';
-                        const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Editado</span>` : '';
+                        const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Alterado</span>` : '';
                         const safeLabel = displayLabel.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         const index = itemsRegistry.length; itemsRegistry.push({ category: categoryKey, fullValue, displayLabel });
                         const undoBtn = hasReplacement ? `<button data-action="undo" data-index="${index}" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 ml-2 shadow-sm border border-m3-primary/20"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg></button>` : '';
@@ -568,17 +567,17 @@
                 };
 
                 let html = '';
-                html += createCategoryCard("Formulários (Actions)", icons.forms, "forms", analysisData.forms);
-                html += createCategoryCard("Links de Páginas", icons.links, "links", analysisData.links);
-                html += createCategoryCard("Seções (<section>)", icons.sections, "sections", analysisData.sections);
-                html += createCategoryCard("Botões (<button>)", icons.buttons, "buttons", analysisData.buttons);
+                html += createCategoryCard("Formulários", icons.forms, "forms", analysisData.forms);
+                html += createCategoryCard("Links", icons.links, "links", analysisData.links);
+                html += createCategoryCard("Seções (Sections)", icons.sections, "sections", analysisData.sections);
+                html += createCategoryCard("Botões", icons.buttons, "buttons", analysisData.buttons);
                 html += createCategoryCard("Widgets & Iframes", icons.iframes, "iframes", analysisData.iframes);
                 html += createCategoryCard("Vídeos & Players", icons.videos, "videos", analysisData.videos);
                 html += createCategoryCard("Imagens & Logos", icons.images, "images", analysisData.images);
                 html += createCategoryCard("Arquivos & Docs", icons.documents, "documents", analysisData.documents);
                 html += createCategoryCard("Âncoras Internas", icons.anchors, "anchors", analysisData.anchors);
                 html += createCategoryCard("Scripts Diversos", icons.scripts, "scripts", analysisData.scripts);
-                html += createCategoryCard("Divisões (IDs)", icons.divs, "divs", analysisData.divs);
+                html += createCategoryCard("Divisões (Divs)", icons.divs, "divs", analysisData.divs);
 
                 container.innerHTML = html;
             };
