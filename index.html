@@ -459,8 +459,25 @@
                 }
             };
 
-            const utf8ToB64 = (str) => btoa(unescape(encodeURIComponent(str)));
-            const b64ToUtf8 = (str) => decodeURIComponent(escape(atob(str)));
+            // Codificador Moderno Anti-Crash (Processa UTF-8 e Emojis sem quebrar o Base64)
+            const utf8ToB64 = (str) => {
+                const bytes = new TextEncoder().encode(str);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+                return btoa(binary);
+            };
+
+            const b64ToUtf8 = (str) => {
+                try {
+                    const binary = atob(str.replace(/\s/g, ''));
+                    const bytes = new Uint8Array(binary.length);
+                    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                    return new TextDecoder('utf-8').decode(bytes);
+                } catch (e) {
+                    return decodeURIComponent(escape(atob(str.replace(/\s/g, ''))));
+                }
+            };
+
             const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10));
 
             // ================= GITHUB INTELIGENTE ================= //
@@ -483,7 +500,6 @@
 
                 const [_, owner, repo, branch, path] = match;
                 
-                // Salvar dados seguros no LocalStorage
                 if(token) localStorage.setItem('rt_gh_token', enc(token));
                 localStorage.setItem('rt_gh_url', url);
 
@@ -505,13 +521,18 @@
                     
                     document.getElementById('btnGithubSave').classList.remove('hide');
                     document.getElementById('githubActivePath').textContent = `${owner}/${repo}/${path}`;
-                    show('githubBanner');
 
                     closeModal('githubModal');
                     spinner.classList.add('hide');
-                    processHTMLString(htmlContent);
                     
-                    toast("Puxado do GitHub! 🐙");
+                    // Salva na memória e auto-analisa
+                    originalHTMLString = htmlContent;
+                    masterParsedDocument = new DOMParser().parseFromString(originalHTMLString, 'text/html');
+                    toggleExportButtons(false);
+                    
+                    toast("Puxado do GitHub! 🐙 Analisando...");
+                    analyzeCode(); // Auto-análise
+
                 } catch (error) {
                     spinner.classList.add('hide');
                     toast("Vish! Repositório privado ou link quebrado?", true);
@@ -547,6 +568,7 @@
                 masterParsedDocument = new DOMParser().parseFromString(originalHTMLString, 'text/html');
                 toggleExportButtons(false); 
                 hide('step-input'); show('step-actions');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 toast("Vrau! Código na memória.");
             };
 
@@ -630,9 +652,18 @@
             const analyzeCode = async () => {
                 const btnIcon = document.getElementById('analyzeIcon'); const btnSpinner = document.getElementById('analyzeSpinner'); const btnText = document.getElementById('analyzeText');
                 btnIcon.classList.add('hide'); btnSpinner.classList.remove('hide'); btnText.textContent = "Escaneando...";
-                toast("Raio-X ativado! 🕵️‍♂️");
-                try { await extractDataChunked(masterParsedDocument); renderAnalysisDashboard(); hide('step-actions'); show('step-dashboard'); } 
-                catch (error) { toast("Eita! Tropeçou aqui.", true); } finally { btnIcon.classList.remove('hide'); btnSpinner.classList.add('hide'); btnText.textContent = "Analisar Código"; }
+                
+                try { 
+                    await extractDataChunked(masterParsedDocument); 
+                    renderAnalysisDashboard(); 
+                    hide('step-actions'); 
+                    show('step-dashboard'); 
+                    if(githubContext.isActive) show('githubBanner');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    toast("Zzzzt! Análise na velocidade da luz! ⚡");
+                } 
+                catch (error) { toast("Eita! Tropeçou aqui.", true); } 
+                finally { btnIcon.classList.remove('hide'); btnSpinner.classList.add('hide'); btnText.textContent = "Analisar Código"; }
             };
 
             // ================= DASHBOARD UI ================= //
