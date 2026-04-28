@@ -125,7 +125,7 @@
             </button>
 
             <button onclick="app.openPasteModal()" class="btn-m3 tonal h-full bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-1 flex flex-col items-center justify-center gap-3 md:gap-4 transition-colors">
-                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 <div class="text-center">
                     <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Colar Código HTML</span>
                     <span class="block text-m3-onPrimaryContainer opacity-80 font-medium text-sm md:text-base">Usar área de transferência</span>
@@ -136,14 +136,14 @@
                 <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 <div class="text-center">
                     <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Importar do GitHub</span>
-                    <span class="block text-gray-300 font-medium text-sm md:text-base">Usar código HTML do GitHub</span>
+                    <span class="block text-gray-300 font-medium text-sm md:text-base">Usar Código HTML do GitHub</span>
                 </div>
             </button>
         </section>
 
         <!-- ================= ETAPA 2: AÇÕES APÓS UPLOAD ================= -->
         <section id="step-actions" class="hide mt-6 md:mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <button onclick="app.analyzeCode()" class="btn-m3 bg-m3-primary text-m3-onPrimary px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl shadow-m3-elevation-3 flex items-center justify-center gap-3">
+            <button onclick="app.analyzeCode()" class="btn-m3 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl shadow-m3-elevation-3 flex items-center justify-center gap-3">
                 <svg id="analyzeIcon" class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 <svg id="analyzeSpinner" class="w-6 h-6 md:w-7 md:h-7 animate-spin hide" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 <span id="analyzeText">Analisar Código</span>
@@ -156,6 +156,7 @@
 
         <!-- ================= ETAPA 3: DASHBOARD DE ANÁLISE ================= -->
         <section id="step-dashboard" class="hide mt-4 w-full">
+            
             <!-- Injeções Globais e SEO -->
             <div class="bg-m3-surface border border-m3-surfaceVariant rounded-m3-xl p-6 md:p-8 mb-8 shadow-sm">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -164,7 +165,7 @@
                         <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Modifique a estrutura global da página, adicione scripts ou tune o SEO.</p>
                     </div>
                     <div class="flex flex-col sm:flex-row flex-wrap gap-3 w-full lg:w-auto">
-                        <button onclick="app.openSEOModal()" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-primary hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                        <button onclick="app.openSEOModal()" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                             SEO
                         </button>
@@ -198,10 +199,10 @@
                     Baixar
                 </button>
                 <button id="btnCopy" disabled onclick="app.copyCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
-                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                     Copiar
                 </button>
-                <button id="btnGithubSave" disabled onclick="app.saveToGithub()" class="hide btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
+                <button id="btnGithubSave" disabled onclick="app.saveToGithub()" class="hide btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     Salvar no GitHub
                 </button>
@@ -215,7 +216,7 @@
     <div id="githubModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('githubModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-lg overflow-hidden modal-content relative z-10 flex flex-col">
-            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center bg-white">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A] flex items-center gap-2">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     Importar do GitHub
@@ -227,7 +228,7 @@
             <div class="p-4 md:p-6 bg-white flex flex-col gap-5">
                 <div>
                     <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Link do Arquivo no GitHub</label>
-                    <input type="text" id="ghUrl" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none text-sm font-medium transition-colors" placeholder="https://github.com/usuario/repo/blob/main/index.html">
+                    <input type="text" id="ghUrl" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none text-sm font-medium transition-colors text-[#1F1B1A]" placeholder="https://github.com/usuario/repo/blob/main/index.html">
                     <p class="text-[11px] text-gray-500 mt-1 font-medium">Cole a URL inteira da página do arquivo.</p>
                 </div>
                 <div>
@@ -235,12 +236,12 @@
                         <span>Token de Acesso (PAT)</span>
                         <span class="text-gray-400 font-normal">Opcional para públicos</span>
                     </label>
-                    <input type="password" id="ghToken" class="w-full p-4 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none text-sm font-medium" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX">
+                    <input type="password" id="ghToken" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none text-sm font-medium transition-colors text-[#1F1B1A]" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX">
                 </div>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
                 <button onclick="app.closeModal('githubModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
-                <button onclick="app.fetchFromGithub()" class="btn-m3 bg-[#1F1B1A] text-white w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm flex items-center justify-center gap-2">
+                <button onclick="app.fetchFromGithub()" class="btn-m3 bg-[#1F1B1A] text-white hover:bg-black w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm flex items-center justify-center gap-2">
                     <svg class="w-5 h-5 animate-spin hide" id="ghSpinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     Puxar Código
                 </button>
@@ -252,18 +253,18 @@
     <div id="pasteModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('pasteModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 flex flex-col max-h-[90vh]">
-            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center bg-white">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]">Colar Código HTML</h3>
                 <button onclick="app.closeModal('pasteModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             <div class="p-4 md:p-6 bg-white flex-1 overflow-hidden flex flex-col">
-                <textarea id="pasteInput" class="w-full flex-1 min-h-[200px] md:min-h-[250px] p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] rounded-m3-lg focus:outline-none focus:ring-2 focus:ring-m3-primary transition-all resize-none text-sm md:text-base font-medium placeholder-m3-outline" placeholder="Cole todo o seu código gigante aqui..."></textarea>
+                <textarea id="pasteInput" spellcheck="false" class="w-full flex-1 min-h-[200px] md:min-h-[250px] p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-mono text-[#1F1B1A] placeholder-m3-outline resize-none" placeholder="Cole todo o seu código gigante aqui..."></textarea>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
                 <button onclick="app.closeModal('pasteModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
-                <button onclick="app.submitPaste()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Carregar</button>
+                <button onclick="app.submitPaste()" class="btn-m3 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Carregar</button>
             </div>
         </div>
     </div>
@@ -272,7 +273,7 @@
     <div id="itemModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('itemModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-4xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
-            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-white">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]" id="itemModalTitle">Editar Elemento</h3>
                 <button onclick="app.closeModal('itemModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -280,7 +281,7 @@
             </div>
             <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
                 <label class="block text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Código / Valor (Edite como desejar)</label>
-                <textarea id="itemModalInput" class="w-full flex-1 p-4 md:p-5 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-mono text-[#1F1B1A] min-h-[150px] md:min-h-[300px] shadow-inner" spellcheck="false" placeholder="Deixe em branco para REMOVER completamente."></textarea>
+                <textarea id="itemModalInput" class="w-full flex-1 p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-mono text-[#1F1B1A] min-h-[150px] md:min-h-[300px] shadow-inner" spellcheck="false" placeholder="Deixe em branco para REMOVER completamente."></textarea>
                 
                 <div class="mt-3 flex items-start gap-2 text-m3-primary bg-m3-primaryContainer/30 p-3 rounded-lg shrink-0">
                     <svg class="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -289,7 +290,7 @@
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
                 <button onclick="app.closeModal('itemModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
-                <button onclick="app.saveItemReplacement()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Aplicar</button>
+                <button onclick="app.saveItemReplacement()" class="btn-m3 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Aplicar</button>
             </div>
         </div>
     </div>
@@ -298,7 +299,7 @@
     <div id="injectModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('injectModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 max-h-[90vh] flex flex-col">
-            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-white">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]" id="injectModalTitle">Injetar Código</h3>
                 <button onclick="app.closeModal('injectModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -306,11 +307,11 @@
             </div>
             <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
                 <p class="text-sm md:text-base font-medium text-m3-onSurfaceVariant mb-4" id="injectModalDesc">Adicione scripts, estilos ou metas aqui.</p>
-                <textarea id="injectModalInput" class="w-full flex-1 p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] border-none rounded-m3-lg focus:ring-2 focus:ring-m3-primary focus:outline-none transition-all text-sm font-mono min-h-[150px] md:min-h-[200px]" placeholder="Insira o código..."></textarea>
+                <textarea id="injectModalInput" spellcheck="false" class="w-full flex-1 p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm font-mono text-[#1F1B1A] min-h-[150px] md:min-h-[200px]" placeholder="Insira o código..."></textarea>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
                 <button onclick="app.closeModal('injectModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
-                <button onclick="app.saveInjection()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Salvar</button>
+                <button onclick="app.saveInjection()" class="btn-m3 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Salvar</button>
             </div>
         </div>
     </div>
@@ -319,7 +320,7 @@
     <div id="pixelsModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('pixelsModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-4xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
-            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-white">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]">Pixels & Trackers</h3>
                 <button onclick="app.closeModal('pixelsModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -329,27 +330,27 @@
                 <!-- Facebook -->
                 <div class="flex flex-col gap-2">
                     <label class="font-bold text-[#1877F2] text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook & Instagram</label>
-                    <textarea id="pxFb" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1877F2] focus:outline-none text-xs font-mono h-32" placeholder="Cole o código <script> do Facebook aqui..."></textarea>
+                    <textarea id="pxFb" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-[#1877F2] focus:outline-none transition-colors text-xs font-mono text-[#1F1B1A] h-32" placeholder="Cole o código <script> do Facebook aqui..."></textarea>
                 </div>
                 <!-- Google -->
                 <div class="flex flex-col gap-2">
                     <label class="font-bold text-[#D93025] text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg> Google Ads / Analytics</label>
-                    <textarea id="pxGo" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#D93025] focus:outline-none text-xs font-mono h-32" placeholder="Cole o código <script> do Google gtag aqui..."></textarea>
+                    <textarea id="pxGo" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-[#D93025] focus:outline-none transition-colors text-xs font-mono text-[#1F1B1A] h-32" placeholder="Cole o código <script> do Google gtag aqui..."></textarea>
                 </div>
                 <!-- TikTok -->
                 <div class="flex flex-col gap-2">
                     <label class="font-bold text-black text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg> TikTok Ads</label>
-                    <textarea id="pxTk" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-black focus:outline-none text-xs font-mono h-32" placeholder="Cole o código do TikTok Pixel aqui..."></textarea>
+                    <textarea id="pxTk" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-black focus:outline-none transition-colors text-xs font-mono text-[#1F1B1A] h-32" placeholder="Cole o código do TikTok Pixel aqui..."></textarea>
                 </div>
                 <!-- Twitter -->
                 <div class="flex flex-col gap-2">
                     <label class="font-bold text-[#1DA1F2] text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg> Twitter / X</label>
-                    <textarea id="pxTw" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1DA1F2] focus:outline-none text-xs font-mono h-32" placeholder="Cole o código do Twitter Pixel aqui..."></textarea>
+                    <textarea id="pxTw" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-[#1DA1F2] focus:outline-none transition-colors text-xs font-mono text-[#1F1B1A] h-32" placeholder="Cole o código do Twitter Pixel aqui..."></textarea>
                 </div>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
                 <button onclick="app.closeModal('pixelsModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
-                <button onclick="app.savePixels()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Salvar Pixels</button>
+                <button onclick="app.savePixels()" class="btn-m3 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Salvar Pixels</button>
             </div>
         </div>
     </div>
@@ -358,27 +359,27 @@
     <div id="seoModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('seoModal')"></div>
         <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
-            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-m3-surfaceVariant">
-                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-m3-primary flex items-center gap-2">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-white">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A] flex items-center gap-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                     Painel SEO
                 </h3>
-                <button onclick="app.closeModal('seoModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-white">
+                <button onclick="app.closeModal('seoModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col gap-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Título da Página</label>
-                    <input type="text" id="seoTitle" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-m3-primary focus:outline-none text-sm font-medium" placeholder="Ex: Curso Completo">
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Título da Página</label>
+                    <input type="text" id="seoTitle" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm font-medium text-[#1F1B1A]" placeholder="Ex: Curso Completo">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Favicon (URL da Imagem)</label>
-                    <input type="text" id="seoFavicon" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-m3-primary focus:outline-none text-sm font-medium" placeholder="Ex: https://meusite.com/favicon.ico">
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Favicon (URL da Imagem)</label>
+                    <input type="text" id="seoFavicon" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm font-medium text-[#1F1B1A]" placeholder="Ex: https://meusite.com/favicon.ico">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Palavras-Chave (Separadas por vírgula)</label>
-                    <textarea id="seoKeywords" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-m3-primary focus:outline-none text-sm font-medium h-24" placeholder="Ex: magica, truques, curso online"></textarea>
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Palavras-Chave (Separadas por vírgula)</label>
+                    <textarea id="seoKeywords" spellcheck="false" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm font-medium text-[#1F1B1A] h-24" placeholder="Ex: magica, truques, curso online"></textarea>
                 </div>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
@@ -387,7 +388,7 @@
                     <span class="relative z-10">SEO Avançado</span>
                 </button>
                 <div class="flex gap-3 w-full sm:w-auto">
-                    <button onclick="app.closeModal('seoModal')" class="btn-m3 tonal flex-1 sm:flex-none px-6 py-3 rounded-full font-bold text-gray-600 hover:bg-gray-200">Cancelar</button>
+                    <button onclick="app.closeModal('seoModal')" class="btn-m3 tonal flex-1 sm:flex-none px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
                     <button onclick="app.saveSEO()" class="btn-m3 bg-m3-primary hover:bg-[#93000A] text-m3-onPrimary flex-1 sm:flex-none px-8 py-3 rounded-full font-bold shadow-sm">Salvar</button>
                 </div>
             </div>
@@ -451,20 +452,9 @@
                 return btoa(binary);
             };
 
-            const b64ToUtf8 = (str) => {
-                try {
-                    const binary = atob(str.replace(/\s/g, ''));
-                    const bytes = new Uint8Array(binary.length);
-                    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-                    return new TextDecoder('utf-8').decode(bytes);
-                } catch (e) {
-                    return decodeURIComponent(escape(atob(str.replace(/\s/g, ''))));
-                }
-            };
-
             const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10));
 
-            // ================= GITHUB INTEGRADO (Oficial API) ================= //
+            // ================= GITHUB INTEGRADO ================= //
             const openGithubImportModal = () => {
                 const savedToken = localStorage.getItem('rt_gh_token');
                 const savedUrl = localStorage.getItem('rt_gh_url');
@@ -490,25 +480,20 @@
                 spinner.classList.remove('hide');
 
                 try {
-                    const apiHeaders = { 'Accept': 'application/vnd.github.v3+json' };
-                    if(token) apiHeaders['Authorization'] = `Bearer ${token}`;
-
-                    // 1. Puxar Metadados (SHA e Tamanho)
-                    const metaRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { headers: apiHeaders });
-                    if (!metaRes.ok) throw new Error("API negou");
+                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
+                    const rawHeaders = token ? { 'Authorization': `token ${token}` } : {};
+                    const rawResponse = await fetch(rawUrl, { headers: rawHeaders });
                     
-                    const metaData = await metaRes.json();
-                    const sha = metaData.sha;
-                    let htmlContent = "";
+                    if (!rawResponse.ok) throw new Error("Erro ao baixar arquivo");
+                    const htmlContent = await rawResponse.text();
 
-                    // 2. Decisão inteligente de download (Blob para arquivos grandes, Content para pequenos)
-                    if (metaData.size > 1000000 || !metaData.content) {
-                        const blobRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs/${sha}`, { headers: apiHeaders });
-                        const blobData = await blobRes.json();
-                        htmlContent = b64ToUtf8(blobData.content);
-                    } else {
-                        htmlContent = b64ToUtf8(metaData.content);
-                    }
+                    let sha = "";
+                    try {
+                        const apiHeaders = { 'Accept': 'application/vnd.github.v3+json' };
+                        if(token) apiHeaders['Authorization'] = `Bearer ${token}`;
+                        const apiRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { headers: apiHeaders });
+                        if(apiRes.ok) sha = (await apiRes.json()).sha;
+                    } catch(e) {} 
 
                     githubContext = { isActive: true, token, owner, repo, path, branch, sha };
                     currentFileName = path.split('/').pop();
@@ -516,15 +501,12 @@
                     closeModal('githubModal');
                     spinner.classList.add('hide');
                     
-                    // Salva na memória e auto-analisa
                     originalHTMLString = htmlContent;
                     masterParsedDocument = new DOMParser().parseFromString(originalHTMLString, 'text/html');
-                    
-                    document.getElementById('btnGithubSave').classList.remove('hide');
                     toggleExportButtons(false);
                     
-                    toast("Engoli o código do GitHub! 🐙");
-                    analyzeCode(); // Auto-análise direto
+                    toast("Puxado do GitHub! 🐙 Analisando...");
+                    analyzeCode();
 
                 } catch (error) {
                     spinner.classList.add('hide');
@@ -722,6 +704,7 @@
             const openItemModalByIndex = (index) => {
                 const item = itemsRegistry[index]; if (!item) return;
                 currentEditIndex = index;
+                document.getElementById('itemModalTitle').textContent = 'Editar Elemento';
                 const existingVal = replacements[item.category][item.fullValue];
                 document.getElementById('itemModalInput').value = existingVal !== undefined ? existingVal : item.fullValue;
                 show('itemModal');
