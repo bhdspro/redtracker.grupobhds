@@ -125,7 +125,7 @@
             </button>
 
             <button onclick="app.openPasteModal()" class="btn-m3 tonal h-full bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-1 flex flex-col items-center justify-center gap-3 md:gap-4 transition-colors">
-                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 <div class="text-center">
                     <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Colar Código HTML</span>
                     <span class="block text-m3-onPrimaryContainer opacity-80 font-medium text-sm md:text-base">Usar área de transferência</span>
@@ -156,7 +156,6 @@
 
         <!-- ================= ETAPA 3: DASHBOARD DE ANÁLISE ================= -->
         <section id="step-dashboard" class="hide mt-4 w-full">
-            
             <!-- Injeções Globais e SEO -->
             <div class="bg-m3-surface border border-m3-surfaceVariant rounded-m3-xl p-6 md:p-8 mb-8 shadow-sm">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -165,7 +164,7 @@
                         <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Modifique a estrutura global da página, adicione scripts ou tune o SEO.</p>
                     </div>
                     <div class="flex flex-col sm:flex-row flex-wrap gap-3 w-full lg:w-auto">
-                        <button onclick="app.openSEOModal()" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                        <button onclick="app.openSEOModal()" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-primary hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                             SEO
                         </button>
@@ -199,7 +198,7 @@
                     Baixar
                 </button>
                 <button id="btnCopy" disabled onclick="app.copyCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
-                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                     Copiar
                 </button>
                 <button id="btnGithubSave" disabled onclick="app.saveToGithub()" class="hide btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
@@ -228,7 +227,7 @@
             <div class="p-4 md:p-6 bg-white flex flex-col gap-5">
                 <div>
                     <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Link do Arquivo no GitHub</label>
-                    <input type="text" id="ghUrl" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium transition-colors" placeholder="https://github.com/usuario/repo/blob/main/index.html">
+                    <input type="text" id="ghUrl" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none text-sm font-medium transition-colors" placeholder="https://github.com/usuario/repo/blob/main/index.html">
                     <p class="text-[11px] text-gray-500 mt-1 font-medium">Cole a URL inteira da página do arquivo.</p>
                 </div>
                 <div>
@@ -236,12 +235,12 @@
                         <span>Token de Acesso (PAT)</span>
                         <span class="text-gray-400 font-normal">Opcional para públicos</span>
                     </label>
-                    <input type="password" id="ghToken" class="w-full p-4 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX">
+                    <input type="password" id="ghToken" class="w-full p-4 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none text-sm font-medium" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX">
                 </div>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
                 <button onclick="app.closeModal('githubModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
-                <button onclick="app.fetchFromGithub()" class="btn-m3 bg-[#181717] text-white w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm flex items-center justify-center gap-2">
+                <button onclick="app.fetchFromGithub()" class="btn-m3 bg-[#1F1B1A] text-white w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm flex items-center justify-center gap-2">
                     <svg class="w-5 h-5 animate-spin hide" id="ghSpinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     Puxar Código
                 </button>
@@ -452,9 +451,20 @@
                 return btoa(binary);
             };
 
+            const b64ToUtf8 = (str) => {
+                try {
+                    const binary = atob(str.replace(/\s/g, ''));
+                    const bytes = new Uint8Array(binary.length);
+                    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                    return new TextDecoder('utf-8').decode(bytes);
+                } catch (e) {
+                    return decodeURIComponent(escape(atob(str.replace(/\s/g, ''))));
+                }
+            };
+
             const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10));
 
-            // ================= GITHUB INTELIGENTE (Raw Fetch API) ================= //
+            // ================= GITHUB INTEGRADO (Oficial API) ================= //
             const openGithubImportModal = () => {
                 const savedToken = localStorage.getItem('rt_gh_token');
                 const savedUrl = localStorage.getItem('rt_gh_url');
@@ -467,13 +477,12 @@
                 const url = document.getElementById('ghUrl').value.trim();
                 const token = document.getElementById('ghToken').value.trim();
 
-                if(!url) return toast("Manda o link do GitHub, chefe!", true);
+                if(!url) return toast("Cadê o link, meu rei?", true);
                 
                 const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)/);
-                if(!match) return toast("Link inválido. Precisa ser o link do arquivo (com /blob/).", true);
+                if(!match) return toast("Link zicado. Use o link do arquivo direto.", true);
 
                 const [_, owner, repo, branch, path] = match;
-                
                 if(token) localStorage.setItem('rt_gh_token', enc(token));
                 localStorage.setItem('rt_gh_url', url);
 
@@ -481,47 +490,51 @@
                 spinner.classList.remove('hide');
 
                 try {
-                    // Puxando o RAW diretamente (Ignora limite de Base64 e corrupção de caracteres)
-                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
-                    const rawHeaders = token ? { 'Authorization': `token ${token}` } : {};
-                    const rawResponse = await fetch(rawUrl, { headers: rawHeaders });
-                    
-                    if (!rawResponse.ok) throw new Error("Erro ao baixar arquivo RAW");
-                    const htmlContent = await rawResponse.text();
+                    const apiHeaders = { 'Accept': 'application/vnd.github.v3+json' };
+                    if(token) apiHeaders['Authorization'] = `Bearer ${token}`;
 
-                    // Obter SHA para commit futuro
-                    let sha = "";
-                    try {
-                        const apiHeaders = { 'Accept': 'application/vnd.github.v3+json' };
-                        if(token) apiHeaders['Authorization'] = `Bearer ${token}`;
-                        const apiRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { headers: apiHeaders });
-                        if(apiRes.ok) sha = (await apiRes.json()).sha;
-                    } catch(e) {} // Ignora se falhar o SHA agora
+                    // 1. Puxar Metadados (SHA e Tamanho)
+                    const metaRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { headers: apiHeaders });
+                    if (!metaRes.ok) throw new Error("API negou");
+                    
+                    const metaData = await metaRes.json();
+                    const sha = metaData.sha;
+                    let htmlContent = "";
+
+                    // 2. Decisão inteligente de download (Blob para arquivos grandes, Content para pequenos)
+                    if (metaData.size > 1000000 || !metaData.content) {
+                        const blobRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs/${sha}`, { headers: apiHeaders });
+                        const blobData = await blobRes.json();
+                        htmlContent = b64ToUtf8(blobData.content);
+                    } else {
+                        htmlContent = b64ToUtf8(metaData.content);
+                    }
 
                     githubContext = { isActive: true, token, owner, repo, path, branch, sha };
                     currentFileName = path.split('/').pop();
                     
-                    document.getElementById('btnGithubSave').classList.remove('hide');
-
                     closeModal('githubModal');
                     spinner.classList.add('hide');
                     
+                    // Salva na memória e auto-analisa
                     originalHTMLString = htmlContent;
                     masterParsedDocument = new DOMParser().parseFromString(originalHTMLString, 'text/html');
+                    
+                    document.getElementById('btnGithubSave').classList.remove('hide');
                     toggleExportButtons(false);
                     
-                    toast("Puxado do GitHub! 🐙 Analisando...");
-                    analyzeCode(); // Auto-análise
+                    toast("Engoli o código do GitHub! 🐙");
+                    analyzeCode(); // Auto-análise direto
 
                 } catch (error) {
                     spinner.classList.add('hide');
-                    toast("Vish! Repositório privado ou link quebrado?", true);
+                    toast("GitHub bloqueou! Token inválido ou arquivo sumiu?", true);
                 }
             };
 
             const saveToGithub = async () => {
                 if(!githubContext.isActive) return;
-                toast("Mandando pro polvo... 🐙");
+                toast("Fazendo o Commit... 🐙");
                 const btn = document.getElementById('btnGithubSave'); btn.disabled = true;
 
                 const finalCode = getFinalHTMLString();
@@ -529,12 +542,18 @@
                     const response = await fetch(`https://api.github.com/repos/${githubContext.owner}/${githubContext.repo}/contents/${githubContext.path}`, {
                         method: 'PUT',
                         headers: { 'Authorization': `Bearer ${githubContext.token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: "Atualizado via RedTracker Monitor ⚡", content: utf8ToB64(finalCode), sha: githubContext.sha, branch: githubContext.branch })
+                        body: JSON.stringify({ 
+                            message: "Atualizado via RedTracker Monitor ⚡", 
+                            content: utf8ToB64(finalCode), 
+                            sha: githubContext.sha, 
+                            branch: githubContext.branch 
+                        })
                     });
                     if (!response.ok) throw new Error("Erro");
-                    githubContext.sha = (await response.json()).content.sha; 
-                    toast("Commit feito com sucesso! 😎");
-                } catch (error) { toast("Deu ruim no Commit. Faltou permissão?", true); } 
+                    const data = await response.json();
+                    githubContext.sha = data.content.sha; 
+                    toast("Salvo no GitHub! Tá na nuvem. ☁️");
+                } catch (error) { toast("Erro no commit! Sem permissão?", true); } 
                 finally { btn.disabled = false; }
             };
 
@@ -543,22 +562,22 @@
             const closeModal = (modalId) => hide(modalId);
 
             const processHTMLString = (htmlStr) => {
-                if (!htmlStr || htmlStr.trim() === "") return toast("Vish, cadê o código?", true);
+                if (!htmlStr || htmlStr.trim() === "") return toast("Cadê o código, patrão?", true);
                 originalHTMLString = htmlStr;
                 masterParsedDocument = new DOMParser().parseFromString(originalHTMLString, 'text/html');
                 toggleExportButtons(false); 
                 hide('step-input'); show('step-actions');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                toast("Vrau! Código na memória.");
+                toast("Tudo na memória!");
             };
 
             const handleFileUpload = (event) => {
                 const file = event.target.files[0]; if (!file) return;
                 currentFileName = file.name.replace(/\.[^/.]+$/, "") + "_redtracker.html";
-                githubContext.isActive = false; document.getElementById('btnGithubSave').classList.add('hide'); 
+                githubContext.isActive = false; document.getElementById('btnGithubSave').classList.add('hide');
                 const reader = new FileReader();
                 reader.onload = (e) => processHTMLString(e.target.result);
-                reader.onerror = () => toast("O arquivo engasgou!", true);
+                reader.onerror = () => toast("Arquivo engasgou!", true);
                 reader.readAsText(file);
             };
 
@@ -577,7 +596,7 @@
                 document.getElementById('fileInput').value = ""; document.getElementById('analysisResults').innerHTML = "";
                 document.getElementById('btnGithubSave').classList.add('hide'); 
                 toggleExportButtons(false); show('step-input'); hide('step-actions'); hide('step-dashboard');
-                toast("Tudo limpo! 🧹");
+                toast("Faxina feita! 🧹");
             };
 
             // ================= ANÁLISE ================= //
@@ -639,16 +658,16 @@
                     hide('step-actions'); 
                     show('step-dashboard'); 
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                    toast("Zzzzt! Análise na velocidade da luz! ⚡");
+                    toast("Análise completa! ⚡");
                 } 
-                catch (error) { toast("Eita! Tropeçou aqui.", true); } 
+                catch (error) { toast("Deu erro no Raio-X!", true); } 
                 finally { btnIcon.classList.remove('hide'); btnSpinner.classList.add('hide'); btnText.textContent = "Analisar Código"; }
             };
 
             // ================= DASHBOARD UI ================= //
             const createCategoryCard = (title, iconSvg, categoryKey, mapSet) => {
                 let itemsHTML = ''; const entries = Array.from(mapSet.entries()); 
-                if (entries.length === 0) { itemsHTML = `<div class="p-6 text-center text-m3-outline font-medium text-sm">Nenhum elemento encontrado.</div>`; } 
+                if (entries.length === 0) { itemsHTML = `<div class="p-6 text-center text-m3-outline font-medium text-sm">Nada aqui.</div>`; } 
                 else {
                     const displayItems = entries.slice(0, 100); 
                     itemsHTML = displayItems.map(([fullValue, displayLabel]) => {
@@ -660,7 +679,7 @@
                         const undoBtn = hasReplacement ? `<button data-action="undo" data-index="${index}" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 ml-2 shadow-sm border border-m3-primary/20"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg></button>` : '';
                         return `<div class="flex items-center justify-between p-3 rounded-m3-lg border ${bgClass} transition-colors mb-2 shadow-sm"><button data-action="edit" data-index="${index}" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group"><span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2 pointer-events-none">${safeLabel}</span>${badge}</button>${undoBtn}</div>`;
                     }).join('');
-                    if(entries.length > 100) itemsHTML += `<div class="p-2 mt-2 text-xs text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${entries.length - 100} itens ocultos</div>`;
+                    if(entries.length > 100) itemsHTML += `<div class="p-2 mt-2 text-xs text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${entries.length - 100} ocultos</div>`;
                 }
                 return `<div class="bg-white border border-m3-surfaceVariant rounded-m3-xl overflow-hidden shadow-m3-elevation-1 hover:shadow-m3-elevation-3 transition-shadow flex flex-col h-full max-h-[400px]"><div class="bg-m3-surface p-4 flex items-center justify-between border-b border-m3-surfaceVariant shrink-0"><div class="flex items-center gap-3 min-w-0"><div class="bg-m3-primaryContainer text-m3-onPrimaryContainer p-2 rounded-full shrink-0">${iconSvg}</div><h3 class="text-lg font-bold text-[#1F1B1A] truncate">${title}</h3></div><span class="bg-[#1F1B1A] text-white text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2">${entries.length}</span></div><div class="p-3 overflow-y-auto bg-m3-surface/50 flex-1 custom-scrollbar">${itemsHTML}</div></div>`;
             };
@@ -703,7 +722,6 @@
             const openItemModalByIndex = (index) => {
                 const item = itemsRegistry[index]; if (!item) return;
                 currentEditIndex = index;
-                document.getElementById('itemModalTitle').textContent = 'Editar Elemento';
                 const existingVal = replacements[item.category][item.fullValue];
                 document.getElementById('itemModalInput').value = existingVal !== undefined ? existingVal : item.fullValue;
                 show('itemModal');
@@ -713,14 +731,14 @@
                 const item = itemsRegistry[currentEditIndex]; if (!item) return;
                 replacements[item.category][item.fullValue] = document.getElementById('itemModalInput').value.trim();
                 closeModal('itemModal'); renderAnalysisDashboard(); toggleExportButtons(false); 
-                toast("Anotado! Lembre de 'Atualizar' depois.");
+                toast("Salvo! Lembre de Atualizar.");
             };
 
             const undoItemReplacement = (index) => {
                 const item = itemsRegistry[index]; if (!item) return;
                 delete replacements[item.category][item.fullValue];
                 renderAnalysisDashboard(); toggleExportButtons(false); 
-                toast("Voltou no tempo! ⏪");
+                toast("Resetado! ⏪");
             };
 
             document.addEventListener('DOMContentLoaded', () => {
@@ -742,7 +760,7 @@
 
             const saveInjection = () => {
                 injections[currentInjectTarget] = document.getElementById('injectModalInput').value;
-                closeModal('injectModal'); toggleExportButtons(false); toast("Código injetado com sucesso!");
+                closeModal('injectModal'); toggleExportButtons(false); toast("Injetado!");
             };
 
             const openPixelsModal = () => {
@@ -754,13 +772,11 @@
             const savePixels = () => {
                 const fb = document.getElementById('pxFb').value.trim(); const go = document.getElementById('pxGo').value.trim();
                 const tk = document.getElementById('pxTk').value.trim(); const tw = document.getElementById('pxTw').value.trim();
-                
                 let combined = '';
-                if(fb) combined += `\n<!-- Facebook -->\n${fb}\n`; if(go) combined += `\n<!-- Google -->\n${go}\n`;
-                if(tk) combined += `\n<!-- TikTok -->\n${tk}\n`; if(tw) combined += `\n<!-- Twitter -->\n${tw}\n`;
-                
+                if(fb) combined += `\n<!-- FB -->\n${fb}\n`; if(go) combined += `\n<!-- GO -->\n${go}\n`;
+                if(tk) combined += `\n<!-- TK -->\n${tk}\n`; if(tw) combined += `\n<!-- TW -->\n${tw}\n`;
                 injections.pixels = combined;
-                closeModal('pixelsModal'); toggleExportButtons(false); toast("Pixels engatilhados!");
+                closeModal('pixelsModal'); toggleExportButtons(false); toast("Pixels prontos!");
             };
 
             const openSEOModal = () => {
@@ -774,12 +790,11 @@
                 seoData.title = document.getElementById('seoTitle').value.trim();
                 seoData.favicon = document.getElementById('seoFavicon').value.trim();
                 seoData.keywords = document.getElementById('seoKeywords').value.trim();
-                closeModal('seoModal'); toggleExportButtons(false);
-                toast("SEO anotado! 👀");
+                closeModal('seoModal'); toggleExportButtons(false); toast("SEO salvo!");
             };
 
             const applyBlackHatSEO = () => {
-                seoData.advancedSEO = true; toast("Hackeado com sucesso! SEO Avançado ativado 🥷");
+                seoData.advancedSEO = true; toast("SEO Ninja Ativado! 🥷");
             };
 
             // ================= EXPORT ================= //
@@ -809,11 +824,10 @@
                 if (seoData.title) { let t = targetDoc.querySelector('title'); if(t) t.textContent = seoData.title; else head.insertAdjacentHTML('afterbegin', `<title>${seoData.title}</title>`); }
                 if (seoData.favicon) { targetDoc.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]').forEach(el => el.remove()); head.insertAdjacentHTML('beforeend', `<link rel="icon" href="${seoData.favicon}">`); }
                 if (seoData.keywords) { let k = targetDoc.querySelector('meta[name="keywords"]'); if(k) k.setAttribute('content', seoData.keywords); else head.insertAdjacentHTML('beforeend', `<meta name="keywords" content="${seoData.keywords}">`); }
-                if (seoData.advancedSEO) { head.insertAdjacentHTML('afterbegin', `\n<!-- RT ADVANCED SEO -->\n<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">\n<meta property="og:locale" content="pt_BR"><meta property="og:type" content="website">\n<meta property="og:title" content="${seoData.title || 'Página Otimizada'}">\n<meta name="twitter:card" content="summary_large_image">\n<link rel="dns-prefetch" href="//fonts.googleapis.com"><link rel="dns-prefetch" href="//s.w.org">\n<!-- END ADVANCED SEO -->\n`); }
+                if (seoData.advancedSEO) { head.insertAdjacentHTML('afterbegin', `\n<!-- RT SEO -->\n<meta name="robots" content="index, follow">\n<meta property="og:title" content="${seoData.title || 'Landing'}">\n`); }
 
                 if (injections.pixels.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- RT PIXELS -->\n' + injections.pixels + '\n');
                 if (injections.header.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- RT HEAD -->\n' + injections.header + '\n');
-                
                 const body = targetDoc.body || targetDoc.documentElement;
                 if (injections.footer.trim() !== "") body.insertAdjacentHTML('beforeend', '\n<!-- RT FOOTER -->\n' + injections.footer + '\n');
             };
@@ -825,16 +839,15 @@
                 let finalStr = serializer.serializeToString(tempDoc);
                 if (originalHTMLString.trim().toLowerCase().startsWith("<!doctype")) {
                     const doctypeMatch = originalHTMLString.match(/^<!doctype[^>]*>/i);
-                    finalStr = finalStr.replace(/^<!doctype[^>]*>/i, '');
-                    finalStr = (doctypeMatch ? doctypeMatch[0] + "\n" : "<!DOCTYPE html>\n") + finalStr;
+                    finalStr = (doctypeMatch ? doctypeMatch[0] + "\n" : "<!DOCTYPE html>\n") + finalStr.replace(/^<!doctype[^>]*>/i, '');
                 }
                 return finalStr;
             };
 
-            const updateCode = () => { toast("Mágica feita! ✨"); toggleExportButtons(true); };
+            const updateCode = () => { toast("Tudo pronto! ✨"); toggleExportButtons(true); };
 
             const downloadCode = () => {
-                toast("Empacotando...");
+                toast("Baixando...");
                 const blob = new Blob([getFinalHTMLString()], { type: 'text/html;charset=utf-8' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a'); a.href = url; a.download = currentFileName;
@@ -843,15 +856,15 @@
 
             const copyCode = async () => {
                 toast("Copiando...");
-                const finalCode = getFinalHTMLString();
                 try {
+                    const finalCode = getFinalHTMLString();
                     if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(finalCode);
                     else {
                         const t = document.createElement("textarea"); t.value = finalCode; t.style.position = "fixed"; t.style.opacity = "0";
                         document.body.appendChild(t); t.focus(); t.select(); document.execCommand('copy'); t.remove();
                     }
-                    setTimeout(() => toast("Copiado! 📋"), 500);
-                } catch (err) { toast("Muito grande pra copiar, tenta baixar!", true); }
+                    toast("Copiado! 📋");
+                } catch (err) { toast("Muito grande, baixe o arquivo!", true); }
             };
 
             return {
