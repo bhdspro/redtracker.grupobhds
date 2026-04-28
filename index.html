@@ -136,7 +136,7 @@
                 <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 <div class="text-center">
                     <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Importar do GitHub</span>
-                    <span class="block text-gray-300 font-medium text-sm md:text-base">Usar Código HTML do GitHub</span>
+                    <span class="block text-gray-300 font-medium text-sm md:text-base">Usar código HTML do GitHub</span>
                 </div>
             </button>
         </section>
@@ -454,7 +454,7 @@
 
             const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10));
 
-            // ================= GITHUB INTEGRADO ================= //
+            // ================= GITHUB INTEGRADO (Raw Fetch API) ================= //
             const openGithubImportModal = () => {
                 const savedToken = localStorage.getItem('rt_gh_token');
                 const savedUrl = localStorage.getItem('rt_gh_url');
@@ -473,6 +473,7 @@
                 if(!match) return toast("Link zicado. Use o link do arquivo direto.", true);
 
                 const [_, owner, repo, branch, path] = match;
+                
                 if(token) localStorage.setItem('rt_gh_token', enc(token));
                 localStorage.setItem('rt_gh_url', url);
 
@@ -484,7 +485,7 @@
                     const rawHeaders = token ? { 'Authorization': `token ${token}` } : {};
                     const rawResponse = await fetch(rawUrl, { headers: rawHeaders });
                     
-                    if (!rawResponse.ok) throw new Error("Erro ao baixar arquivo");
+                    if (!rawResponse.ok) throw new Error("Erro ao baixar arquivo RAW");
                     const htmlContent = await rawResponse.text();
 
                     let sha = "";
@@ -498,6 +499,8 @@
                     githubContext = { isActive: true, token, owner, repo, path, branch, sha };
                     currentFileName = path.split('/').pop();
                     
+                    document.getElementById('btnGithubSave').classList.remove('hide');
+
                     closeModal('githubModal');
                     spinner.classList.add('hide');
                     
@@ -506,17 +509,17 @@
                     toggleExportButtons(false);
                     
                     toast("Puxado do GitHub! 🐙 Analisando...");
-                    analyzeCode();
+                    analyzeCode(); 
 
                 } catch (error) {
                     spinner.classList.add('hide');
-                    toast("GitHub bloqueou! Token inválido ou arquivo sumiu?", true);
+                    toast("Vish! Repositório privado ou link quebrado?", true);
                 }
             };
 
             const saveToGithub = async () => {
                 if(!githubContext.isActive) return;
-                toast("Fazendo o Commit... 🐙");
+                toast("Mandando pro polvo... 🐙");
                 const btn = document.getElementById('btnGithubSave'); btn.disabled = true;
 
                 const finalCode = getFinalHTMLString();
@@ -524,18 +527,12 @@
                     const response = await fetch(`https://api.github.com/repos/${githubContext.owner}/${githubContext.repo}/contents/${githubContext.path}`, {
                         method: 'PUT',
                         headers: { 'Authorization': `Bearer ${githubContext.token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            message: "Atualizado via RedTracker Monitor ⚡", 
-                            content: utf8ToB64(finalCode), 
-                            sha: githubContext.sha, 
-                            branch: githubContext.branch 
-                        })
+                        body: JSON.stringify({ message: "Atualizado via RedTracker Monitor ⚡", content: utf8ToB64(finalCode), sha: githubContext.sha, branch: githubContext.branch })
                     });
                     if (!response.ok) throw new Error("Erro");
-                    const data = await response.json();
-                    githubContext.sha = data.content.sha; 
-                    toast("Salvo no GitHub! Tá na nuvem. ☁️");
-                } catch (error) { toast("Erro no commit! Sem permissão?", true); } 
+                    githubContext.sha = (await response.json()).content.sha; 
+                    toast("Commit feito com sucesso! 😎");
+                } catch (error) { toast("Deu ruim no Commit. Faltou permissão?", true); } 
                 finally { btn.disabled = false; }
             };
 
@@ -556,7 +553,7 @@
             const handleFileUpload = (event) => {
                 const file = event.target.files[0]; if (!file) return;
                 currentFileName = file.name.replace(/\.[^/.]+$/, "") + "_redtracker.html";
-                githubContext.isActive = false; document.getElementById('btnGithubSave').classList.add('hide');
+                githubContext.isActive = false; document.getElementById('btnGithubSave').classList.add('hide'); 
                 const reader = new FileReader();
                 reader.onload = (e) => processHTMLString(e.target.result);
                 reader.onerror = () => toast("Arquivo engasgou!", true);
