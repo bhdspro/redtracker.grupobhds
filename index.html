@@ -356,15 +356,17 @@
     <!-- ================= SCRIPT CORE DE ALTA PERFORMANCE ================= -->
     <script>
         const app = (function() {
+            const defaultHeaderScript = `<!-- ========================================== -->\n<!-- ⚡ REDTRACKER MONITOR                      -->\n<!-- ========================================== -->\n<script>\n  document.addEventListener("DOMContentLoaded", function() {\n    const paramsURL = new URLSearchParams(window.location.search);\n    \n    if (paramsURL.toString() !== "") {\n      const blindarLinksRedTracker = () => {\n        const todosLinks = document.querySelectorAll("a");\n        \n        todosLinks.forEach(link => {\n          if (link.href && link.href.includes("red=")) {\n            try {\n              const urlDestino = new URL(link.href);\n              \n              if (urlDestino.searchParams.has("red")) {\n                paramsURL.forEach((valor, chave) => {\n                  if (chave !== 'red') {\n                    urlDestino.searchParams.set(chave, valor);\n                  }\n                });\n                link.href = urlDestino.toString();\n              }\n            } catch (e) {\n              // Ignora links malformados\n            }\n          }\n        });\n      };\n\n      blindarLinksRedTracker();\n\n      const observadorDeDOM = new MutationObserver((mutations) => {\n        let detetouNovoLink = false;\n        mutations.forEach((mutation) => {\n          if (mutation.addedNodes.length > 0) detetouNovoLink = true;\n        });\n        \n        if (detetouNovoLink) blindarLinksRedTracker();\n      });\n\n      observadorDeDOM.observe(document.body, { childList: true, subtree: true });\n    }\n  });\n<\/script>`;
+
             let originalHTMLString = "";
             let masterParsedDocument = null; 
             let currentFileName = "redtracker_export.html";
             let itemsRegistry = [];
 
-            let appState = { pixelsToRemove: [], pixelsUserEdited: false };
+            let appState = { pixelsUserEdited: false };
 
             let replacements = { forms: {}, links: {}, sections: {}, buttons: {}, iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} };
-            let injections = { header: "", footer: "", pixels: "" };
+            let injections = { header: defaultHeaderScript, footer: "", pixels: "" };
             let seoData = { title: "", favicon: "", keywords: "", advancedSEO: false };
 
             let currentEditIndex = null;
@@ -424,9 +426,9 @@
             const resetApp = () => {
                 originalHTMLString = ""; masterParsedDocument = null; itemsRegistry = [];
                 replacements = { forms: {}, links: {}, sections: {}, buttons: {}, iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} };
-                injections = { header: "", footer: "", pixels: "" };
+                injections = { header: defaultHeaderScript, footer: "", pixels: "" };
                 seoData = { title: "", favicon: "", keywords: "", advancedSEO: false };
-                appState = { pixelsToRemove: [], pixelsUserEdited: false };
+                appState = { pixelsUserEdited: false };
                 
                 document.getElementById('fileInput').value = ""; document.getElementById('analysisResults').innerHTML = "";
                 toggleExportButtons(false); show('step-input'); hide('step-actions'); hide('step-dashboard');
@@ -440,7 +442,6 @@
                 const docRegex = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|zip|rar|7z)(\?.*)?$/i;
                 
                 let fbCode = [], goCode = [], tkCode = [], twCode = [];
-                appState.pixelsToRemove = [];
 
                 doc.querySelectorAll('a[href]').forEach(el => {
                     const href = el.getAttribute('href');
@@ -454,10 +455,9 @@
                 doc.querySelectorAll('button').forEach(el => { let label = "Botão"; if(el.className) label += ` class="${el.className}"`; else if(el.innerText) label += ` "${el.innerText.substring(0, 20)}"`; analysisData.buttons.set(el.outerHTML, label); });
                 await yieldToMain();
 
-                // Extração Segura de Pixels e Scripts
                 doc.querySelectorAll('script, noscript, img').forEach(el => {
-                    if (el.tagName === 'IMG' && !el.src.includes('facebook.com/tr')) return;
-                    if (el.tagName === 'NOSCRIPT' && !el.innerHTML.includes('facebook.com/tr') && !el.innerHTML.includes('googletagmanager')) return;
+                    if (el.tagName === 'IMG' && (!el.src || !el.src.includes('facebook.com/tr'))) return;
+                    if (el.tagName === 'NOSCRIPT' && (!el.innerHTML || (!el.innerHTML.includes('facebook.com/tr') && !el.innerHTML.includes('googletagmanager')))) return;
 
                     const src = el.getAttribute('src') || '';
                     const content = el.innerHTML || '';
@@ -478,7 +478,7 @@
                     }
 
                     if (isPixel) {
-                        el.setAttribute('data-rt-remove', 'true'); // Marca original para sumir depois
+                        el.setAttribute('data-rt-remove', 'true'); 
                         if (category === 'fb') fbCode.push(el.outerHTML);
                         else if (category === 'go') goCode.push(el.outerHTML);
                         else if (category === 'tk') tkCode.push(el.outerHTML);
@@ -543,7 +543,6 @@
                         const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Editado</span>` : '';
                         const safeLabel = displayLabel.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         const index = itemsRegistry.length; itemsRegistry.push({ category: categoryKey, fullValue, displayLabel });
-                        
                         const undoBtn = hasReplacement ? `<button data-action="undo" data-index="${index}" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 ml-2 shadow-sm border border-m3-primary/20"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg></button>` : '';
                         return `<div class="flex items-center justify-between p-3 rounded-m3-lg border ${bgClass} transition-colors mb-2 shadow-sm"><button data-action="edit" data-index="${index}" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group"><span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2 pointer-events-none">${safeLabel}</span>${badge}</button>${undoBtn}</div>`;
                     }).join('');
@@ -617,14 +616,6 @@
                 });
             });
 
-            // ================= PREVENÇÃO DE DUPLICATAS ================= //
-            const checkDuplicate = (newCode) => {
-                if(!newCode.trim()) return false;
-                const normNew = newCode.replace(/\s+/g, '');
-                const docHtml = masterParsedDocument.documentElement.innerHTML.replace(/\s+/g, '');
-                return docHtml.includes(normNew);
-            };
-
             // ================= INJEÇÕES & SEO ================= //
             const openInjectModal = (type) => {
                 currentInjectTarget = type;
@@ -634,17 +625,8 @@
             };
 
             const saveInjection = () => {
-                const val = document.getElementById('injectModalInput').value;
-                const currentVal = injections[currentInjectTarget] || "";
-                
-                // Evitar códigos duplicados
-                if (val.trim() !== "" && val.replace(/\s+/g, '') !== currentVal.replace(/\s+/g, '') && checkDuplicate(val)) {
-                    toast("Esse código já existe na página! Bloqueamos a duplicação.", true);
-                    return;
-                }
-
-                injections[currentInjectTarget] = val;
-                closeModal('injectModal'); toggleExportButtons(false); toast("Injetado!");
+                injections[currentInjectTarget] = document.getElementById('injectModalInput').value;
+                closeModal('injectModal'); toggleExportButtons(false); toast("Pronto para injetar!");
             };
 
             const openPixelsModal = () => {
@@ -652,7 +634,7 @@
             };
 
             const savePixels = () => {
-                appState.pixelsUserEdited = true; // Impede que extrações futuras sobrescrevam
+                appState.pixelsUserEdited = true; 
                 const fb = document.getElementById('pxFb').value.trim(); const go = document.getElementById('pxGo').value.trim();
                 const tk = document.getElementById('pxTk').value.trim(); const tw = document.getElementById('pxTw').value.trim();
                 
@@ -661,7 +643,7 @@
                 if(tk) combined += `\n<!-- TK -->\n${tk}\n`; if(tw) combined += `\n<!-- TW -->\n${tw}\n`;
                 
                 injections.pixels = combined;
-                closeModal('pixelsModal'); toggleExportButtons(false); toast("Pixels prontos!");
+                closeModal('pixelsModal'); toggleExportButtons(false); toast("Pixels engatilhados!");
             };
 
             const openSEOModal = () => {
@@ -682,14 +664,14 @@
                 seoData.advancedSEO = true; toast("SEO Ninja Ativado! 🥷");
             };
 
-            // ================= EXPORT ================= //
+            // ================= EXPORT & ANTI-DUPLICAÇÃO ================= //
             const applyUpdatesToDOM = (targetDoc) => {
                 if (!targetDoc) return false;
 
-                // 1. Remove Pixels originais extraídos
+                // 1. Remove Pixels originais
                 targetDoc.querySelectorAll('[data-rt-remove="true"]').forEach(el => el.remove());
 
-                // 2. Aplica as regras de substituição
+                // 2. Aplica Regras Básicas
                 const applyAttr = (sel, obj, attr) => Object.keys(obj).forEach(o => { targetDoc.querySelectorAll(sel(o)).forEach(el => { if (el.getAttribute(attr) === o) { if (obj[o] === "") el.remove(); else el.setAttribute(attr, obj[o]); } }); });
                 const applyHtml = (sel, obj, useOuter) => Object.keys(obj).forEach(o => { targetDoc.querySelectorAll(sel).forEach(el => { const comp = useOuter ? el.outerHTML : el.innerHTML; if (comp === o) { if (obj[o] === "") el.remove(); else { if(useOuter) el.outerHTML = obj[o]; else el.innerHTML = obj[o]; } } }); });
 
@@ -701,24 +683,46 @@
                 applyAttr(o => `iframe[src="${o}"]`, replacements.iframes, 'src');
 
                 Object.keys(replacements.videos).forEach(o => targetDoc.querySelectorAll(`video[src="${o}"], source[src="${o}"], iframe[src="${o}"]`).forEach(el => { if (replacements.videos[o] === "") el.remove(); else el.setAttribute('src', replacements.videos[o]); }));
-
                 Object.keys(replacements.scripts).forEach(o => { const v = replacements.scripts[o]; targetDoc.querySelectorAll(`script[src="${o}"]`).forEach(el => { if (v === "") el.remove(); else el.setAttribute('src', v); }); targetDoc.querySelectorAll('script:not([src])').forEach(el => { if (el.innerHTML === o) { if (v === "") el.remove(); else el.innerHTML = v; } }); });
 
                 applyHtml('section', replacements.sections, true);
                 applyHtml('button', replacements.buttons, true);
                 applyHtml('div[id]', replacements.divs, true);
 
-                // 3. Aplica Injeções e SEO
+                // 3. INJEÇÕES COM ESCUDO ANTI-DUPLICAÇÃO
                 const head = targetDoc.head || targetDoc.documentElement;
+                const body = targetDoc.body || targetDoc.documentElement;
+                
+                // Pega todo o HTML já formatado da página para comparar
+                const fullHtml = targetDoc.documentElement.innerHTML;
+                
+                const checkDupe = (html, snippet) => {
+                    if(!snippet || snippet.trim() === "") return true; 
+                    // Remove espaços pra comparar "na raiz"
+                    return html.replace(/\s+/g, '').includes(snippet.replace(/\s+/g, ''));
+                };
+
+                // Aplica SEO
                 if (seoData.title) { let t = targetDoc.querySelector('title'); if(t) t.textContent = seoData.title; else head.insertAdjacentHTML('afterbegin', `<title>${seoData.title}</title>`); }
                 if (seoData.favicon) { targetDoc.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]').forEach(el => el.remove()); head.insertAdjacentHTML('beforeend', `<link rel="icon" href="${seoData.favicon}">`); }
                 if (seoData.keywords) { let k = targetDoc.querySelector('meta[name="keywords"]'); if(k) k.setAttribute('content', seoData.keywords); else head.insertAdjacentHTML('beforeend', `<meta name="keywords" content="${seoData.keywords}">`); }
-                if (seoData.advancedSEO) { head.insertAdjacentHTML('afterbegin', `\n<!-- RT SEO -->\n<meta name="robots" content="index, follow">\n<meta property="og:title" content="${seoData.title || 'Landing'}">\n`); }
+                
+                if (seoData.advancedSEO) { 
+                    const advBlock = `\n<!-- RT SEO -->\n<meta name="robots" content="index, follow">\n<meta property="og:title" content="${seoData.title || 'Landing'}">\n`;
+                    if(!checkDupe(fullHtml, advBlock)) head.insertAdjacentHTML('afterbegin', advBlock); 
+                }
 
-                if (injections.pixels.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- RT PIXELS -->\n' + injections.pixels + '\n');
-                if (injections.header.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- RT HEAD -->\n' + injections.header + '\n');
-                const body = targetDoc.body || targetDoc.documentElement;
-                if (injections.footer.trim() !== "") body.insertAdjacentHTML('beforeend', '\n<!-- RT FOOTER -->\n' + injections.footer + '\n');
+                if (injections.pixels.trim() !== "" && !checkDupe(fullHtml, injections.pixels)) {
+                    head.insertAdjacentHTML('beforeend', '\n<!-- RT PIXELS -->\n' + injections.pixels + '\n');
+                }
+                
+                if (injections.header.trim() !== "" && !checkDupe(fullHtml, injections.header)) {
+                    head.insertAdjacentHTML('beforeend', '\n<!-- RT HEAD -->\n' + injections.header + '\n');
+                }
+                
+                if (injections.footer.trim() !== "" && !checkDupe(fullHtml, injections.footer)) {
+                    body.insertAdjacentHTML('beforeend', '\n<!-- RT FOOTER -->\n' + injections.footer + '\n');
+                }
             };
 
             const getFinalHTMLString = () => {
