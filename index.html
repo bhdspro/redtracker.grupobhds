@@ -113,14 +113,14 @@
     <main class="w-full max-w-7xl relative">
         
         <!-- ================= ETAPA 1: INPUT DE DADOS ================= -->
-        <section id="step-input" class="flex flex-col md:flex-row justify-center gap-4 md:gap-6 transition-all duration-300 w-full max-w-4xl mx-auto">
+        <section id="step-input" class="flex flex-col md:flex-row justify-center gap-4 md:gap-6 transition-all duration-300 w-full max-w-5xl mx-auto">
             <input type="file" id="fileInput" accept=".html,.htm,.txt" class="hidden" onchange="app.handleFileUpload(event)">
             
             <button onclick="document.getElementById('fileInput').click()" class="btn-m3 flex-1 bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 group">
                 <svg class="w-10 h-10 md:w-12 md:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                 <div class="text-center">
                     <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Importar Arquivo HTML</span>
-                    <span class="block text-m3-primaryContainer opacity-90 font-medium text-sm md:text-base">Selecionar arquivo</span>
+                    <span class="block text-m3-primaryContainer opacity-90 font-medium text-sm md:text-base">Selecionar do dispositivo</span>
                 </div>
             </button>
 
@@ -131,23 +131,44 @@
                     <span class="block text-m3-onPrimaryContainer opacity-80 font-medium text-sm md:text-base">Usar área de transferência</span>
                 </div>
             </button>
+
+            <button onclick="app.openGithubImportModal()" class="btn-m3 bg-[#181717] text-white hover:bg-[#2b2b2b] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 transition-colors">
+                <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <div class="text-center">
+                    <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">GitHub / Repositório</span>
+                    <span class="block text-gray-300 font-medium text-sm md:text-base">Importação Integrada</span>
+                </div>
+            </button>
         </section>
 
         <!-- ================= ETAPA 2: AÇÕES APÓS UPLOAD ================= -->
         <section id="step-actions" class="hide mt-6 md:mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <button onclick="app.analyzeCode()" class="btn-m3 bg-m3-primary text-m3-onPrimary px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl shadow-m3-elevation-3 flex items-center justify-center gap-3">
-                <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                Analisar Código
+                <!-- Ícone trocado para spinner quando analisando -->
+                <svg id="analyzeIcon" class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <svg id="analyzeSpinner" class="w-6 h-6 md:w-7 md:h-7 animate-spin hide" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span id="analyzeText">Analisar Código</span>
             </button>
             <button onclick="app.resetApp()" class="btn-m3 tonal bg-m3-surfaceVariant text-m3-onSurfaceVariant hover:bg-[#E7CFCB] px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl flex items-center justify-center gap-3 transition-colors">
                 <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                Limpar Código
+                Limpar Memória
             </button>
         </section>
 
         <!-- ================= ETAPA 3: DASHBOARD DE ANÁLISE ================= -->
         <section id="step-dashboard" class="hide mt-4 w-full">
             
+            <!-- Banner do GitHub Ativo -->
+            <div id="githubBanner" class="hide bg-[#F6F8FA] border border-[#D0D7DE] rounded-m3-xl p-4 md:p-5 mb-6 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-[#24292F]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <div>
+                        <p class="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">Repositório GitHub Sincronizado</p>
+                        <p id="githubActivePath" class="text-sm md:text-base font-bold text-[#24292F] font-mono"></p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Injeções Globais e Pixels -->
             <div class="bg-m3-surface border border-m3-surfaceVariant rounded-m3-xl p-6 md:p-8 mb-8 shadow-sm">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -172,7 +193,7 @@
                 </div>
             </div>
 
-            <!-- Grid de Resultados -->
+            <!-- Grid de Resultados (Agora com delegação de eventos embutida) -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="analysisResults"></div>
 
             <!-- Botões de Ação Final -->
@@ -183,17 +204,64 @@
                 </button>
                 <button id="btnDownload" disabled onclick="app.downloadCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Baixar Código
+                    Baixar
                 </button>
                 <button id="btnCopy" disabled onclick="app.copyCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                    Copiar Código
+                    Copiar
+                </button>
+                <button id="btnGithubSave" disabled onclick="app.saveToGithub()" class="hide btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Salvar no GitHub
                 </button>
             </div>
         </section>
     </main>
 
     <!-- ================= MODALS ================= -->
+
+    <!-- Modal: GitHub Import -->
+    <div id="githubModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('githubModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-lg overflow-hidden modal-content relative z-10 flex flex-col">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A] flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Importar do GitHub
+                </h3>
+                <button onclick="app.closeModal('githubModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white flex flex-col gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Token de Acesso (PAT)</label>
+                    <input type="password" id="ghToken" class="w-full p-3 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Usuário / Org</label>
+                        <input type="text" id="ghOwner" class="w-full p-3 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium" placeholder="ex: dev-ninja">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Repositório</label>
+                        <input type="text" id="ghRepo" class="w-full p-3 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium" placeholder="ex: landing-page">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Caminho do Arquivo</label>
+                    <input type="text" id="ghPath" class="w-full p-3 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium" placeholder="ex: index.html">
+                </div>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
+                <button onclick="app.closeModal('githubModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
+                <button onclick="app.fetchFromGithub()" class="btn-m3 bg-[#181717] text-white w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 animate-spin hide" id="ghSpinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    Puxar Código
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal: Colar Código -->
     <div id="pasteModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -206,7 +274,7 @@
                 </button>
             </div>
             <div class="p-4 md:p-6 bg-white flex-1 overflow-hidden flex flex-col">
-                <textarea id="pasteInput" class="w-full flex-1 min-h-[200px] md:min-h-[250px] p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] rounded-m3-lg focus:outline-none focus:ring-2 focus:ring-m3-primary transition-all resize-none text-sm md:text-base font-medium placeholder-m3-outline" placeholder="Cole todo o seu código aqui..."></textarea>
+                <textarea id="pasteInput" class="w-full flex-1 min-h-[200px] md:min-h-[250px] p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] rounded-m3-lg focus:outline-none focus:ring-2 focus:ring-m3-primary transition-all resize-none text-sm md:text-base font-medium placeholder-m3-outline" placeholder="Cole todo o seu código gigante aqui..."></textarea>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
                 <button onclick="app.closeModal('pasteModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
@@ -226,16 +294,13 @@
                 </button>
             </div>
             <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
-                <p class="text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Identificador (Alvo)</p>
-                <div class="bg-m3-surfaceVariant p-3 md:p-4 rounded-m3-lg mb-5 text-[#1F1B1A] font-semibold text-xs md:text-sm break-all border border-m3-surfaceVariant/50 max-h-24 overflow-y-auto" id="itemModalOriginal"></div>
-                
-                <label class="block text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Código / Valor (Edite como desejar)</label>
-                <!-- Preenchido automaticamente via JS -->
+                <label class="block text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Código / Valor Original (Edite como desejar)</label>
+                <!-- Preenchido automaticamente via JS com o alvo -->
                 <textarea id="itemModalInput" class="w-full flex-1 p-4 md:p-5 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-mono text-[#1F1B1A] min-h-[150px] md:min-h-[250px] shadow-inner" placeholder="Deixe em branco para REMOVER completamente."></textarea>
                 
                 <div class="mt-3 flex items-start gap-2 text-m3-primary bg-m3-primaryContainer/30 p-3 rounded-lg shrink-0">
                     <svg class="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <p class="text-xs md:text-sm font-bold leading-tight">Apagar tudo e salvar vazio removerá este elemento ou atributo permanentemente.</p>
+                    <p class="text-xs md:text-sm font-bold leading-tight">Apagar tudo e salvar vazio vai remover esse cara do documento, sem deixar vestígios.</p>
                 </div>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
@@ -257,6 +322,18 @@
             </div>
             <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
                 <p class="text-sm md:text-base font-medium text-m3-onSurfaceVariant mb-4" id="injectModalDesc">Adicione scripts, estilos ou metas aqui.</p>
+                
+                <!-- Botões Rápidos para Pixels -->
+                <div id="pixelShortcuts" class="hide mb-4">
+                    <p class="text-xs font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Templates Rápidos:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="app.insertPixelTemplate('fb')" class="btn-m3 text-xs md:text-sm px-4 py-2 rounded-full font-bold bg-[#E7F3FF] text-[#1877F2] hover:bg-[#D1E7FF]">Facebook & IG</button>
+                        <button onclick="app.insertPixelTemplate('google')" class="btn-m3 text-xs md:text-sm px-4 py-2 rounded-full font-bold bg-[#FCE8E6] text-[#D93025] hover:bg-[#FAD2CF]">Google Ads</button>
+                        <button onclick="app.insertPixelTemplate('tiktok')" class="btn-m3 text-xs md:text-sm px-4 py-2 rounded-full font-bold bg-gray-100 text-black hover:bg-gray-200">TikTok</button>
+                        <button onclick="app.insertPixelTemplate('twitter')" class="btn-m3 text-xs md:text-sm px-4 py-2 rounded-full font-bold bg-[#E8F5FD] text-[#1DA1F2] hover:bg-[#D4EDFC]">Twitter / X</button>
+                    </div>
+                </div>
+
                 <textarea id="injectModalInput" class="w-full flex-1 p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] border-none rounded-m3-lg focus:ring-2 focus:ring-m3-primary focus:outline-none transition-all text-sm font-mono min-h-[150px] md:min-h-[200px]" placeholder="Insira o conteúdo a ser injetado..."></textarea>
             </div>
             <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
@@ -266,7 +343,7 @@
         </div>
     </div>
 
-    <!-- Toast Notification (M3 Snackbar) -->
+    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 bg-[#313033] text-[#F4EFF4] px-6 py-4 rounded-[8px] font-medium shadow-m3-elevation-3 opacity-0 transition-opacity duration-300 pointer-events-none z-[100] min-w-[280px] md:min-w-[300px] text-center text-sm md:text-base tracking-wide">
         Notificação
     </div>
@@ -322,26 +399,24 @@
   });
 <\/script>`;
 
-            // Estado
+            // ================= ESTADO DA APLICAÇÃO ================= //
             let originalHTMLString = "";
+            let masterParsedDocument = null; // DOM Virtual Mestre (Evita re-parse constante)
             let currentFileName = "redtracker_export.html";
             
-            // Registro de Itens para performance (evita strings gigantes no DOM)
+            let githubContext = { isActive: false, token: "", owner: "", repo: "", path: "", sha: "" };
             let itemsRegistry = [];
 
-            // Categorias Expandidas
             let replacements = { 
                 pixels: {}, forms: {}, links: {}, sections: {}, buttons: {}, 
                 iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} 
             };
-            
-            // Estado de Injeção inclui o novo Pixels
             let injections = { header: defaultHeaderScript, footer: "", pixels: "" };
 
             let currentEditIndex = null;
             let currentInjectTarget = null;
 
-            // UI Utils
+            // ================= UTILITÁRIOS ================= //
             const show = (id) => document.getElementById(id).classList.remove('hide');
             const hide = (id) => document.getElementById(id).classList.add('hide');
             
@@ -356,38 +431,157 @@
             const toggleExportButtons = (enabled) => {
                 const btnDownload = document.getElementById('btnDownload');
                 const btnCopy = document.getElementById('btnCopy');
+                const btnGithubSave = document.getElementById('btnGithubSave');
+                
+                const activeClasses = ['bg-green-700', 'hover:bg-green-800'];
+                const activeCopyClasses = ['bg-blue-700', 'hover:bg-blue-800'];
+                const activeGhClasses = ['bg-[#181717]', 'hover:bg-[#2b2b2b]'];
+                const disabledClasses = ['bg-gray-400', 'opacity-50', 'cursor-not-allowed'];
+
                 if (enabled) {
                     btnDownload.disabled = false;
                     btnCopy.disabled = false;
-                    btnDownload.classList.remove('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
-                    btnDownload.classList.add('bg-green-700', 'hover:bg-green-800');
-                    btnCopy.classList.remove('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
-                    btnCopy.classList.add('bg-blue-700', 'hover:bg-blue-800');
+                    btnDownload.classList.remove(...disabledClasses);
+                    btnDownload.classList.add(...activeClasses);
+                    btnCopy.classList.remove(...disabledClasses);
+                    btnCopy.classList.add(...activeCopyClasses);
+                    
+                    if (githubContext.isActive) {
+                        btnGithubSave.disabled = false;
+                        btnGithubSave.classList.remove(...disabledClasses);
+                        btnGithubSave.classList.add(...activeGhClasses);
+                    }
                 } else {
                     btnDownload.disabled = true;
                     btnCopy.disabled = true;
-                    btnDownload.classList.add('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
-                    btnDownload.classList.remove('bg-green-700', 'hover:bg-green-800');
-                    btnCopy.classList.add('bg-gray-400', 'opacity-50', 'cursor-not-allowed');
-                    btnCopy.classList.remove('bg-blue-700', 'hover:bg-blue-800');
+                    btnDownload.classList.add(...disabledClasses);
+                    btnDownload.classList.remove(...activeClasses);
+                    btnCopy.classList.add(...disabledClasses);
+                    btnCopy.classList.remove(...activeCopyClasses);
+                    
+                    if (githubContext.isActive) {
+                        btnGithubSave.disabled = true;
+                        btnGithubSave.classList.add(...disabledClasses);
+                        btnGithubSave.classList.remove(...activeGhClasses);
+                    }
                 }
             };
 
-            // Modals
+            const utf8ToB64 = (str) => btoa(unescape(encodeURIComponent(str)));
+            const b64ToUtf8 = (str) => decodeURIComponent(escape(atob(str)));
+            const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10)); // Função para evitar travamento (Time-slicing)
+
+            // ================= MÓDULO: GITHUB ================= //
+            const openGithubImportModal = () => {
+                if(localStorage.getItem('rt_gh_token')) document.getElementById('ghToken').value = localStorage.getItem('rt_gh_token');
+                if(localStorage.getItem('rt_gh_owner')) document.getElementById('ghOwner').value = localStorage.getItem('rt_gh_owner');
+                if(localStorage.getItem('rt_gh_repo')) document.getElementById('ghRepo').value = localStorage.getItem('rt_gh_repo');
+                if(localStorage.getItem('rt_gh_path')) document.getElementById('ghPath').value = localStorage.getItem('rt_gh_path');
+                show('githubModal');
+            };
+
+            const fetchFromGithub = async () => {
+                const token = document.getElementById('ghToken').value.trim();
+                const owner = document.getElementById('ghOwner').value.trim();
+                const repo = document.getElementById('ghRepo').value.trim();
+                const path = document.getElementById('ghPath').value.trim();
+
+                if(!token || !owner || !repo || !path) {
+                    toast("Ei, preenche todos os campos do GitHub! Não tenho bola de cristal.", true);
+                    return;
+                }
+
+                localStorage.setItem('rt_gh_token', token);
+                localStorage.setItem('rt_gh_owner', owner);
+                localStorage.setItem('rt_gh_repo', repo);
+                localStorage.setItem('rt_gh_path', path);
+
+                const spinner = document.getElementById('ghSpinner');
+                spinner.classList.remove('hide');
+
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                    });
+
+                    if (!response.ok) throw new Error("Erro na API do GitHub");
+                    
+                    const data = await response.json();
+                    githubContext = { isActive: true, token, owner, repo, path, sha: data.sha };
+                    
+                    const htmlContent = b64ToUtf8(data.content);
+                    currentFileName = path.split('/').pop();
+                    
+                    document.getElementById('btnGithubSave').classList.remove('hide');
+                    document.getElementById('githubActivePath').textContent = `${owner}/${repo}/${path}`;
+                    show('githubBanner');
+
+                    closeModal('githubModal');
+                    spinner.classList.add('hide');
+                    processHTMLString(htmlContent);
+                    
+                    toast("O polvo do GitHub aprovou! Código importado direto da nuvem. 🐙");
+                } catch (error) {
+                    spinner.classList.add('hide');
+                    toast("Opa! GitHub recusou. Verifique o token, repo ou caminho do arquivo.", true);
+                }
+            };
+
+            const saveToGithub = async () => {
+                if(!githubContext.isActive) return;
+                
+                toast("Empacotando e enviando pro polvo... 🐙");
+                const btn = document.getElementById('btnGithubSave');
+                btn.disabled = true;
+
+                const finalCode = getFinalHTMLString();
+                const contentB64 = utf8ToB64(finalCode);
+
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${githubContext.owner}/${githubContext.repo}/contents/${githubContext.path}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${githubContext.token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: "Atualizado via RedTracker Monitor ⚡",
+                            content: contentB64,
+                            sha: githubContext.sha
+                        })
+                    });
+
+                    if (!response.ok) throw new Error("Erro ao salvar no GitHub");
+                    const data = await response.json();
+                    githubContext.sha = data.content.sha; 
+                    toast("Tudo nosso! Commit feito e salvo com sucesso no GitHub! ⚡");
+                } catch (error) {
+                    toast("Deu ruim no Commit. Será que outro dev mexeu lá antes?", true);
+                } finally {
+                    btn.disabled = false;
+                }
+            };
+
+            // ================= MÓDULO: CONTROLE DE ARQUIVOS ================= //
             const openPasteModal = () => show('pasteModal');
             const closeModal = (modalId) => hide(modalId);
 
-            // Processamento Inicial
             const processHTMLString = (htmlStr) => {
                 if (!htmlStr || htmlStr.trim() === "") {
-                    toast("O código fornecido está vazio.", true);
+                    toast("Opa! Cadê o código? Mandou um arquivo invisível?", true);
                     return;
                 }
                 originalHTMLString = htmlStr;
+                
+                // Criação do DOM Mestre (UMA ÚNICA VEZ)
+                const parser = new DOMParser();
+                masterParsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
+
                 toggleExportButtons(false); 
                 hide('step-input');
                 show('step-actions');
-                toast("Estrutura carregada na memória. Pronto para análise!");
+                toast("Código engolido com sucesso! Bora mastigar esses dados.");
             };
 
             const handleFileUpload = (event) => {
@@ -395,9 +589,13 @@
                 if (!file) return;
                 currentFileName = file.name.replace(/\.[^/.]+$/, "") + "_redtracker.html";
                 
+                githubContext.isActive = false;
+                document.getElementById('btnGithubSave').classList.add('hide');
+                hide('githubBanner');
+
                 const reader = new FileReader();
                 reader.onload = (e) => processHTMLString(e.target.result);
-                reader.onerror = () => toast("Erro ao ler o arquivo.", true);
+                reader.onerror = () => toast("Deu ruim! O arquivo engasgou na leitura.", true);
                 reader.readAsText(file);
             };
 
@@ -406,50 +604,38 @@
                 const val = textarea.value;
                 textarea.value = ""; 
                 closeModal('pasteModal');
+                
+                githubContext.isActive = false;
+                document.getElementById('btnGithubSave').classList.add('hide');
+                hide('githubBanner');
+
                 processHTMLString(val);
             };
 
             const resetApp = () => {
                 originalHTMLString = "";
+                masterParsedDocument = null;
                 itemsRegistry = [];
                 replacements = { pixels: {}, forms: {}, links: {}, sections: {}, buttons: {}, iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} };
                 injections = { header: defaultHeaderScript, footer: "", pixels: "" };
+                githubContext.isActive = false;
                 
                 document.getElementById('fileInput').value = "";
                 document.getElementById('analysisResults').innerHTML = "";
+                document.getElementById('btnGithubSave').classList.add('hide');
+                hide('githubBanner');
                 toggleExportButtons(false);
                 
                 show('step-input');
                 hide('step-actions');
                 hide('step-dashboard');
-                toast("Ambiente resetado e memória liberada.");
+                toast("Tudo limpo! Memória livre, leve e solta.");
             };
 
-            // Análise Core
-            const analyzeCode = () => {
-                toast("Realizando análise profunda...");
-                
-                setTimeout(() => {
-                    try {
-                        const parser = new DOMParser();
-                        const parsedDocument = parser.parseFromString(originalHTMLString, 'text/html');
-                        
-                        extractData(parsedDocument);
-                        renderAnalysisDashboard();
-                        
-                        hide('step-actions');
-                        show('step-dashboard');
-                        toast("Análise concluída com extrema velocidade!");
-                    } catch (error) {
-                        toast("Erro de processamento interno.", true);
-                    }
-                }, 50); 
-            };
-
+            // ================= MÓDULO: ANÁLISE DE ALTA PERFORMANCE (Time-Slicing) ================= //
             let analysisData = {};
 
-            const extractData = (doc) => {
-                // Estrutura Map preserva a ordem e a chave é o valor real completo.
+            const extractDataChunked = async (doc) => {
                 analysisData = { 
                     pixels: new Map(), forms: new Map(), links: new Map(), anchors: new Map(), 
                     documents: new Map(), images: new Map(), videos: new Map(), iframes: new Map(),
@@ -457,37 +643,49 @@
                 };
 
                 const docRegex = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|zip|rar|7z)(\?.*)?$/i;
-                const pixelKeywords = /fbq|gtag|google-analytics\.com|googletagmanager\.com|tiktok\.com|fbevents\.js|pixel|hotjar|clarity/i;
+                const pixelKeywords = ['fbq', 'gtag', 'google-analytics.com', 'googletagmanager.com', 'tiktok.com', 'fbevents.js', 'pixel', 'hotjar', 'clarity'];
 
-                // Links e Docs (Pegamos o href)
+                // Chunck 1: Links e Anchors
                 doc.querySelectorAll('a[href]').forEach(el => {
                     const href = el.getAttribute('href');
-                    if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
-                        if (docRegex.test(href)) analysisData.documents.set(href, href);
-                        else analysisData.links.set(href, href);
+                    if (!href || href.startsWith('javascript:')) return;
+                    if (href.startsWith('#')) {
+                        if(href.length > 1) analysisData.anchors.set(href, href);
+                    } else if (docRegex.test(href)) {
+                        analysisData.documents.set(href, href);
+                    } else {
+                        analysisData.links.set(href, href);
                     }
                 });
+                await yieldToMain();
 
-                // Anchors (href)
-                doc.querySelectorAll('a[href^="#"]').forEach(el => {
-                    const href = el.getAttribute('href');
-                    if(href.length > 1) analysisData.anchors.set(href, href);
-                });
-
-                // Forms (action)
+                // Chunk 2: Forms e Buttons
                 doc.querySelectorAll('form[action]').forEach(el => {
                     const action = el.getAttribute('action');
                     if (action) analysisData.forms.set(action, action);
                 });
+                doc.querySelectorAll('button').forEach(el => {
+                    let label = "Botão";
+                    if(el.className) label += ` class="${el.className}"`;
+                    else if(el.innerText) label += ` "${el.innerText.substring(0, 20)}"`;
+                    analysisData.buttons.set(el.outerHTML, label);
+                });
+                await yieldToMain();
 
-                // Scripts e Pixels detectados no código do cliente (src ou innerHTML)
+                // Chunk 3: Scripts de forma ultra rápida (Sem Regex)
                 doc.querySelectorAll('script').forEach(el => {
                     const src = el.getAttribute('src');
                     const content = el.innerHTML;
                     
                     let isPixel = false;
-                    if ((src && pixelKeywords.test(src)) || (content && pixelKeywords.test(content))) {
-                        isPixel = true;
+                    const lowerSrc = src ? src.toLowerCase() : '';
+                    const lowerContent = content ? content.toLowerCase() : '';
+
+                    for (let i = 0; i < pixelKeywords.length; i++) {
+                        if ((lowerSrc && lowerSrc.includes(pixelKeywords[i])) || 
+                            (lowerContent && lowerContent.includes(pixelKeywords[i]))) {
+                            isPixel = true; break;
+                        }
                     }
 
                     if (src) {
@@ -501,59 +699,67 @@
                         else analysisData.scripts.set(content, label);
                     }
                 });
+                await yieldToMain();
 
-                // Buttons (outerHTML)
-                doc.querySelectorAll('button').forEach(el => {
-                    let label = "Botão";
-                    if(el.className) label += ` class="${el.className}"`;
-                    else if(el.innerText) label += ` "${el.innerText.substring(0, 20)}"`;
-                    analysisData.buttons.set(el.outerHTML, label);
-                });
-
-                // Divs (outerHTML, exibe label com ID)
-                doc.querySelectorAll('div[id]').forEach(el => {
-                    const id = el.getAttribute('id');
-                    analysisData.divs.set(el.outerHTML, `<div id="${id}">`);
-                });
-
-                // Imagens (src)
+                // Chunk 4: Divs, Images, Videos, Iframes
+                doc.querySelectorAll('div[id]').forEach(el => analysisData.divs.set(el.outerHTML, `<div id="${el.getAttribute('id')}">`));
                 doc.querySelectorAll('img[src]').forEach(el => {
                     const src = el.getAttribute('src');
                     if (src && !src.startsWith('data:image')) analysisData.images.set(src, src);
                 });
-
-                // Videos (src)
                 doc.querySelectorAll('video[src], video > source[src]').forEach(el => {
                     const src = el.getAttribute('src');
                     if (src) analysisData.videos.set(src, src);
                 });
-
-                // Iframes (src)
                 doc.querySelectorAll('iframe[src]').forEach(el => {
                     const src = el.getAttribute('src');
                     if (!src) return;
-                    if (/youtube|youtu\.be|vimeo|player/i.test(src)) {
-                        analysisData.videos.set(src, `[Iframe Vídeo] ${src}`);
-                    } else {
-                        analysisData.iframes.set(src, src);
-                    }
+                    if (/youtube|youtu\.be|vimeo|player/i.test(src)) analysisData.videos.set(src, `[Iframe Vídeo] ${src}`);
+                    else analysisData.iframes.set(src, src);
                 });
+                await yieldToMain();
 
-                // Seções (ESTRITO PARA <section>) - Pega o outerHTML completo
+                // Chunk 5: Sections (Estrutural)
                 doc.querySelectorAll('section').forEach(el => {
                     let idAttr = el.getAttribute('id');
                     let classAttr = el.getAttribute('class');
-                    
                     let label = "<section";
                     if (idAttr) label += ` id="${idAttr}"`;
                     if (classAttr) label += ` class="${classAttr.substring(0, 30)}${classAttr.length > 30 ? '...' : ''}"`;
                     label += ">";
-                    
                     analysisData.sections.set(el.outerHTML, label);
                 });
+                await yieldToMain();
             };
 
-            // Renderização da Interface
+            const analyzeCode = async () => {
+                const btnIcon = document.getElementById('analyzeIcon');
+                const btnSpinner = document.getElementById('analyzeSpinner');
+                const btnText = document.getElementById('analyzeText');
+
+                btnIcon.classList.add('hide');
+                btnSpinner.classList.remove('hide');
+                btnText.textContent = "Escaneando...";
+                toast("Iniciando varredura profunda e fatiada... 🕵️‍♂️");
+                
+                try {
+                    // Executa a busca assíncrona para não congelar
+                    await extractDataChunked(masterParsedDocument);
+                    renderAnalysisDashboard();
+                    
+                    hide('step-actions');
+                    show('step-dashboard');
+                    toast("Zzzzt! Análise concluída sem suar o processador! ⚡");
+                } catch (error) {
+                    toast("Eita! Os hamsters do processador tropeçaram.", true);
+                } finally {
+                    btnIcon.classList.remove('hide');
+                    btnSpinner.classList.add('hide');
+                    btnText.textContent = "Analisar Código";
+                }
+            };
+
+            // ================= MÓDULO: RENDERIZAÇÃO DA INTERFACE ================= //
             const createCategoryCard = (title, iconSvg, categoryKey, mapSet) => {
                 let itemsHTML = '';
                 const entries = Array.from(mapSet.entries()); 
@@ -565,25 +771,24 @@
                     
                     itemsHTML = displayItems.map(([fullValue, displayLabel]) => {
                         const hasReplacement = replacements[categoryKey] && replacements[categoryKey][fullValue] !== undefined;
-                        
                         const bgClass = hasReplacement ? 'bg-m3-primaryContainer text-m3-onPrimaryContainer border-m3-primary/30' : 'bg-white text-[#1F1B1A] border-m3-surfaceVariant hover:bg-m3-surfaceVariant';
                         const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Editado</span>` : '';
-
                         const safeLabel = displayLabel.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         
                         const index = itemsRegistry.length;
                         itemsRegistry.push({ category: categoryKey, fullValue, displayLabel });
 
+                        // Uso de data-action e data-index para Event Delegation
                         const undoBtn = hasReplacement ? `
-                            <button onclick="app.undoItemReplacement(event, ${index})" title="Desfazer" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 transition-colors ml-2 shadow-sm border border-m3-primary/20">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+                            <button data-action="undo" data-index="${index}" title="Desfazer" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 transition-colors ml-2 shadow-sm border border-m3-primary/20">
+                                <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
                             </button>
                         ` : '';
 
                         return `
                             <div class="flex items-center justify-between p-3 rounded-m3-lg border ${bgClass} transition-colors mb-2 shadow-sm">
-                                <button onclick="app.openItemModalByIndex(${index})" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group">
-                                    <span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2">${safeLabel}</span>
+                                <button data-action="edit" data-index="${index}" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group">
+                                    <span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2 pointer-events-none">${safeLabel}</span>
                                     ${badge}
                                 </button>
                                 ${undoBtn}
@@ -591,9 +796,7 @@
                         `;
                     }).join('');
 
-                    if(entries.length > 100) {
-                         itemsHTML += `<div class="p-2 md:p-3 mt-2 text-xs md:text-sm text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${entries.length - 100} itens ocultados</div>`;
-                    }
+                    if(entries.length > 100) itemsHTML += `<div class="p-2 md:p-3 mt-2 text-xs md:text-sm text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${entries.length - 100} itens ocultados na view</div>`;
                 }
 
                 return `
@@ -614,7 +817,7 @@
 
             const renderAnalysisDashboard = () => {
                 const container = document.getElementById('analysisResults');
-                itemsRegistry = []; // Reset registry
+                itemsRegistry = []; 
 
                 const icons = {
                     pixels: `<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`,
@@ -648,37 +851,24 @@
                 container.innerHTML = html;
             };
 
-            // Interações de Edição via Registry Index
+            // ================= MÓDULO: INTERAÇÕES DE EDIÇÃO ================= //
             const openItemModalByIndex = (index) => {
                 const item = itemsRegistry[index];
                 if (!item) return;
 
                 currentEditIndex = index;
-                const { category, fullValue, displayLabel } = item;
+                const { category, fullValue } = item;
                 
                 const titles = { 
-                    pixels: 'Configurar Pixel/Tracker Original',
-                    forms: 'Configurar Destino de Form',
-                    links: 'Editar URL', 
-                    sections: 'Editar Bloco (Seção Completa)',
-                    buttons: 'Editar Botão',
-                    iframes: 'Editar Iframe/Widget',
-                    videos: 'Editar Fonte de Vídeo',
-                    images: 'Editar Imagem',
-                    documents: 'Editar Documento (href)',
-                    anchors: 'Editar Âncora', 
-                    scripts: 'Editar Script', 
-                    divs: 'Editar Elemento Div'
+                    pixels: 'Configurar Pixel/Tracker Original', forms: 'Configurar Destino de Form',
+                    links: 'Editar URL', sections: 'Editar Bloco (Seção Completa)', buttons: 'Editar Botão',
+                    iframes: 'Editar Iframe/Widget', videos: 'Editar Fonte de Vídeo', images: 'Editar Imagem',
+                    documents: 'Editar Documento (href)', anchors: 'Editar Âncora', scripts: 'Editar Script', divs: 'Editar Elemento Div'
                 };
                 
                 document.getElementById('itemModalTitle').textContent = titles[category] || 'Editar Item';
-                document.getElementById('itemModalOriginal').textContent = displayLabel;
-                
                 const existingVal = replacements[category][fullValue];
-                
-                // Preenchimento automático com original ou alteração salva
                 document.getElementById('itemModalInput').value = existingVal !== undefined ? existingVal : fullValue;
-                
                 show('itemModal');
             };
 
@@ -687,50 +877,79 @@
                 if (!item) return;
 
                 const newValue = document.getElementById('itemModalInput').value.trim();
-                
                 replacements[item.category][item.fullValue] = newValue;
                 closeModal('itemModal');
                 renderAnalysisDashboard();
                 toggleExportButtons(false); 
-                toast("Regra cadastrada com sucesso. Atualize o código para exportar.");
+                toast("Regra anotada no caderninho! Lembre de 'Atualizar Código'.");
             };
 
-            const undoItemReplacement = (event, index) => {
-                event.stopPropagation(); 
+            const undoItemReplacement = (index) => {
                 const item = itemsRegistry[index];
                 if (!item) return;
 
                 delete replacements[item.category][item.fullValue];
                 renderAnalysisDashboard();
                 toggleExportButtons(false); 
-                toast("Alteração desfeita. O código original foi restaurado.");
+                toast("Ctrl+Z ativado! Voltamos no tempo.");
             };
 
+            // Delegação de Eventos Mestre (Event Delegation p/ Performance)
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('analysisResults').addEventListener('click', (e) => {
+                    const btnEdit = e.target.closest('[data-action="edit"]');
+                    if (btnEdit) {
+                        openItemModalByIndex(btnEdit.getAttribute('data-index'));
+                        return;
+                    }
+                    const btnUndo = e.target.closest('[data-action="undo"]');
+                    if (btnUndo) {
+                        e.stopPropagation();
+                        undoItemReplacement(btnUndo.getAttribute('data-index'));
+                    }
+                });
+            });
+
+            // ================= MÓDULO: INJEÇÕES ================= //
             const openInjectModal = (type) => {
                 currentInjectTarget = type;
                 if (type === 'header') {
                     document.getElementById('injectModalTitle').textContent = 'Injeção Estrutural: <head>';
                     document.getElementById('injectModalDesc').textContent = 'Será executado antes do início da página visível.';
+                    hide('pixelShortcuts');
                 } else if (type === 'footer') {
                     document.getElementById('injectModalTitle').textContent = 'Injeção Estrutural: <body>';
                     document.getElementById('injectModalDesc').textContent = 'Será executado no final do carregamento da página.';
+                    hide('pixelShortcuts');
                 } else if (type === 'pixels') {
                     document.getElementById('injectModalTitle').textContent = 'Pixels & Trackers';
                     document.getElementById('injectModalDesc').textContent = 'Cole códigos do Facebook Pixel, GTM, TikTok, etc. Eles serão injetados com segurança no <head>.';
+                    show('pixelShortcuts');
                 }
                 document.getElementById('injectModalInput').value = injections[type] || '';
-                
                 show('injectModal');
+            };
+
+            const insertPixelTemplate = (platform) => {
+                const templates = {
+                    fb: `<!-- Meta Pixel Code -->\n<script>\n  // Substitua SEU_ID_DO_PIXEL pelo ID do seu pixel\n  !function(f,b,e,v,n,t,s)\n  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?\n  n.callMethod.apply(n,arguments):n.queue.push(arguments)};\n  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\n  n.queue=[];t=b.createElement(e);t.async=!0;\n  t.src=v;s=b.getElementsByTagName(e)[0];\n  s.parentNode.insertBefore(t,s)}(window, document,'script',\n  'https://connect.facebook.net/en_US/fbevents.js');\n  fbq('init', 'SEU_ID_DO_PIXEL');\n  fbq('track', 'PageView');\n<\/script>\n<noscript><img height="1" width="1" style="display:none"\n  src="https://www.facebook.com/tr?id=SEU_ID_DO_PIXEL&ev=PageView&noscript=1"\n/></noscript>\n<!-- End Meta Pixel Code -->\n\n`,
+                    google: `<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=AW-SEU_ID_GOOGLE"><\/script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'AW-SEU_ID_GOOGLE');\n<\/script>\n\n`,
+                    tiktok: `<!-- TikTok Pixel -->\n<script>\n  // Cole seu pixel completo do TikTok aqui abaixo!\n  \n<\/script>\n\n`,
+                    twitter: `<!-- Twitter/X Pixel -->\n<script>\n  // Cole seu pixel completo do Twitter aqui abaixo!\n  \n<\/script>\n\n`
+                };
+                const textarea = document.getElementById('injectModalInput');
+                textarea.value += templates[platform];
+                textarea.focus();
             };
 
             const saveInjection = () => {
                 injections[currentInjectTarget] = document.getElementById('injectModalInput').value;
                 closeModal('injectModal');
                 toggleExportButtons(false); 
-                toast("Bloco de injeção salvo. Atualize o código para exportar.");
+                toast("Injeção preparada! Lembre de atualizar para plugar os fios.");
             };
 
-            // Aplicação DOM Robusta
+            // ================= MÓDULO: EXPORTAÇÃO E ATUALIZAÇÃO DOM (Clonagem de Memória) ================= //
             const applyUpdatesToDOM = (targetDoc) => {
                 if (!targetDoc) return false;
 
@@ -739,8 +958,7 @@
                         const newVal = categoryObj[original];
                         targetDoc.querySelectorAll(selectorFunc(original)).forEach(el => {
                             if (el.getAttribute(attrName) === original) {
-                                if (newVal === "") el.remove(); 
-                                else el.setAttribute(attrName, newVal);
+                                if (newVal === "") el.remove(); else el.setAttribute(attrName, newVal);
                             }
                         });
                     });
@@ -752,17 +970,14 @@
                         targetDoc.querySelectorAll(selector).forEach(el => {
                             const compareVal = useOuter ? el.outerHTML : el.innerHTML;
                             if (compareVal === original) {
-                                if (newVal === "") el.remove(); 
-                                else {
-                                    if(useOuter) el.outerHTML = newVal;
-                                    else el.innerHTML = newVal;
+                                if (newVal === "") el.remove(); else {
+                                    if(useOuter) el.outerHTML = newVal; else el.innerHTML = newVal;
                                 }
                             }
                         });
                     });
                 };
 
-                // Atributos Simples
                 applyAttributeReplacement(orig => `a[href="${orig}"]`, replacements.links, 'href');
                 applyAttributeReplacement(orig => `a[href="${orig}"]`, replacements.documents, 'href');
                 applyAttributeReplacement(orig => `a[href="${orig}"]`, replacements.anchors, 'href');
@@ -770,7 +985,6 @@
                 applyAttributeReplacement(orig => `img[src="${orig}"]`, replacements.images, 'src');
                 applyAttributeReplacement(orig => `iframe[src="${orig}"]`, replacements.iframes, 'src');
 
-                // Videos
                 Object.keys(replacements.videos).forEach(original => {
                     const newVal = replacements.videos[original];
                     const selectors = `video[src="${original}"], source[src="${original}"], iframe[src="${original}"]`;
@@ -779,15 +993,12 @@
                     });
                 });
 
-                // Pixels & Scripts (Mesclado: pode ser src ou innerHTML)
                 const processScriptLikeObj = (obj) => {
                     Object.keys(obj).forEach(original => {
                         const newVal = obj[original];
-                        // Testa src
                         targetDoc.querySelectorAll(`script[src="${original}"]`).forEach(el => {
                             if (newVal === "") el.remove(); else el.setAttribute('src', newVal);
                         });
-                        // Testa innerHTML
                         targetDoc.querySelectorAll('script:not([src])').forEach(el => {
                             if (el.innerHTML === original) {
                                 if (newVal === "") el.remove(); else el.innerHTML = newVal;
@@ -798,29 +1009,21 @@
                 processScriptLikeObj(replacements.pixels);
                 processScriptLikeObj(replacements.scripts);
 
-                // Estruturais HTML (OuterHTML)
                 applyHTMLReplacement('section', replacements.sections, true);
                 applyHTMLReplacement('button', replacements.buttons, true);
                 applyHTMLReplacement('div[id]', replacements.divs, true);
 
-                // Injeções
                 const head = targetDoc.head || targetDoc.documentElement;
-                if (injections.pixels.trim() !== "") {
-                    head.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT PIXELS -->\n' + injections.pixels + '\n');
-                }
-                if (injections.header.trim() !== "") {
-                    head.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT HEAD -->\n' + injections.header + '\n');
-                }
+                if (injections.pixels.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT PIXELS -->\n' + injections.pixels + '\n');
+                if (injections.header.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT HEAD -->\n' + injections.header + '\n');
                 
                 const body = targetDoc.body || targetDoc.documentElement;
-                if (injections.footer.trim() !== "") {
-                    body.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT FOOTER -->\n' + injections.footer + '\n');
-                }
+                if (injections.footer.trim() !== "") body.insertAdjacentHTML('beforeend', '\n<!-- REDTRACKER INJECT FOOTER -->\n' + injections.footer + '\n');
             };
 
             const getFinalHTMLString = () => {
-                const parser = new DOMParser();
-                const tempDoc = parser.parseFromString(originalHTMLString, 'text/html');
+                // Clonagem nativa de C++ do V8 Engine (Quase 0 de RAM)
+                const tempDoc = masterParsedDocument.cloneNode(true);
                 applyUpdatesToDOM(tempDoc);
                 
                 const serializer = new XMLSerializer();
@@ -836,13 +1039,13 @@
             };
 
             const updateCode = () => {
-                toast("Aplicando substituições globais...");
+                toast("Fazendo a mágica acontecer nos bastidores...");
                 toggleExportButtons(true);
-                toast("Virtualização atualizada! Arquivo pronto para exportação.");
+                setTimeout(() => toast("Tudo pronto! Seu código novo tá saindo do forno."), 1000);
             };
 
             const downloadCode = () => {
-                toast("Compilando pacote final...");
+                toast("Empacotando tudo bonitinho...");
                 const finalCode = getFinalHTMLString();
 
                 const blob = new Blob([finalCode], { type: 'text/html;charset=utf-8' });
@@ -854,11 +1057,11 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                toast("Download processado com sucesso!");
+                setTimeout(() => toast("Download liberado! Pode comemorar. 🎉"), 1000);
             };
 
             const copyCode = async () => {
-                toast("Preparando buffer de memória...");
+                toast("Copiando... Segura a emoção!");
                 const finalCode = getFinalHTMLString();
 
                 try {
@@ -875,27 +1078,17 @@
                         document.execCommand('copy');
                         textArea.remove();
                     }
-                    toast("Código clonado para a área de transferência.");
+                    setTimeout(() => toast("Copiado! Pode colar onde quiser."), 800);
                 } catch (err) {
-                    toast("Volume excede a capacidade da área de transferência.", true);
+                    toast("Vish, o código é tão grande que quebrou a prancheta! Tente baixar.", true);
                 }
             };
 
             return {
-                handleFileUpload,
-                openPasteModal,
-                submitPaste,
-                analyzeCode,
-                resetApp,
-                openItemModalByIndex,
-                closeModal,
-                saveItemReplacement,
-                undoItemReplacement,
-                openInjectModal,
-                saveInjection,
-                updateCode,
-                downloadCode,
-                copyCode
+                handleFileUpload, openPasteModal, submitPaste, analyzeCode, resetApp,
+                openItemModalByIndex, closeModal, saveItemReplacement, undoItemReplacement,
+                openInjectModal, insertPixelTemplate, saveInjection, updateCode, downloadCode,
+                copyCode, openGithubImportModal, fetchFromGithub, saveToGithub
             };
         })();
     </script>
