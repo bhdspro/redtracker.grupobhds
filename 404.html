@@ -1,1017 +1,856 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RedTracker Monitor</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23E11D48'/%3E%3Ctext x='32' y='43' font-size='36' fill='%23FFFFFF' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
-<!-- Fontes Premium e Modernas -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Biblioteca de Ícones Premium (Lucide) -->
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-    /* =========================================
-       RedTracker - Premium M3 Expressive
-       ========================================= */
-    :root {
-        /* Color Palette - Premium Light Ruby */
-        --surface-bg: #FFFAFA; 
-        --surface-card: #FFFFFF;
-        --surface-container: #FFF0F2;
-        --surface-hover: #FDF2F4;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RedTracker Monitor</title>
+    
+    <!-- Favicon ⚡ -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        m3: {
+                            primary: '#BA1A1A',
+                            onPrimary: '#FFFFFF',
+                            primaryContainer: '#FFDAD6',
+                            onPrimaryContainer: '#410002',
+                            secondaryContainer: '#FFDAD6',
+                            onSecondaryContainer: '#2C1513',
+                            surface: '#FFF8F7',
+                            surfaceVariant: '#F5DDDA',
+                            onSurfaceVariant: '#534341',
+                            outline: '#857371',
+                        }
+                    },
+                    borderRadius: {
+                        'm3-lg': '16px',
+                        'm3-xl': '28px',
+                    },
+                    boxShadow: {
+                        'm3-elevation-1': '0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)',
+                        'm3-elevation-3': '0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #1F1B1A;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .btn-m3 {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+        }
+        .btn-m3:not(:disabled):active { transform: scale(0.98); }
+        .btn-m3::after {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.4s;
+        }
+        .btn-m3.tonal::after { background: rgba(186, 26, 26, 0.15); }
+        .btn-m3:not(:disabled):active::after {
+            transform: translate(-50%, -50%) scale(2.5);
+            opacity: 1;
+            transition: 0s;
+        }
+
+        .hide { display: none !important; }
         
-        --text-main: #111827;
-        --text-muted: #4B5563;
-        --text-subtle: #9CA3AF;
+        .modal-overlay { animation: fadeIn 0.2s cubic-bezier(0.2, 0, 0, 1) forwards; }
+        .modal-content { animation: slideUp 0.3s cubic-bezier(0.2, 0, 0, 1) forwards; }
         
-        --primary: #E11D48; 
-        --primary-hover: #BE123C;
-        --primary-container: #FFE4E6;
-        --on-primary-container: #881337;
-        
-        --secondary: #4F46E5; 
-        --secondary-container: #E0E7FF;
-        --on-secondary-container: #312E81;
-        
-        --border-light: #F3E8E9;
-        --border-focus: #FDA4AF;
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* M3 Expressive Shapes */
-        --radius-sm: 12px;
-        --radius-md: 18px;
-        --radius-lg: 32px; 
-        --radius-pill: 9999px;
-
-        /* Premium Soft Shadows */
-        --shadow-sm: 0 2px 4px rgba(225, 29, 72, 0.02), 0 1px 2px rgba(225, 29, 72, 0.04);
-        --shadow-md: 0 10px 24px rgba(225, 29, 72, 0.04), 0 4px 8px rgba(225, 29, 72, 0.03);
-        --shadow-lg: 0 20px 40px rgba(225, 29, 72, 0.06), 0 8px 16px rgba(225, 29, 72, 0.04);
-        
-        /* Fonts */
-        --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-        --font-mono: 'Fira Code', monospace;
-        
-        --transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body {
-        background-color: var(--surface-bg);
-        color: var(--text-main);
-        font-family: var(--font-sans);
-        -webkit-font-smoothing: antialiased;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        padding: 24px;
-        background-image: radial-gradient(var(--border-light) 1.5px, transparent 1.5px);
-        background-size: 32px 32px;
-    }
-
-    button, input, textarea, select { 
-        font-family: var(--font-sans); 
-        border: none; outline: none; background: none; 
-    }
-
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: var(--radius-pill); }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
-
-    .lucide { width: 20px; height: 20px; vertical-align: middle; }
-    .lucide-spin { animation: spin 1s linear infinite; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    .app-shell {
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-    }
-
-    /* Header */
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 32px;
-        background: var(--surface-card);
-        border-radius: var(--radius-pill);
-        box-shadow: var(--shadow-sm);
-        flex-wrap: wrap;
-        gap: 16px;
-    }
-
-    .brand { display: flex; align-items: center; gap: 16px; }
-
-    .logo {
-        width: 56px; height: 56px;
-        background-color: var(--primary);
-        color: white;
-        border-radius: var(--radius-pill);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 26px;
-        box-shadow: 0 8px 16px rgba(225, 29, 72, 0.25);
-    }
-
-    .brand-text h1 {
-        font-size: 26px;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        color: var(--text-main);
-    }
-
-    .status-badge {
-        padding: 12px 24px;
-        background-color: var(--surface-container);
-        color: var(--primary);
-        border-radius: var(--radius-pill);
-        font-weight: 700;
-        font-size: 15px;
-        display: none; 
-        align-items: center; gap: 8px;
-    }
-    .status-badge.processing { background-color: var(--secondary-container); color: var(--secondary); }
-
-    /* Layout Cards */
-    .card {
-        background-color: var(--surface-card);
-        border-radius: var(--radius-lg);
-        padding: 48px;
-        box-shadow: var(--shadow-md);
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        transition: var(--transition);
-        border: 1px solid rgba(225, 29, 72, 0.05);
-    }
-
-    .card-title {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--text-main);
-        display: flex; justify-content: space-between; align-items: center;
-        letter-spacing: -0.02em;
-    }
-
-    /* Segmented Control (Abas de Entrada) */
-    .input-tabs {
-        display: flex;
-        background-color: var(--surface-bg);
-        border-radius: var(--radius-pill);
-        padding: 6px;
-        border: 1px solid var(--border-light);
-        gap: 4px;
-    }
-    .input-tab {
-        flex: 1;
-        padding: 14px 20px;
-        border-radius: var(--radius-pill);
-        font-weight: 800;
-        font-size: 15px;
-        color: var(--text-muted);
-        cursor: pointer;
-        display: flex; justify-content: center; align-items: center; gap: 10px;
-        transition: var(--transition);
-    }
-    .input-tab:hover { color: var(--text-main); }
-    .input-tab.active {
-        background-color: var(--surface-card);
-        color: var(--text-main);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .input-pane {
-        display: none;
-        flex-direction: column;
-        gap: 24px;
-        animation: fadeIn 0.4s cubic-bezier(0.2, 0, 0, 1);
-    }
-    .input-pane.active { display: flex; }
-    
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Dropzone Expressive Premium */
-    .dropzone {
-        background-color: var(--surface-bg);
-        border: 2px dashed var(--border-light);
-        border-radius: var(--radius-lg);
-        padding: 72px 24px;
-        text-align: center;
-        cursor: pointer;
-        position: relative;
-        transition: var(--transition);
-    }
-    .dropzone:hover, .dropzone.drag-active { background-color: var(--primary-container); border-color: var(--primary); }
-    .dropzone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .dropzone-icon { width: 64px; height: 64px; color: var(--primary); margin-bottom: 20px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .dropzone:hover .dropzone-icon { transform: translateY(-8px) scale(1.1); }
-    .dropzone h3 { font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
-    .dropzone p { font-size: 16px; color: var(--text-muted); font-weight: 500; }
-
-    /* Inputs Modernos */
-    .field { display: flex; flex-direction: column; gap: 12px; }
-    .label { font-size: 16px; font-weight: 800; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
-    .label span { font-weight: 600; color: var(--text-subtle); font-size: 14px; }
-    
-    .input, .textarea, .select {
-        background-color: var(--surface-bg);
-        color: var(--text-main);
-        padding: 20px 28px;
-        border-radius: var(--radius-md);
-        border: 2px solid transparent;
-        font-size: 16px;
-        transition: var(--transition);
-        font-weight: 500;
-    }
-    .input:focus, .textarea:focus, .select:focus {
-        background-color: var(--surface-card);
-        border-color: var(--border-focus);
-        box-shadow: 0 0 0 4px var(--primary-container);
-    }
-    .textarea { min-height: 220px; resize: vertical; font-family: var(--font-mono); font-size: 14px; line-height: 1.6; }
-    
-    /* URL Fetch Area */
-    .url-fetch-box { display: flex; gap: 12px; flex-wrap: wrap; }
-    .url-fetch-box .input { flex: 1; min-width: 250px; }
-
-    /* Botoes Expressive Pill */
-    .btn-row { display: flex; gap: 16px; flex-wrap: wrap; }
-    .btn-row > * { flex: 1; min-width: max-content; }
-    
-    .btn {
-        display: inline-flex; justify-content: center; align-items: center; gap: 12px;
-        padding: 20px 36px;
-        border-radius: var(--radius-pill);
-        font-size: 17px; font-weight: 800;
-        cursor: pointer;
-        transition: var(--transition);
-        letter-spacing: -0.01em;
-    }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
-    .btn:active { transform: scale(0.97); }
-
-    .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 8px 24px rgba(225, 29, 72, 0.25); }
-    .btn-primary:hover { background-color: var(--primary-hover); box-shadow: 0 12px 32px rgba(225, 29, 72, 0.35); transform: translateY(-2px); }
-
-    .btn-tonal { background-color: var(--primary-container); color: var(--on-primary-container); }
-    .btn-tonal:hover { background-color: #FEE2E2; transform: translateY(-2px); }
-
-    .btn-outline { background-color: transparent; color: var(--text-main); border: 2px solid var(--border-light); }
-    .btn-outline:hover { border-color: var(--text-subtle); background-color: var(--surface-bg); }
-
-    .hidden-initially { display: none; opacity: 0; transform: translateY(20px); animation: slideUpFade 0.6s cubic-bezier(0.2, 0, 0, 1) forwards; }
-
-    /* Resultados & Métricas */
-    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 24px; }
-    .metric-box {
-        background-color: var(--surface-bg); padding: 32px 24px; border-radius: var(--radius-lg);
-        display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border-light); text-align: center;
-    }
-    .metric-val { font-size: 48px; font-weight: 900; color: var(--primary); line-height: 1; letter-spacing: -0.04em; }
-    .metric-lbl { font-size: 15px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-
-    /* Substituição em Massa */
-    .mass-box {
-        background-color: var(--primary-container); padding: 32px; border-radius: var(--radius-lg);
-        display: flex; flex-direction: column; gap: 24px;
-    }
-    .mass-title { font-size: 20px; font-weight: 800; color: var(--on-primary-container); display: flex; align-items: center; gap: 12px; }
-    .mass-grid { display: flex; gap: 16px; flex-wrap: wrap; }
-    .mass-grid > input { flex: 1; min-width: 200px; background-color: var(--surface-card); }
-    .mass-grid > button { flex: 0 0 auto; }
-
-    /* Filtros & Chips */
-    .filter-grid { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
-    .filter-grid-icon { position: relative; flex: 1; min-width: 250px; }
-    .filter-grid-icon i { position: absolute; left: 24px; top: 50%; transform: translateY(-50%); color: var(--text-subtle); }
-    .filter-grid-icon input { width: 100%; border-radius: var(--radius-pill); padding-left: 56px; }
-    .filter-grid > select { border-radius: var(--radius-pill); font-weight: 700; cursor: pointer; flex: 0 0 auto; }
-
-    .chips { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; margin-top: 8px; scrollbar-width: none; }
-    .chips::-webkit-scrollbar { display: none; }
-    .chip {
-        padding: 14px 28px; background-color: var(--surface-bg); color: var(--text-muted); border-radius: var(--radius-pill);
-        font-weight: 800; font-size: 15px; cursor: pointer; transition: var(--transition); white-space: nowrap;
-        border: 1px solid var(--border-light); display: flex; align-items: center; gap: 8px;
-    }
-    .chip:hover { border-color: var(--text-subtle); color: var(--text-main); }
-    .chip.active { background-color: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 8px 20px rgba(225, 29, 72, 0.25); }
-
-    /* Lista de Itens */
-    .item-list { display: flex; flex-direction: column; gap: 24px; max-height: 800px; overflow-y: auto; padding-right: 12px; }
-    
-    .item-card {
-        background-color: var(--surface-bg); border-radius: var(--radius-lg); padding: 32px;
-        display: flex; flex-direction: column; gap: 20px; border: 1px solid var(--border-light); transition: var(--transition);
-    }
-    .item-card:hover { border-color: var(--border-focus); box-shadow: var(--shadow-sm); }
-    
-    .item-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .item-badges { display: flex; gap: 10px; flex-wrap: wrap; }
-    .badge {
-        padding: 8px 16px; background-color: var(--surface-card); color: var(--text-muted); border-radius: var(--radius-pill);
-        font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--border-light);
-    }
-    .badge.highlight { background-color: var(--primary-container); color: var(--on-primary-container); border-color: transparent; }
-
-    .item-url {
-        font-family: var(--font-mono); font-size: 15px; color: var(--text-main); word-break: break-all; line-height: 1.6;
-        background-color: var(--surface-card); padding: 16px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-light);
-    }
-    .color-dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; margin-right: 12px; vertical-align: middle; border: 1px solid var(--border-light); }
-    .item-meta { font-size: 15px; color: var(--text-subtle); font-weight: 700; display: flex; align-items: center; gap: 6px; }
-
-    .item-input {
-        background-color: var(--surface-card); border: 2px solid var(--border-light); border-radius: var(--radius-md);
-        padding: 20px 24px; width: 100%; color: var(--text-main); font-family: var(--font-mono); font-size: 15px; transition: var(--transition);
-    }
-    .item-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-container); }
-
-    /* Accordion Details */
-    .details-box { background-color: var(--surface-bg); border-radius: var(--radius-lg); border: 1px solid var(--border-light); transition: var(--transition); }
-    .details-box summary {
-        padding: 32px; font-size: 20px; font-weight: 800; color: var(--text-main);
-        cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;
-    }
-    .details-box summary::-webkit-details-marker { display: none; }
-    .details-box summary .chevron { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .details-box[open] summary .chevron { transform: rotate(180deg); }
-    .details-box .textarea { border-radius: 0 0 var(--radius-lg) var(--radius-lg); background-color: var(--surface-card); border: none; border-top: 1px solid var(--border-light); }
-
-    /* Empty State */
-    .empty-state { text-align: center; padding: 100px 24px; color: var(--text-subtle); }
-    .empty-icon { width: 64px; height: 64px; margin: 0 auto 24px auto; color: var(--text-subtle); opacity: 0.5; }
-    .empty-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; }
-    .empty-state p { font-size: 16px; font-weight: 500; }
-
-    /* Snackbar */
-    .snackbar {
-        position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(120px);
-        background-color: var(--text-main); color: var(--surface-card);
-        padding: 20px 40px; border-radius: var(--radius-pill);
-        font-weight: 800; font-size: 16px; box-shadow: var(--shadow-lg);
-        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1000; opacity: 0;
-        display: flex; align-items: center; gap: 12px;
-    }
-    .snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-    @media(max-width: 1024px) { .item-list { max-height: none; } }
-    @media(max-width: 600px) {
-        body { padding: 16px; }
-        .header { padding: 20px; justify-content: center; text-align: center; border-radius: var(--radius-lg); }
-        .brand { flex-direction: column; gap: 8px; }
-        .card { padding: 24px; border-radius: var(--radius-lg); }
-        .mass-grid, .filter-grid, .btn-row, .url-fetch-box { flex-direction: column; }
-        .dropzone { padding: 48px 16px; }
-        .metric-box { padding: 24px 16px; }
-        .input-tabs { flex-direction: column; border-radius: var(--radius-md); }
-        .input-tab { border-radius: var(--radius-sm); }
-    }
-</style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #F5DDDA; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #BA1A1A; }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center py-8 md:py-12 px-4 md:px-8 overflow-x-hidden">
 
-    <div class="app-shell">
+    <!-- Header Expressivo -->
+    <header class="text-center mb-8 md:mb-12 w-full max-w-7xl">
+        <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-m3-primaryContainer rounded-full mb-4 md:mb-6 shadow-m3-elevation-1">
+            <span class="text-2xl md:text-3xl">⚡</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1F1B1A] tracking-tight mb-3 md:mb-4">
+            RedTracker <span class="text-m3-primary">Monitor</span>
+        </h1>
+        <p class="text-lg md:text-xl text-m3-onSurfaceVariant font-medium max-w-2xl mx-auto px-4">
+            Alta performance em análise estrutural e injeção de código.
+        </p>
+    </header>
+
+    <main class="w-full max-w-7xl relative">
         
-        <!-- Header -->
-        <header class="header">
-            <div class="brand">
-                <div class="logo">⚡</div>
-                <div class="brand-text">
-                    <h1>RedTracker Monitor</h1>
-                </div>
-            </div>
-            <div class="status-badge" id="statusBadge"></div>
-        </header>
-
-        <!-- Entrada de Dados -->
-        <main class="card" id="inputCard">
+        <!-- ================= ETAPA 1: INPUT DE DADOS ================= -->
+        <section id="step-input" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-6xl mx-auto transition-all duration-300">
+            <input type="file" id="fileInput" accept=".html,.htm,.txt" class="hidden" onchange="app.handleFileUpload(event)">
             
-            <div class="input-tabs">
-                <button class="input-tab active" data-target="tab-file">
-                    <i data-lucide="file-up"></i> Enviar Arquivo
-                </button>
-                <button class="input-tab" data-target="tab-text">
-                    <i data-lucide="code-2"></i> Colar Código
-                </button>
-                <button class="input-tab" data-target="tab-url">
-                    <i data-lucide="link"></i> Importar de URL
-                </button>
-            </div>
+            <button onclick="document.getElementById('fileInput').click()" class="btn-m3 h-full bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 group">
+                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                <div class="text-center">
+                    <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Importar Arquivo HTML</span>
+                    <span class="block text-m3-primaryContainer opacity-90 font-medium text-sm md:text-base">Selecionar do dispositivo</span>
+                </div>
+            </button>
 
-            <!-- Tab 1: Dropzone -->
-            <div id="tab-file" class="input-pane active">
-                <div class="dropzone" id="dropzone">
-                    <input id="fileInput" type="file" accept=".html,.htm,.txt,text/html,text/plain">
-                    <i data-lucide="file-code-2" class="dropzone-icon"></i>
-                    <h3>Solte seu arquivo HTML aqui</h3>
-                    <p>Ou clique para procurar no seu computador</p>
+            <button onclick="app.openPasteModal()" class="btn-m3 tonal h-full bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-1 flex flex-col items-center justify-center gap-3 md:gap-4 transition-colors">
+                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <div class="text-center">
+                    <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Colar Código HTML</span>
+                    <span class="block text-m3-onPrimaryContainer opacity-80 font-medium text-sm md:text-base">Usar área de transferência</span>
+                </div>
+            </button>
+
+            <button onclick="app.openGithubImportModal()" class="btn-m3 h-full bg-[#181717] text-white hover:bg-[#2b2b2b] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 transition-colors">
+                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <div class="text-center">
+                    <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Importar do GitHub</span>
+                    <span class="block text-gray-300 font-medium text-sm md:text-base">Usar Código HTML do GitHub</span>
+                </div>
+            </button>
+        </section>
+
+        <!-- ================= ETAPA 2: AÇÕES APÓS UPLOAD ================= -->
+        <section id="step-actions" class="hide mt-6 md:mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <button onclick="app.analyzeCode()" class="btn-m3 bg-m3-primary text-m3-onPrimary px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl shadow-m3-elevation-3 flex items-center justify-center gap-3">
+                <svg id="analyzeIcon" class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <svg id="analyzeSpinner" class="w-6 h-6 md:w-7 md:h-7 animate-spin hide" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span id="analyzeText">Analisar Código</span>
+            </button>
+            <button onclick="app.resetApp()" class="btn-m3 tonal bg-m3-surfaceVariant text-m3-onSurfaceVariant hover:bg-[#E7CFCB] px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl flex items-center justify-center gap-3 transition-colors">
+                <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                Limpar Memória
+            </button>
+        </section>
+
+        <!-- ================= ETAPA 3: DASHBOARD DE ANÁLISE ================= -->
+        <section id="step-dashboard" class="hide mt-4 w-full">
+            
+            <!-- Banner do GitHub Ativo -->
+            <div id="githubBanner" class="hide bg-[#F6F8FA] border border-[#D0D7DE] rounded-m3-xl p-4 md:p-5 mb-6 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-[#24292F]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <div>
+                        <p class="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">GitHub Sincronizado</p>
+                        <p id="githubActivePath" class="text-sm md:text-base font-bold text-[#24292F] font-mono"></p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Tab 2: Textarea -->
-            <div id="tab-text" class="input-pane">
-                <div class="field">
-                    <textarea class="textarea" id="sourceCode" spellcheck="false" placeholder="Cole o código fonte (HTML) aqui..."></textarea>
-                </div>
-                <div class="btn-row">
-                    <button class="btn btn-primary" id="analyzeBtn">
-                        <i data-lucide="scan-search"></i> Analisar Código Colado
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tab 3: URL Fetch -->
-            <div id="tab-url" class="input-pane">
-                <div class="field">
-                    <label class="label">Puxar de uma URL</label>
-                    <div class="url-fetch-box">
-                        <input type="url" class="input" id="urlInput" placeholder="https://exemplo.com.br" />
-                        <button class="btn btn-primary" id="fetchUrlBtn" style="flex: 0 0 auto;">
-                            <i data-lucide="cloud-download"></i> Extrair Código
+            <!-- Injeções Globais e SEO -->
+            <div class="bg-m3-surface border border-m3-surfaceVariant rounded-m3-xl p-6 md:p-8 mb-8 shadow-sm">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-extrabold text-[#1F1B1A] tracking-tight mb-1">Injeções e Otimizações</h3>
+                        <p class="text-sm md:text-base text-m3-onSurfaceVariant font-medium">Modifique a estrutura global da página, adicione scripts ou tune o SEO.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-3 w-full lg:w-auto">
+                        <button onclick="app.openSEOModal()" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-blue-100 text-blue-800 hover:bg-blue-200 px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                            SEO
+                        </button>
+                        <button onclick="app.openInjectModal('header')" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                            Cabeçalho
+                        </button>
+                        <button onclick="app.openInjectModal('footer')" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16M4 12h16M4 6h16"></path></svg>
+                            Rodapé
+                        </button>
+                        <button onclick="app.openPixelsModal()" class="btn-m3 tonal flex-1 sm:flex-none justify-center bg-m3-primaryContainer text-m3-onPrimaryContainer hover:bg-[#FFB4AB] px-6 py-3 rounded-full font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            Pixels & Trackers
                         </button>
                     </div>
                 </div>
             </div>
-            
-        </main>
 
-        <!-- Painel Avançado (Escondido até análise) -->
-        <section class="card hidden-initially" id="resultsCard">
-            
-            <div class="card-title">
-                Visão Geral
-                <div class="btn-row" style="margin: 0;">
-                    <button class="btn btn-outline" id="clearBtn" style="padding: 12px 24px; font-size: 14px;">
-                        <i data-lucide="trash-2"></i> Limpar Tudo
-                    </button>
-                </div>
-            </div>
+            <!-- Grid de Resultados -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="analysisResults"></div>
 
-            <div class="metrics">
-                <div class="metric-box">
-                    <div class="metric-val" id="mTotal">0</div>
-                    <div class="metric-lbl">Total Encontrado</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-val" id="mChanged">0</div>
-                    <div class="metric-lbl">Modificados</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-val" id="mCats">0</div>
-                    <div class="metric-lbl">Categorias</div>
-                </div>
-            </div>
-
-            <div class="mass-box">
-                <div class="mass-title">
-                    <i data-lucide="arrow-left-right"></i> Substituição em Massa
-                </div>
-                <div class="mass-grid">
-                    <input type="text" class="input" id="massOldDomain" placeholder="Procurar por (ex: checkout.antigo.com)">
-                    <input type="text" class="input" id="massNewDomain" placeholder="Substituir por (ex: meudominio.com)">
-                    <button class="btn btn-primary" id="massReplaceBtn">Aplicar a Tudo</button>
-                </div>
-            </div>
-
-            <div class="filter-grid">
-                <div class="filter-grid-icon">
-                    <i data-lucide="search"></i>
-                    <input type="text" class="input" id="searchInput" placeholder="Pesquisar links, IDs, textos, cores...">
-                </div>
-                <select class="select" id="categorySelect">
-                    <option value="all">Todas as Categorias</option>
-                </select>
-            </div>
-
-            <div class="chips" id="categoryTabs"></div>
-
-            <div class="item-list" id="listContainer"></div>
-
-            <hr style="border: 0; border-top: 2px dashed var(--border-light); margin: 24px 0;">
-
-            <div class="card-title">Injeções de Código</div>
-
-            <div class="field">
-                <label class="label">Injetar no &lt;head&gt; <span>Opcional</span></label>
-                <textarea class="textarea" id="headCode" spellcheck="false" placeholder="Scripts de Analytics, Meta Tags, Pixels..."></textarea>
-            </div>
-
-            <div class="field">
-                <label class="label">Injetar no final do &lt;body&gt; <span>Opcional</span></label>
-                <textarea class="textarea" id="footerCode" spellcheck="false" placeholder="Iframes ocultos, Scripts de tracking finais..."></textarea>
-            </div>
-
-            <div class="btn-row" style="margin-top: 24px;">
-                <button class="btn btn-primary" id="updateBtn">
-                    <i data-lucide="check-circle-2"></i> Confirmar Alterações
+            <!-- Botões de Ação Final -->
+            <div class="mt-10 md:mt-12 flex flex-col md:flex-row justify-center gap-3 md:gap-4 bg-m3-surface p-4 md:p-6 rounded-m3-xl border border-m3-surfaceVariant">
+                <button onclick="app.updateCode()" class="btn-m3 bg-[#1F1B1A] text-white hover:bg-black px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 transition-colors">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Atualizar
                 </button>
-                <button class="btn btn-tonal" id="downloadBtn" disabled>
-                    <i data-lucide="download"></i> Baixar HTML
+                <button id="btnDownload" disabled onclick="app.downloadCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Baixar
                 </button>
-                <button class="btn btn-outline" id="copyBtn" disabled>
-                    <i data-lucide="copy"></i> Copiar HTML
+                <button id="btnCopy" disabled onclick="app.copyCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    Copiar
+                </button>
+                <button id="btnGithubSave" disabled onclick="app.saveToGithub()" class="hide btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Salvar no GitHub
                 </button>
             </div>
-
-            <details class="details-box">
-                <summary>
-                    Pré-visualizar HTML Gerado 
-                    <i data-lucide="chevron-down" class="chevron"></i>
-                </summary>
-                <textarea class="textarea" id="outputCode" spellcheck="false" readonly placeholder="O código final aparecerá aqui após clicar em Confirmar Alterações."></textarea>
-            </details>
-
         </section>
+    </main>
 
+    <!-- ================= MODALS ================= -->
+
+    <!-- Modal: GitHub Importação Inteligente -->
+    <div id="githubModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('githubModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-lg overflow-hidden modal-content relative z-10 flex flex-col">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A] flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Importar do GitHub
+                </h3>
+                <button onclick="app.closeModal('githubModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white flex flex-col gap-5">
+                <div>
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider">Link do Arquivo no GitHub</label>
+                    <input type="text" id="ghUrl" class="w-full p-4 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium transition-colors" placeholder="https://github.com/usuario/repo/blob/main/index.html">
+                    <p class="text-[11px] text-gray-500 mt-1 font-medium">Cole a URL inteira da página do arquivo.</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-m3-onSurfaceVariant mb-1 uppercase tracking-wider flex justify-between">
+                        <span>Token de Acesso (PAT)</span>
+                        <span class="text-gray-400 font-normal">Opcional para públicos</span>
+                    </label>
+                    <input type="password" id="ghToken" class="w-full p-4 bg-m3-surfaceVariant border border-m3-surfaceVariant rounded-m3-lg focus:border-[#181717] focus:outline-none text-sm font-medium" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX">
+                </div>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
+                <button onclick="app.closeModal('githubModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
+                <button onclick="app.fetchFromGithub()" class="btn-m3 bg-[#181717] text-white w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 animate-spin hide" id="ghSpinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    Puxar Código
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Toast de Notificações -->
-    <div class="snackbar" id="toast">
-        <i data-lucide="info"></i>
-        <span id="toastMsg">Sistema iniciado</span>
+    <!-- Modal: Colar Código -->
+    <div id="pasteModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('pasteModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 flex flex-col max-h-[90vh]">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]">Colar Código HTML</h3>
+                <button onclick="app.closeModal('pasteModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white flex-1 overflow-hidden flex flex-col">
+                <textarea id="pasteInput" class="w-full flex-1 min-h-[200px] md:min-h-[250px] p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] rounded-m3-lg focus:outline-none focus:ring-2 focus:ring-m3-primary transition-all resize-none text-sm md:text-base font-medium placeholder-m3-outline" placeholder="Cole todo o seu código gigante aqui..."></textarea>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3">
+                <button onclick="app.closeModal('pasteModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
+                <button onclick="app.submitPaste()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Carregar</button>
+            </div>
+        </div>
     </div>
 
-<script>
-    lucide.createIcons();
-
-    const $ = id => document.getElementById(id);
-    const state = { originalHtml: '', currentHtml: '', items: [], activeCat: 'all', hasPendingChanges: false };
-
-    // --- Tabs Logic ---
-    document.querySelectorAll('.input-tab').forEach(tab => {
-        tab.onclick = () => {
-            document.querySelectorAll('.input-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.input-pane').forEach(p => p.classList.remove('active'));
-            tab.classList.add('active');
-            $(tab.dataset.target).classList.add('active');
-        };
-    });
-
-    // --- Web Worker Lógica ---
-    const workerScriptCode = `
-        self.onmessage = function(e) {
-            const { action, payload } = e.data;
-            if (action === 'ANALYZE') {
-                const results = performExtraction(payload.html);
-                self.postMessage({ action: 'ANALYZE_DONE', results });
-            } 
-            else if (action === 'UPDATE') {
-                const newHtml = performUpdate(payload.html, payload.replacements, payload.headInjection, payload.bodyInjection);
-                self.postMessage({ action: 'UPDATE_DONE', html: newHtml });
-            }
-        };
-
-        const CATEGORIES = ['Checkouts', 'Iframes', 'Inputs Ocultos', 'Meta Tags', 'Scripts', 'Divs/Containers', 'Imagens', 'Vídeos', 'CSS/Estilos', 'Cores', 'Documentos', 'Formulários', 'Links', 'Âncoras', 'Outros'];
-        
-        function getCategory(urlOrContent, tag) {
-            const str = String(urlOrContent).toLowerCase();
-            const t = String(tag).toLowerCase();
-
-            if (t === 'iframe') return 'Iframes';
-            if (t === 'input') return 'Inputs Ocultos';
-            if (t === 'meta') return 'Meta Tags';
-            if (t === 'script') return 'Scripts';
-            if (t === 'div' || t === 'span') return 'Divs/Containers';
-            if (t === 'form') return 'Formulários';
-            if (t === 'style-color') return 'Cores';
-            
-            if (str.startsWith('#') && !/^#[0-9a-fA-F]{3,8}$/.test(str)) return 'Âncoras';
-            if (/hotmart|checkout|pay\\.|kiwify|eduzz|monetizze|kirvano|ticto|braip|purchase/i.test(str)) return 'Checkouts';
-            if (/youtube\\.com|youtu\\.be|vimeo\\.com|vturb|\\.mp4|\\.webm|\\.m3u8/i.test(str)) return 'Vídeos';
-            if (/\\.(png|jpe?g|webp|gif|svg|avif|ico)/i.test(str) || t === 'img') return 'Imagens';
-            if (/\\.css/i.test(str) || t === 'style' || t === 'link') return 'CSS/Estilos';
-            if (/\\.(pdf|zip|rar|doc|xlsx)/i.test(str)) return 'Documentos';
-            if (/^(https?:)?\\/\\//i.test(str)) return 'Links';
-            
-            return 'Outros';
-        }
-
-        function extractDomain(url) {
-            try {
-                if (/^https?:\\/\\//i.test(url)) return new URL(url).hostname.replace(/^www\\./, '');
-                if (/^#[0-9a-fA-F]{3,8}$/.test(url)) return 'Hexadecimal';
-                return 'Interno/Relativo';
-            } catch { return 'Desconhecido'; }
-        }
-
-        function decodeEntityAndUri(str) {
-            let res = str;
-            try { res = decodeURIComponent(res); } catch(e){}
-            return res;
-        }
-
-        function performExtraction(html) {
-            const map = new Map();
-            let idCounter = 0;
-
-            function addEntry(originalValue, type, tag, context) {
-                if (!originalValue || originalValue.length < 2 || originalValue.length > 5000) return;
-                if (/^javascript:/i.test(originalValue)) return;
+    <!-- Modal: Substituir Item -->
+    <div id="itemModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('itemModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-4xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]" id="itemModalTitle">Editar Elemento</h3>
+                <button onclick="app.closeModal('itemModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
+                <label class="block text-xs md:text-sm font-bold text-m3-onSurfaceVariant mb-2 uppercase tracking-wider">Código / Valor (Edite como desejar)</label>
+                <!-- O input já vem preenchido com o original para ser editado livremente -->
+                <textarea id="itemModalInput" class="w-full flex-1 p-4 md:p-5 bg-white border-2 border-m3-surfaceVariant rounded-m3-lg focus:border-m3-primary focus:outline-none transition-colors text-sm md:text-base font-mono text-[#1F1B1A] min-h-[150px] md:min-h-[300px] shadow-inner" spellcheck="false" placeholder="Deixe em branco para REMOVER completamente."></textarea>
                 
-                const key = originalValue.trim();
-                if (!map.has(key)) {
-                    const decoded = decodeEntityAndUri(key);
-                    map.set(key, {
-                        id: 'item_' + (++idCounter),
-                        original: key,
-                        decoded: decoded !== key ? decoded : null,
-                        replacement: '',
-                        tagType: tag,
-                        contextInfo: context,
-                        category: getCategory(key, tag === 'style-color' ? tag : tag),
-                        domain: extractDomain(key),
-                        count: 1
+                <div class="mt-3 flex items-start gap-2 text-m3-primary bg-m3-primaryContainer/30 p-3 rounded-lg shrink-0">
+                    <svg class="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p class="text-xs md:text-sm font-bold leading-tight">Apagar tudo e salvar vazio vai sumir com isso da página.</p>
+                </div>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
+                <button onclick="app.closeModal('itemModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
+                <button onclick="app.saveItemReplacement()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Aplicar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Injeção Header/Footer -->
+    <div id="injectModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('injectModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 max-h-[90vh] flex flex-col">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]" id="injectModalTitle">Injetar Código</h3>
+                <button onclick="app.closeModal('injectModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col">
+                <p class="text-sm md:text-base font-medium text-m3-onSurfaceVariant mb-4" id="injectModalDesc">Adicione scripts, estilos ou metas aqui.</p>
+                <textarea id="injectModalInput" class="w-full flex-1 p-4 md:p-5 bg-m3-surfaceVariant text-[#1F1B1A] border-none rounded-m3-lg focus:ring-2 focus:ring-m3-primary focus:outline-none transition-all text-sm font-mono min-h-[150px] md:min-h-[200px]" placeholder="Insira o código..."></textarea>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
+                <button onclick="app.closeModal('injectModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
+                <button onclick="app.saveInjection()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Pixels Individuais -->
+    <div id="pixelsModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('pixelsModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-4xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#1F1B1A]">Pixels & Trackers</h3>
+                <button onclick="app.closeModal('pixelsModal')" class="text-m3-onSurfaceVariant hover:text-m3-primary transition-colors p-2 rounded-full hover:bg-m3-surfaceVariant">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Facebook -->
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold text-[#1877F2] text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook & Instagram</label>
+                    <textarea id="pxFb" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1877F2] focus:outline-none text-xs font-mono h-32" placeholder="Cole o código <script> do Facebook aqui..."></textarea>
+                </div>
+                <!-- Google -->
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold text-[#D93025] text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg> Google Ads / Analytics</label>
+                    <textarea id="pxGo" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#D93025] focus:outline-none text-xs font-mono h-32" placeholder="Cole o código <script> do Google gtag aqui..."></textarea>
+                </div>
+                <!-- TikTok -->
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold text-black text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg> TikTok Ads</label>
+                    <textarea id="pxTk" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-black focus:outline-none text-xs font-mono h-32" placeholder="Cole o código do TikTok Pixel aqui..."></textarea>
+                </div>
+                <!-- Twitter -->
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold text-[#1DA1F2] text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg> Twitter / X</label>
+                    <textarea id="pxTw" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1DA1F2] focus:outline-none text-xs font-mono h-32" placeholder="Cole o código do Twitter Pixel aqui..."></textarea>
+                </div>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col-reverse sm:flex-row justify-end gap-3 shrink-0">
+                <button onclick="app.closeModal('pixelsModal')" class="btn-m3 tonal w-full sm:w-auto px-6 py-3 rounded-full font-bold text-m3-onSurfaceVariant hover:bg-m3-surfaceVariant">Cancelar</button>
+                <button onclick="app.savePixels()" class="btn-m3 bg-m3-primary text-m3-onPrimary w-full sm:w-auto px-8 py-3 rounded-full font-bold shadow-sm">Salvar Pixels</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: SEO -->
+    <div id="seoModal" class="hide fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#1F1B1A]/40 backdrop-blur-sm modal-overlay" onclick="app.closeModal('seoModal')"></div>
+        <div class="bg-m3-surface rounded-m3-xl shadow-m3-elevation-3 w-full max-w-2xl overflow-hidden modal-content relative z-10 max-h-[95vh] flex flex-col">
+            <div class="p-5 md:p-6 border-b border-m3-surfaceVariant flex justify-between items-center shrink-0 bg-blue-50">
+                <h3 class="text-xl md:text-2xl font-bold tracking-tight text-blue-900 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                    Painel SEO
+                </h3>
+                <button onclick="app.closeModal('seoModal')" class="text-blue-500 hover:text-blue-800 transition-colors p-2 rounded-full hover:bg-blue-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 md:p-6 bg-white overflow-y-auto flex-1 flex flex-col gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Título da Página</label>
+                    <input type="text" id="seoTitle" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none text-sm font-medium" placeholder="Ex: Curso Completo">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Favicon (URL da Imagem)</label>
+                    <input type="text" id="seoFavicon" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none text-sm font-medium" placeholder="Ex: https://meusite.com/favicon.ico">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Palavras-Chave (Separadas por vírgula)</label>
+                    <textarea id="seoKeywords" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none text-sm font-medium h-24" placeholder="Ex: magica, truques, curso online"></textarea>
+                </div>
+            </div>
+            <div class="p-4 md:p-6 border-t border-m3-surfaceVariant bg-m3-surface flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
+                <button onclick="app.applyBlackHatSEO()" class="btn-m3 w-full sm:w-auto bg-black text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 border border-gray-800 relative overflow-hidden group">
+                    <span class="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-20 group-hover:opacity-40 transition-opacity"></span>
+                    <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span class="relative z-10">SEO Avançado</span>
+                </button>
+                <div class="flex gap-3 w-full sm:w-auto">
+                    <button onclick="app.closeModal('seoModal')" class="btn-m3 tonal flex-1 sm:flex-none px-6 py-3 rounded-full font-bold text-gray-600 hover:bg-gray-200">Cancelar</button>
+                    <button onclick="app.saveSEO()" class="btn-m3 bg-blue-600 text-white flex-1 sm:flex-none px-8 py-3 rounded-full font-bold shadow-sm hover:bg-blue-700">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 bg-[#313033] text-[#F4EFF4] px-6 py-4 rounded-[8px] font-medium shadow-m3-elevation-3 opacity-0 transition-opacity duration-300 pointer-events-none z-[100] min-w-[280px] md:min-w-[300px] text-center text-sm md:text-base tracking-wide">
+        Notificação
+    </div>
+
+    <!-- ================= SCRIPT CORE DE ALTA PERFORMANCE ================= -->
+    <script>
+        const app = (function() {
+            const defaultHeaderScript = `<!-- ⚡ REDTRACKER MONITOR -->\n<script>\n  document.addEventListener("DOMContentLoaded", function() {\n    const paramsURL = new URLSearchParams(window.location.search);\n    if (paramsURL.toString() !== "") {\n      const blindarLinks = () => {\n        document.querySelectorAll("a").forEach(link => {\n          if (link.href && link.href.includes("red=")) {\n            try {\n              const urlDestino = new URL(link.href);\n              if (urlDestino.searchParams.has("red")) {\n                paramsURL.forEach((v, k) => { if (k !== 'red') urlDestino.searchParams.set(k, v); });\n                link.href = urlDestino.toString();\n              }\n            } catch (e) {}\n          }\n        });\n      };\n      blindarLinks();\n      new MutationObserver(m => { if(m.some(x => x.addedNodes.length > 0)) blindarLinks(); }).observe(document.body, { childList: true, subtree: true });\n    }\n  });\n<\/script>`;
+
+            let originalHTMLString = "";
+            let masterParsedDocument = null; 
+            let currentFileName = "redtracker_export.html";
+            let githubContext = { isActive: false, token: "", owner: "", repo: "", path: "", sha: "", branch: "" };
+            let itemsRegistry = [];
+
+            let replacements = { pixels: {}, forms: {}, links: {}, sections: {}, buttons: {}, iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} };
+            let injections = { header: defaultHeaderScript, footer: "", pixels: "" };
+            let seoData = { title: "", favicon: "", keywords: "", advancedSEO: false };
+
+            let currentEditIndex = null;
+            let currentInjectTarget = null;
+
+            // ================= UTILS & CRYPTO ================= //
+            const SEC_KEY = "RT2026_NINJA";
+            const enc = (text) => btoa(Array.from(text).map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ SEC_KEY.charCodeAt(i % SEC_KEY.length))).join(''));
+            const dec = (b64) => Array.from(atob(b64)).map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ SEC_KEY.charCodeAt(i % SEC_KEY.length))).join('');
+
+            const show = (id) => document.getElementById(id).classList.remove('hide');
+            const hide = (id) => document.getElementById(id).classList.add('hide');
+            const toast = (message, isError = false) => {
+                const el = document.getElementById('toast');
+                el.textContent = message; el.style.backgroundColor = isError ? '#B3261E' : '#313033'; 
+                el.style.opacity = '1'; setTimeout(() => el.style.opacity = '0', 2500);
+            };
+
+            const toggleExportButtons = (enabled) => {
+                const btnD = document.getElementById('btnDownload'); const btnC = document.getElementById('btnCopy'); const btnG = document.getElementById('btnGithubSave');
+                const dis = ['bg-gray-400', 'opacity-50', 'cursor-not-allowed'];
+                const actG = ['bg-green-700', 'hover:bg-green-800']; const actB = ['bg-blue-700', 'hover:bg-blue-800']; const actGh = ['bg-[#181717]', 'hover:bg-[#2b2b2b]'];
+                if (enabled) {
+                    btnD.disabled = false; btnC.disabled = false;
+                    btnD.classList.remove(...dis); btnD.classList.add(...actG); btnC.classList.remove(...dis); btnC.classList.add(...actB);
+                    if (githubContext.isActive) { btnG.disabled = false; btnG.classList.remove(...dis); btnG.classList.add(...actGh); }
+                } else {
+                    btnD.disabled = true; btnC.disabled = true;
+                    btnD.classList.add(...dis); btnD.classList.remove(...actG); btnC.classList.add(...dis); btnC.classList.remove(...actB);
+                    if (githubContext.isActive) { btnG.disabled = true; btnG.classList.add(...dis); btnG.classList.remove(...actGh); }
+                }
+            };
+
+            const utf8ToB64 = (str) => btoa(unescape(encodeURIComponent(str)));
+            const b64ToUtf8 = (str) => decodeURIComponent(escape(atob(str)));
+            const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10));
+
+            // ================= GITHUB INTELIGENTE ================= //
+            const openGithubImportModal = () => {
+                const savedToken = localStorage.getItem('rt_gh_token');
+                const savedUrl = localStorage.getItem('rt_gh_url');
+                if(savedToken) { try { document.getElementById('ghToken').value = dec(savedToken); } catch(e){} }
+                if(savedUrl) document.getElementById('ghUrl').value = savedUrl;
+                show('githubModal');
+            };
+
+            const fetchFromGithub = async () => {
+                const url = document.getElementById('ghUrl').value.trim();
+                const token = document.getElementById('ghToken').value.trim();
+
+                if(!url) return toast("Manda o link do GitHub, chefe!", true);
+                
+                const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)/);
+                if(!match) return toast("Link inválido. Precisa ser o link do arquivo (com /blob/).", true);
+
+                const [_, owner, repo, branch, path] = match;
+                
+                // Salvar dados seguros no LocalStorage
+                if(token) localStorage.setItem('rt_gh_token', enc(token));
+                localStorage.setItem('rt_gh_url', url);
+
+                const spinner = document.getElementById('ghSpinner');
+                spinner.classList.remove('hide');
+
+                try {
+                    const headers = { 'Accept': 'application/vnd.github.v3+json' };
+                    if(token) headers['Authorization'] = `Bearer ${token}`;
+
+                    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { headers });
+                    if (!response.ok) throw new Error("Erro na API do GitHub");
+                    
+                    const data = await response.json();
+                    githubContext = { isActive: true, token, owner, repo, path, branch, sha: data.sha };
+                    
+                    const htmlContent = b64ToUtf8(data.content);
+                    currentFileName = path.split('/').pop();
+                    
+                    document.getElementById('btnGithubSave').classList.remove('hide');
+                    document.getElementById('githubActivePath').textContent = `${owner}/${repo}/${path}`;
+                    show('githubBanner');
+
+                    closeModal('githubModal');
+                    spinner.classList.add('hide');
+                    processHTMLString(htmlContent);
+                    
+                    toast("Puxado do GitHub! 🐙");
+                } catch (error) {
+                    spinner.classList.add('hide');
+                    toast("Vish! Repositório privado ou link quebrado?", true);
+                }
+            };
+
+            const saveToGithub = async () => {
+                if(!githubContext.isActive) return;
+                toast("Mandando pro polvo... 🐙");
+                const btn = document.getElementById('btnGithubSave'); btn.disabled = true;
+
+                const finalCode = getFinalHTMLString();
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${githubContext.owner}/${githubContext.repo}/contents/${githubContext.path}`, {
+                        method: 'PUT',
+                        headers: { 'Authorization': `Bearer ${githubContext.token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: "Atualizado via RedTracker Monitor ⚡", content: utf8ToB64(finalCode), sha: githubContext.sha, branch: githubContext.branch })
                     });
-                } else { map.get(key).count++; }
-            }
+                    if (!response.ok) throw new Error("Erro");
+                    githubContext.sha = (await response.json()).content.sha; 
+                    toast("Commit feito com sucesso! 😎");
+                } catch (error) { toast("Deu ruim no Commit. Faltou permissão?", true); } 
+                finally { btn.disabled = false; }
+            };
 
-            const tagRegex = /<(script|div|span|form|iframe|input|meta)([^>]*)>/gi;
-            let match;
-            while ((match = tagRegex.exec(html)) !== null) {
-                const tag = match[1].toLowerCase();
-                const attrs = match[2];
-                
-                if (tag === 'script' || tag === 'iframe') {
-                    const srcMatch = attrs.match(/src\\s*=\\s*["']([^"']+)["']/i);
-                    if (srcMatch) addEntry(srcMatch[1], 'src', tag, attrs);
-                } else if (tag === 'div' || tag === 'span') {
-                    const idMatch = attrs.match(/id\\s*=\\s*["']([^"']+)["']/i);
-                    const classMatch = attrs.match(/class\\s*=\\s*["']([^"']+)["']/i);
-                    if (idMatch) addEntry(idMatch[1], 'id', tag, attrs);
-                    if (classMatch) addEntry(classMatch[1], 'class', tag, attrs);
-                } else if (tag === 'form') {
-                    const actionMatch = attrs.match(/action\\s*=\\s*["']([^"']+)["']/i);
-                    if (actionMatch) addEntry(actionMatch[1], 'action', tag, attrs);
-                } else if (tag === 'input') {
-                    if (/type\\s*=\\s*["']hidden["']/i.test(attrs)) {
-                        const valMatch = attrs.match(/value\\s*=\\s*["']([^"']+)["']/i);
-                        const nameMatch = attrs.match(/name\\s*=\\s*["']([^"']+)["']/i);
-                        if (valMatch) { addEntry(valMatch[1], 'value', tag, 'Name: ' + (nameMatch ? nameMatch[1] : 'hidden')); }
+            // ================= CONTROLES ================= //
+            const openPasteModal = () => show('pasteModal');
+            const closeModal = (modalId) => hide(modalId);
+
+            const processHTMLString = (htmlStr) => {
+                if (!htmlStr || htmlStr.trim() === "") return toast("Vish, cadê o código?", true);
+                originalHTMLString = htmlStr;
+                masterParsedDocument = new DOMParser().parseFromString(originalHTMLString, 'text/html');
+                toggleExportButtons(false); 
+                hide('step-input'); show('step-actions');
+                toast("Vrau! Código na memória.");
+            };
+
+            const handleFileUpload = (event) => {
+                const file = event.target.files[0]; if (!file) return;
+                currentFileName = file.name.replace(/\.[^/.]+$/, "") + "_redtracker.html";
+                githubContext.isActive = false; document.getElementById('btnGithubSave').classList.add('hide'); hide('githubBanner');
+                const reader = new FileReader();
+                reader.onload = (e) => processHTMLString(e.target.result);
+                reader.onerror = () => toast("O arquivo engasgou!", true);
+                reader.readAsText(file);
+            };
+
+            const submitPaste = () => {
+                const val = document.getElementById('pasteInput').value; document.getElementById('pasteInput').value = ""; closeModal('pasteModal');
+                githubContext.isActive = false; document.getElementById('btnGithubSave').classList.add('hide'); hide('githubBanner');
+                processHTMLString(val);
+            };
+
+            const resetApp = () => {
+                originalHTMLString = ""; masterParsedDocument = null; itemsRegistry = [];
+                replacements = { pixels: {}, forms: {}, links: {}, sections: {}, buttons: {}, iframes: {}, videos: {}, images: {}, documents: {}, anchors: {}, scripts: {}, divs: {} };
+                injections = { header: defaultHeaderScript, footer: "", pixels: "" };
+                seoData = { title: "", favicon: "", keywords: "", advancedSEO: false };
+                githubContext.isActive = false;
+                document.getElementById('fileInput').value = ""; document.getElementById('analysisResults').innerHTML = "";
+                document.getElementById('btnGithubSave').classList.add('hide'); hide('githubBanner');
+                toggleExportButtons(false); show('step-input'); hide('step-actions'); hide('step-dashboard');
+                toast("Tudo limpo! 🧹");
+            };
+
+            // ================= ANÁLISE ================= //
+            let analysisData = {};
+            const extractDataChunked = async (doc) => {
+                analysisData = { pixels: new Map(), forms: new Map(), links: new Map(), anchors: new Map(), documents: new Map(), images: new Map(), videos: new Map(), iframes: new Map(), scripts: new Map(), sections: new Map(), divs: new Map(), buttons: new Map() };
+                const docRegex = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|zip|rar|7z)(\?.*)?$/i;
+                const pixelKeywords = ['fbq', 'gtag', 'google-analytics.com', 'googletagmanager.com', 'tiktok.com', 'fbevents.js', 'pixel', 'hotjar', 'clarity'];
+
+                doc.querySelectorAll('a[href]').forEach(el => {
+                    const href = el.getAttribute('href');
+                    if (!href || href.startsWith('javascript:')) return;
+                    if (href.startsWith('#')) { if(href.length > 1) analysisData.anchors.set(href, href); } 
+                    else if (docRegex.test(href)) analysisData.documents.set(href, href); else analysisData.links.set(href, href);
+                });
+                await yieldToMain();
+
+                doc.querySelectorAll('form[action]').forEach(el => { const action = el.getAttribute('action'); if (action) analysisData.forms.set(action, action); });
+                doc.querySelectorAll('button').forEach(el => { let label = "Botão"; if(el.className) label += ` class="${el.className}"`; else if(el.innerText) label += ` "${el.innerText.substring(0, 20)}"`; analysisData.buttons.set(el.outerHTML, label); });
+                await yieldToMain();
+
+                doc.querySelectorAll('script').forEach(el => {
+                    const src = el.getAttribute('src'); const content = el.innerHTML;
+                    let isPixel = false; const lowerSrc = src ? src.toLowerCase() : ''; const lowerContent = content ? content.toLowerCase() : '';
+                    for (let i = 0; i < pixelKeywords.length; i++) { if ((lowerSrc && lowerSrc.includes(pixelKeywords[i])) || (lowerContent && lowerContent.includes(pixelKeywords[i]))) { isPixel = true; break; } }
+                    if (src) { if (isPixel) analysisData.pixels.set(src, `[Tracker Externo] ${src}`); else analysisData.scripts.set(src, src); } 
+                    else if (content.trim() !== "") {
+                        const snippet = content.trim().substring(0, 50).replace(/\n/g, " ") + "...";
+                        const label = isPixel ? `[Pixel Embutido] ${snippet}` : `[Script Interno] ${snippet}`;
+                        if (isPixel) analysisData.pixels.set(content, label); else analysisData.scripts.set(content, label);
                     }
-                } else if (tag === 'meta') {
-                    if (/property\\s*=\\s*["']og:[^"']+["']/i.test(attrs) || /name\\s*=\\s*["'](?:twitter|description)[^"']+["']/i.test(attrs)) {
-                        const contentMatch = attrs.match(/content\\s*=\\s*["']([^"']+)["']/i);
-                        if (contentMatch) addEntry(contentMatch[1], 'content', tag, attrs);
-                    }
+                });
+                await yieldToMain();
+
+                doc.querySelectorAll('div[id]').forEach(el => analysisData.divs.set(el.outerHTML, `<div id="${el.getAttribute('id')}">`));
+                doc.querySelectorAll('img[src]').forEach(el => { const src = el.getAttribute('src'); if (src && !src.startsWith('data:image')) analysisData.images.set(src, src); });
+                doc.querySelectorAll('video[src], video > source[src]').forEach(el => { const src = el.getAttribute('src'); if (src) analysisData.videos.set(src, src); });
+                doc.querySelectorAll('iframe[src]').forEach(el => {
+                    const src = el.getAttribute('src'); if (!src) return;
+                    if (/youtube|youtu\.be|vimeo|player/i.test(src)) analysisData.videos.set(src, `[Iframe Vídeo] ${src}`); else analysisData.iframes.set(src, src);
+                });
+                await yieldToMain();
+
+                doc.querySelectorAll('section').forEach(el => {
+                    let idAttr = el.getAttribute('id'); let classAttr = el.getAttribute('class'); let label = "<section";
+                    if (idAttr) label += ` id="${idAttr}"`; if (classAttr) label += ` class="${classAttr.substring(0, 30)}${classAttr.length > 30 ? '...' : ''}"`; label += ">";
+                    analysisData.sections.set(el.outerHTML, label);
+                });
+                await yieldToMain();
+            };
+
+            const analyzeCode = async () => {
+                const btnIcon = document.getElementById('analyzeIcon'); const btnSpinner = document.getElementById('analyzeSpinner'); const btnText = document.getElementById('analyzeText');
+                btnIcon.classList.add('hide'); btnSpinner.classList.remove('hide'); btnText.textContent = "Escaneando...";
+                toast("Raio-X ativado! 🕵️‍♂️");
+                try { await extractDataChunked(masterParsedDocument); renderAnalysisDashboard(); hide('step-actions'); show('step-dashboard'); } 
+                catch (error) { toast("Eita! Tropeçou aqui.", true); } finally { btnIcon.classList.remove('hide'); btnSpinner.classList.add('hide'); btnText.textContent = "Analisar Código"; }
+            };
+
+            // ================= DASHBOARD UI ================= //
+            const createCategoryCard = (title, iconSvg, categoryKey, mapSet) => {
+                let itemsHTML = ''; const entries = Array.from(mapSet.entries()); 
+                if (entries.length === 0) { itemsHTML = `<div class="p-6 text-center text-m3-outline font-medium text-sm">Nenhum elemento encontrado.</div>`; } 
+                else {
+                    const displayItems = entries.slice(0, 100); 
+                    itemsHTML = displayItems.map(([fullValue, displayLabel]) => {
+                        const hasReplacement = replacements[categoryKey] && replacements[categoryKey][fullValue] !== undefined;
+                        const bgClass = hasReplacement ? 'bg-m3-primaryContainer text-m3-onPrimaryContainer border-m3-primary/30' : 'bg-white text-[#1F1B1A] border-m3-surfaceVariant hover:bg-m3-surfaceVariant';
+                        const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Editado</span>` : '';
+                        const safeLabel = displayLabel.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        const index = itemsRegistry.length; itemsRegistry.push({ category: categoryKey, fullValue, displayLabel });
+                        const undoBtn = hasReplacement ? `<button data-action="undo" data-index="${index}" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 ml-2 shadow-sm border border-m3-primary/20"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg></button>` : '';
+                        return `<div class="flex items-center justify-between p-3 rounded-m3-lg border ${bgClass} transition-colors mb-2 shadow-sm"><button data-action="edit" data-index="${index}" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group"><span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2 pointer-events-none">${safeLabel}</span>${badge}</button>${undoBtn}</div>`;
+                    }).join('');
+                    if(entries.length > 100) itemsHTML += `<div class="p-2 mt-2 text-xs text-center text-m3-onSurfaceVariant font-bold bg-m3-surfaceVariant rounded-m3-lg">+ ${entries.length - 100} itens ocultos</div>`;
                 }
+                return `<div class="bg-white border border-m3-surfaceVariant rounded-m3-xl overflow-hidden shadow-m3-elevation-1 hover:shadow-m3-elevation-3 transition-shadow flex flex-col h-full max-h-[400px]"><div class="bg-m3-surface p-4 flex items-center justify-between border-b border-m3-surfaceVariant shrink-0"><div class="flex items-center gap-3 min-w-0"><div class="bg-m3-primaryContainer text-m3-onPrimaryContainer p-2 rounded-full shrink-0">${iconSvg}</div><h3 class="text-lg font-bold text-[#1F1B1A] truncate">${title}</h3></div><span class="bg-[#1F1B1A] text-white text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2">${entries.length}</span></div><div class="p-3 overflow-y-auto bg-m3-surface/50 flex-1 custom-scrollbar">${itemsHTML}</div></div>`;
+            };
 
-                const styleMatch = attrs.match(/style\\s*=\\s*["']([^"']+)["']/i);
-                if (styleMatch) {
-                    const styleContent = styleMatch[1];
-                    const colorRegex = /(?:color|background(?:-color)?)\\s*:\\s*(#[0-9a-fA-F]{3,8})/gi;
-                    let cMatch;
-                    while ((cMatch = colorRegex.exec(styleContent)) !== null) { addEntry(cMatch[1], 'color', 'style-color', 'Estilo Inline'); }
-                }
-            }
+            const renderAnalysisDashboard = () => {
+                const container = document.getElementById('analysisResults'); itemsRegistry = []; 
+                const icons = {
+                    pixels: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`,
+                    forms: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>`,
+                    links: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>`,
+                    sections: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2zM4 21a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2z"></path></svg>`,
+                    buttons: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>`,
+                    iframes: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 10h16"></path></svg>`,
+                    videos: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`,
+                    images: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`,
+                    documents: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+                    anchors: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>`,
+                    scripts: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>`,
+                    divs: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>`,
+                };
 
-            const linkAttrs = /\\b(?:href|src|data-src|data-href|action|poster)\\s*=\\s*(["'])(.*?)\\1/gi;
-            while ((match = linkAttrs.exec(html)) !== null) { addEntry(match[2], 'link', 'element', ''); }
+                let html = '';
+                html += createCategoryCard("Pixels no Código (Remover)", icons.pixels, "pixels", analysisData.pixels);
+                html += createCategoryCard("Formulários (Actions)", icons.forms, "forms", analysisData.forms);
+                html += createCategoryCard("Links de Páginas", icons.links, "links", analysisData.links);
+                html += createCategoryCard("Seções (<section>)", icons.sections, "sections", analysisData.sections);
+                html += createCategoryCard("Botões (<button>)", icons.buttons, "buttons", analysisData.buttons);
+                html += createCategoryCard("Widgets & Iframes", icons.iframes, "iframes", analysisData.iframes);
+                html += createCategoryCard("Vídeos & Players", icons.videos, "videos", analysisData.videos);
+                html += createCategoryCard("Imagens & Logos", icons.images, "images", analysisData.images);
+                html += createCategoryCard("Arquivos & Docs", icons.documents, "documents", analysisData.documents);
+                html += createCategoryCard("Âncoras Internas", icons.anchors, "anchors", analysisData.anchors);
+                html += createCategoryCard("Scripts Diversos", icons.scripts, "scripts", analysisData.scripts);
+                html += createCategoryCard("Divisões (IDs)", icons.divs, "divs", analysisData.divs);
 
-            const resultsArray = Array.from(map.values());
-            return resultsArray.sort((a, b) => {
-                const catDiff = CATEGORIES.indexOf(a.category) - CATEGORIES.indexOf(b.category);
-                if (catDiff !== 0) return catDiff;
-                return b.count - a.count;
+                container.innerHTML = html;
+            };
+
+            // ================= EDIÇÃO ================= //
+            const openItemModalByIndex = (index) => {
+                const item = itemsRegistry[index]; if (!item) return;
+                currentEditIndex = index;
+                document.getElementById('itemModalTitle').textContent = 'Editar Elemento';
+                const existingVal = replacements[item.category][item.fullValue];
+                document.getElementById('itemModalInput').value = existingVal !== undefined ? existingVal : item.fullValue;
+                show('itemModal');
+            };
+
+            const saveItemReplacement = () => {
+                const item = itemsRegistry[currentEditIndex]; if (!item) return;
+                replacements[item.category][item.fullValue] = document.getElementById('itemModalInput').value.trim();
+                closeModal('itemModal'); renderAnalysisDashboard(); toggleExportButtons(false); 
+                toast("Anotado! Lembre de 'Atualizar' depois.");
+            };
+
+            const undoItemReplacement = (index) => {
+                const item = itemsRegistry[index]; if (!item) return;
+                delete replacements[item.category][item.fullValue];
+                renderAnalysisDashboard(); toggleExportButtons(false); 
+                toast("Voltou no tempo! ⏪");
+            };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('analysisResults').addEventListener('click', (e) => {
+                    const btnEdit = e.target.closest('[data-action="edit"]');
+                    if (btnEdit) return openItemModalByIndex(btnEdit.getAttribute('data-index'));
+                    const btnUndo = e.target.closest('[data-action="undo"]');
+                    if (btnUndo) { e.stopPropagation(); undoItemReplacement(btnUndo.getAttribute('data-index')); }
+                });
             });
-        }
 
-        function performUpdate(html, replacements, headInj, bodyInj) {
-            let newHtml = html;
-            const sortedReps = replacements.sort((a, b) => b.original.length - a.original.length);
-            
-            for (const rep of sortedReps) {
-                if (rep.replacement && rep.replacement.trim() !== '') {
-                    newHtml = newHtml.split(rep.original).join(rep.replacement);
-                    const encOrig = encodeURI(rep.original);
-                    if (encOrig !== rep.original) {
-                        newHtml = newHtml.split(encOrig).join(encodeURI(rep.replacement));
-                    }
-                }
-            }
-
-            if (headInj.trim() !== '') {
-                const mark = '\\n<!-- RedTracker Head Inj -->\\n' + headInj + '\\n';
-                if (!newHtml.includes(mark)) {
-                    if (/<\\/head>/i.test(newHtml)) newHtml = newHtml.replace(/<\\/head>/i, mark + '</head>');
-                    else if (/<html[^>]*>/i.test(newHtml)) newHtml = newHtml.replace(/<html[^>]*>/i, match => match + '\\n<head>' + mark + '</head>');
-                    else newHtml = mark + newHtml;
-                }
-            }
-
-            if (bodyInj.trim() !== '') {
-                const mark = '\\n<!-- RedTracker Body Inj -->\\n' + bodyInj + '\\n';
-                if (!newHtml.includes(mark)) {
-                    if (/<\\/body>/i.test(newHtml)) newHtml = newHtml.replace(/<\\/body>/i, mark + '</body>');
-                    else newHtml = newHtml + mark;
-                }
-            }
-
-            return newHtml;
-        }
-    `;
-
-    const blob = new Blob([workerScriptCode], { type: 'application/javascript' });
-    const worker = new Worker(URL.createObjectURL(blob));
-
-    function showToast(msg) {
-        $('toastMsg').textContent = msg;
-        const t = $('toast');
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3500);
-    }
-
-    function setStatus(msg, isProcessing = false) {
-        const badge = $('statusBadge');
-        if (!msg) { badge.style.display = 'none'; return; }
-        
-        badge.style.display = 'flex';
-        if (isProcessing) {
-            badge.innerHTML = `<i data-lucide="loader-2" class="lucide-spin"></i> ${msg}`;
-            badge.classList.add('processing');
-        } else {
-            badge.innerHTML = `<i data-lucide="check-circle-2"></i> ${msg}`;
-            badge.classList.remove('processing');
-        }
-        lucide.createIcons();
-    }
-
-    function escapeHTML(str) {
-        return String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-    }
-
-    // Handlers do Worker
-    worker.onmessage = function(e) {
-        const { action } = e.data;
-        if (action === 'ANALYZE_DONE') {
-            state.items = e.data.results;
-            state.hasPendingChanges = false;
-            
-            // Revelar o painel avançado
-            $('resultsCard').style.display = 'flex';
-            $('resultsCard').classList.remove('hidden-initially');
-            
-            renderCategories(); renderList(); updateMetrics();
-            setStatus(''); 
-            showToast(`${state.items.length} itens encontrados!`);
-            
-            // Rolar suavemente para os resultados
-            $('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } 
-        else if (action === 'UPDATE_DONE') {
-            state.currentHtml = e.data.html;
-            $('outputCode').value = state.currentHtml;
-            state.hasPendingChanges = false;
-            $('downloadBtn').disabled = false; $('copyBtn').disabled = false;
-            setStatus('');
-            showToast('As modificações foram aplicadas.');
-        }
-    };
-
-    function startAnalysisFromSource() {
-        const html = $('sourceCode').value;
-        if (!html.trim()) return showToast('Código vazio. Impossível analisar.');
-        state.originalHtml = html;
-        setStatus('Analisando...', true);
-        worker.postMessage({ action: 'ANALYZE', payload: { html: state.originalHtml } });
-    }
-
-    $('analyzeBtn').onclick = startAnalysisFromSource;
-
-    // --- NOVA FUNÇÃO: URL Fetch (Proxy) ---
-    $('fetchUrlBtn').onclick = async () => {
-        const url = $('urlInput').value.trim();
-        if (!url || !url.startsWith('http')) return showToast('Insira uma URL válida (http/https).');
-        
-        setStatus('Puxando código fonte...', true);
-        try {
-            // Usa AllOrigins public proxy para bypass CORS
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-            if (!response.ok) throw new Error('Network error');
-            const data = await response.json();
-            
-            if (data.contents) {
-                $('sourceCode').value = data.contents;
-                // Muda para a tab de código para visualizar o que foi puxado
-                document.querySelector('[data-target="tab-text"]').click();
-                showToast('Código extraído! Iniciando análise...');
-                startAnalysisFromSource();
-            } else {
-                throw new Error('Conteúdo vazio retornado.');
-            }
-        } catch (err) {
-            console.error(err);
-            setStatus('');
-            showToast('Falha. O site pode estar bloqueando a extração (Cloudflare/Bot protection).');
-        }
-    };
-
-    $('updateBtn').onclick = () => {
-        setStatus('Aplicando modificações...', true);
-        const replacements = state.items
-            .filter(item => item.replacement.trim() !== '')
-            .map(item => ({ original: item.original, replacement: item.replacement }));
-
-        worker.postMessage({
-            action: 'UPDATE',
-            payload: {
-                html: state.originalHtml,
-                replacements: replacements,
-                headInjection: $('headCode').value,
-                bodyInjection: $('footerCode').value
-            }
-        });
-    };
-
-    $('massReplaceBtn').onclick = () => {
-        const oldD = $('massOldDomain').value.trim();
-        const newD = $('massNewDomain').value.trim();
-        if (!oldD || !newD) return showToast('Preencha os campos de pesquisa e substituição.');
-        
-        let count = 0;
-        state.items.forEach(item => {
-            if (item.original.includes(oldD)) {
-                item.replacement = item.original.split(oldD).join(newD);
-                count++;
-            }
-        });
-        
-        if (count > 0) {
-            state.hasPendingChanges = true;
-            renderList(); updateMetrics();
-            $('downloadBtn').disabled = true; $('copyBtn').disabled = true;
-            setStatus('Edições Pendentes');
-            showToast(`${count} itens substituídos.`);
-        } else { showToast('Nenhum texto exato encontrado.'); }
-    };
-
-    function updateMetrics() {
-        $('mTotal').textContent = state.items.length;
-        $('mChanged').textContent = state.items.filter(i => i.replacement.trim() !== '').length;
-        $('mCats').textContent = new Set(state.items.map(i => i.category)).size;
-    }
-
-    function renderCategories() {
-        const counts = {};
-        state.items.forEach(i => { counts[i.category] = (counts[i.category] || 0) + 1; });
-        
-        const categories = ['all', ...Object.keys(counts).sort()];
-        
-        $('categoryTabs').innerHTML = categories.map(cat => {
-            const label = cat === 'all' ? 'Mostrar Tudo' : cat;
-            const count = cat === 'all' ? state.items.length : counts[cat];
-            const activeClass = state.activeCat === cat ? 'active' : '';
-            return `<button class="chip ${activeClass}" data-cat="${escapeHTML(cat)}">${escapeHTML(label)} (${count})</button>`;
-        }).join('');
-
-        $('categorySelect').innerHTML = categories.map(cat => {
-            const label = cat === 'all' ? 'Todas as Categorias' : cat;
-            return `<option value="${escapeHTML(cat)}">${escapeHTML(label)}</option>`;
-        }).join('');
-        $('categorySelect').value = state.activeCat;
-
-        document.querySelectorAll('.chip').forEach(btn => {
-            btn.onclick = () => {
-                state.activeCat = btn.dataset.cat;
-                $('categorySelect').value = state.activeCat;
-                renderCategories(); renderList();
+            // ================= INJEÇÕES & SEO ================= //
+            const openInjectModal = (type) => {
+                currentInjectTarget = type;
+                document.getElementById('injectModalTitle').textContent = type === 'header' ? 'Injeção: <head>' : 'Injeção: <body>';
+                document.getElementById('injectModalInput').value = injections[type] || '';
+                show('injectModal');
             };
-        });
-    }
 
-    function renderList() {
-        const query = $('searchInput').value.toLowerCase().trim();
-        const filtered = state.items.filter(item => {
-            const matchCat = state.activeCat === 'all' || item.category === state.activeCat;
-            const matchQuery = !query || 
-                               item.original.toLowerCase().includes(query) || 
-                               item.domain.toLowerCase().includes(query) ||
-                               (item.decoded && item.decoded.toLowerCase().includes(query));
-            return matchCat && matchQuery;
-        });
+            const saveInjection = () => {
+                injections[currentInjectTarget] = document.getElementById('injectModalInput').value;
+                closeModal('injectModal'); toggleExportButtons(false); toast("Código injetado com sucesso!");
+            };
 
-        const container = $('listContainer');
-        if (filtered.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i data-lucide="ghost" class="empty-icon"></i>
-                    <div class="empty-title">Sem resultados</div>
-                    <p>Nenhum item encontrado nesta busca.</p>
-                </div>`;
-            lucide.createIcons();
-            return;
-        }
+            const openPixelsModal = () => {
+                document.getElementById('pxFb').value = ''; document.getElementById('pxGo').value = '';
+                document.getElementById('pxTk').value = ''; document.getElementById('pxTw').value = '';
+                show('pixelsModal');
+            };
 
-        container.innerHTML = filtered.map(item => {
-            let colorSwatch = '';
-            if (item.category === 'Cores' && /^#[0-9a-fA-F]{3,8}$/.test(item.original)) {
-                colorSwatch = `<span class="color-dot" style="background-color: ${item.original};"></span>`;
-            }
-
-            return `
-            <div class="item-card">
-                <div class="item-header">
-                    <div class="item-badges">
-                        <span class="badge highlight">${escapeHTML(item.category)}</span>
-                        <span class="badge">Tag: ${escapeHTML(item.tagType)}</span>
-                        ${item.contextInfo && item.contextInfo.startsWith('Name:') ? `<span class="badge">${escapeHTML(item.contextInfo)}</span>` : ''}
-                    </div>
-                    <div class="item-meta"><i data-lucide="link-2" style="width:14px;height:14px;"></i> Origem: ${escapeHTML(item.domain)} &bull; ${item.count}x</div>
-                </div>
+            const savePixels = () => {
+                const fb = document.getElementById('pxFb').value.trim(); const go = document.getElementById('pxGo').value.trim();
+                const tk = document.getElementById('pxTk').value.trim(); const tw = document.getElementById('pxTw').value.trim();
                 
-                <div class="item-url">
-                    ${colorSwatch}${escapeHTML(item.original)}
-                    ${item.decoded ? `<div style="margin-top:6px;opacity:0.6;font-size:12px">Decodificado: ${escapeHTML(item.decoded)}</div>` : ''}
-                </div>
-
-                <input type="text" class="item-input" 
-                    placeholder="Digitar novo valor de substituição..." 
-                    data-id="${item.id}" 
-                    value="${escapeHTML(item.replacement)}">
-            </div>`;
-        }).join('');
-
-        lucide.createIcons();
-
-        container.querySelectorAll('input[data-id]').forEach(input => {
-            input.oninput = (e) => {
-                const targetId = e.target.dataset.id;
-                const ref = state.items.find(i => i.id === targetId);
-                if (ref) {
-                    ref.replacement = e.target.value;
-                    state.hasPendingChanges = true;
-                    updateMetrics();
-                    $('downloadBtn').disabled = true; $('copyBtn').disabled = true;
-                    setStatus('Edições Pendentes');
-                }
+                let combined = '';
+                if(fb) combined += `\n<!-- Facebook -->\n${fb}\n`; if(go) combined += `\n<!-- Google -->\n${go}\n`;
+                if(tk) combined += `\n<!-- TikTok -->\n${tk}\n`; if(tw) combined += `\n<!-- Twitter -->\n${tw}\n`;
+                
+                injections.pixels = combined;
+                closeModal('pixelsModal'); toggleExportButtons(false); toast("Pixels engatilhados!");
             };
-        });
-    }
 
-    $('clearBtn').onclick = () => {
-        state.originalHtml = ''; state.currentHtml = ''; state.items = []; state.activeCat = 'all';
-        ['sourceCode', 'headCode', 'footerCode', 'outputCode', 'searchInput', 'massOldDomain', 'massNewDomain', 'urlInput'].forEach(id => $(id).value = '');
-        $('downloadBtn').disabled = true; $('copyBtn').disabled = true;
-        
-        $('resultsCard').style.display = 'none';
-        $('resultsCard').classList.add('hidden-initially');
-        
-        // Retorna a view para a aba principal
-        document.querySelector('[data-target="tab-file"]').click();
+            const openSEOModal = () => {
+                document.getElementById('seoTitle').value = seoData.title;
+                document.getElementById('seoFavicon').value = seoData.favicon;
+                document.getElementById('seoKeywords').value = seoData.keywords;
+                show('seoModal');
+            };
 
-        updateMetrics(); renderCategories(); renderList();
-        setStatus(''); 
-        showToast('Área limpa.');
-    };
+            const saveSEO = () => {
+                seoData.title = document.getElementById('seoTitle').value.trim();
+                seoData.favicon = document.getElementById('seoFavicon').value.trim();
+                seoData.keywords = document.getElementById('seoKeywords').value.trim();
+                closeModal('seoModal'); toggleExportButtons(false);
+                toast("SEO anotado! 👀");
+            };
 
-    $('downloadBtn').onclick = () => {
-        if (!state.currentHtml) return;
-        const blob = new Blob([state.currentHtml], { type: 'text/html;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'redtracker-editado.html';
-        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    };
+            const applyBlackHatSEO = () => {
+                seoData.advancedSEO = true; toast("Hackeado com sucesso! SEO Avançado ativado 🥷");
+            };
 
-    $('copyBtn').onclick = async () => {
-        if (!state.currentHtml) return;
-        try { await navigator.clipboard.writeText(state.currentHtml); showToast('HTML Copiado!'); } 
-        catch (err) { showToast('Erro ao copiar.'); }
-    };
+            // ================= EXPORT ================= //
+            const applyUpdatesToDOM = (targetDoc) => {
+                if (!targetDoc) return false;
 
-    $('searchInput').oninput = renderList;
-    $('categorySelect').onchange = (e) => { state.activeCat = e.target.value; renderCategories(); renderList(); };
-    
-    $('sourceCode').oninput = () => {
-        $('downloadBtn').disabled = true; $('copyBtn').disabled = true;
-    };
+                const applyAttr = (sel, obj, attr) => Object.keys(obj).forEach(o => { targetDoc.querySelectorAll(sel(o)).forEach(el => { if (el.getAttribute(attr) === o) { if (obj[o] === "") el.remove(); else el.setAttribute(attr, obj[o]); } }); });
+                const applyHtml = (sel, obj, useOuter) => Object.keys(obj).forEach(o => { targetDoc.querySelectorAll(sel).forEach(el => { const comp = useOuter ? el.outerHTML : el.innerHTML; if (comp === o) { if (obj[o] === "") el.remove(); else { if(useOuter) el.outerHTML = obj[o]; else el.innerHTML = obj[o]; } } }); });
 
-    // Dropzone Logic
-    const dz = $('dropzone');
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evt => dz.addEventListener(evt, e => e.preventDefault()));
-    ['dragenter', 'dragover'].forEach(evt => dz.addEventListener(evt, () => dz.classList.add('drag-active')));
-    ['dragleave', 'drop'].forEach(evt => dz.addEventListener(evt, () => dz.classList.remove('drag-active')));
-    
-    dz.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
-    $('fileInput').onchange = e => { if (e.target.files[0]) handleFile(e.target.files[0]); };
+                applyAttr(o => `a[href="${o}"]`, replacements.links, 'href');
+                applyAttr(o => `a[href="${o}"]`, replacements.documents, 'href');
+                applyAttr(o => `a[href="${o}"]`, replacements.anchors, 'href');
+                applyAttr(o => `form[action="${o}"]`, replacements.forms, 'action');
+                applyAttr(o => `img[src="${o}"]`, replacements.images, 'src');
+                applyAttr(o => `iframe[src="${o}"]`, replacements.iframes, 'src');
 
-    function handleFile(file) {
-        setStatus('Lendo arquivo...', true);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            $('sourceCode').value = e.target.result;
-            // Muda a aba para mostrar que leu o código
-            document.querySelector('[data-target="tab-text"]').click();
-            startAnalysisFromSource(); 
-        };
-        reader.readAsText(file);
-    }
-</script>
+                Object.keys(replacements.videos).forEach(o => targetDoc.querySelectorAll(`video[src="${o}"], source[src="${o}"], iframe[src="${o}"]`).forEach(el => { if (replacements.videos[o] === "") el.remove(); else el.setAttribute('src', replacements.videos[o]); }));
+
+                Object.keys(replacements.pixels).forEach(o => { const v = replacements.pixels[o]; targetDoc.querySelectorAll(`script[src="${o}"]`).forEach(el => { if (v === "") el.remove(); else el.setAttribute('src', v); }); targetDoc.querySelectorAll('script:not([src])').forEach(el => { if (el.innerHTML === o) { if (v === "") el.remove(); else el.innerHTML = v; } }); });
+                Object.keys(replacements.scripts).forEach(o => { const v = replacements.scripts[o]; targetDoc.querySelectorAll(`script[src="${o}"]`).forEach(el => { if (v === "") el.remove(); else el.setAttribute('src', v); }); targetDoc.querySelectorAll('script:not([src])').forEach(el => { if (el.innerHTML === o) { if (v === "") el.remove(); else el.innerHTML = v; } }); });
+
+                applyHtml('section', replacements.sections, true);
+                applyHtml('button', replacements.buttons, true);
+                applyHtml('div[id]', replacements.divs, true);
+
+                const head = targetDoc.head || targetDoc.documentElement;
+                if (seoData.title) { let t = targetDoc.querySelector('title'); if(t) t.textContent = seoData.title; else head.insertAdjacentHTML('afterbegin', `<title>${seoData.title}</title>`); }
+                if (seoData.favicon) { targetDoc.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]').forEach(el => el.remove()); head.insertAdjacentHTML('beforeend', `<link rel="icon" href="${seoData.favicon}">`); }
+                if (seoData.keywords) { let k = targetDoc.querySelector('meta[name="keywords"]'); if(k) k.setAttribute('content', seoData.keywords); else head.insertAdjacentHTML('beforeend', `<meta name="keywords" content="${seoData.keywords}">`); }
+                if (seoData.advancedSEO) { head.insertAdjacentHTML('afterbegin', `\n<!-- RT ADVANCED SEO -->\n<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">\n<meta property="og:locale" content="pt_BR"><meta property="og:type" content="website">\n<meta property="og:title" content="${seoData.title || 'Página Otimizada'}">\n<meta name="twitter:card" content="summary_large_image">\n<link rel="dns-prefetch" href="//fonts.googleapis.com"><link rel="dns-prefetch" href="//s.w.org">\n<!-- END ADVANCED SEO -->\n`); }
+
+                if (injections.pixels.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- RT PIXELS -->\n' + injections.pixels + '\n');
+                if (injections.header.trim() !== "") head.insertAdjacentHTML('beforeend', '\n<!-- RT HEAD -->\n' + injections.header + '\n');
+                
+                const body = targetDoc.body || targetDoc.documentElement;
+                if (injections.footer.trim() !== "") body.insertAdjacentHTML('beforeend', '\n<!-- RT FOOTER -->\n' + injections.footer + '\n');
+            };
+
+            const getFinalHTMLString = () => {
+                const tempDoc = masterParsedDocument.cloneNode(true);
+                applyUpdatesToDOM(tempDoc);
+                const serializer = new XMLSerializer();
+                let finalStr = serializer.serializeToString(tempDoc);
+                if (originalHTMLString.trim().toLowerCase().startsWith("<!doctype")) {
+                    const doctypeMatch = originalHTMLString.match(/^<!doctype[^>]*>/i);
+                    finalStr = finalStr.replace(/^<!doctype[^>]*>/i, '');
+                    finalStr = (doctypeMatch ? doctypeMatch[0] + "\n" : "<!DOCTYPE html>\n") + finalStr;
+                }
+                return finalStr;
+            };
+
+            const updateCode = () => { toast("Mágica feita! ✨"); toggleExportButtons(true); };
+
+            const downloadCode = () => {
+                toast("Empacotando...");
+                const blob = new Blob([getFinalHTMLString()], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = currentFileName;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            };
+
+            const copyCode = async () => {
+                toast("Copiando...");
+                const finalCode = getFinalHTMLString();
+                try {
+                    if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(finalCode);
+                    else {
+                        const t = document.createElement("textarea"); t.value = finalCode; t.style.position = "fixed"; t.style.opacity = "0";
+                        document.body.appendChild(t); t.focus(); t.select(); document.execCommand('copy'); t.remove();
+                    }
+                    setTimeout(() => toast("Copiado! 📋"), 500);
+                } catch (err) { toast("Muito grande pra copiar, tenta baixar!", true); }
+            };
+
+            return {
+                handleFileUpload, openPasteModal, submitPaste, analyzeCode, resetApp,
+                openItemModalByIndex, closeModal, saveItemReplacement, undoItemReplacement,
+                openInjectModal, saveInjection, openPixelsModal, savePixels, openSEOModal, saveSEO, applyBlackHatSEO,
+                updateCode, downloadCode, copyCode, openGithubImportModal, fetchFromGithub, saveToGithub
+            };
+        })();
+    </script>
 </body>
 </html>
