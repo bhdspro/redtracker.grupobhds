@@ -115,11 +115,12 @@
         <section id="step-input" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-4xl mx-auto transition-all duration-300">
             <input type="file" id="fileInput" accept=".html,.htm,.txt" class="hidden" onchange="app.handleFileUpload(event)">
             
-            <button onclick="document.getElementById('fileInput').click()" class="btn-m3 h-full bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 group">
-                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                <div class="text-center">
+            <!-- Botão com Drag & Drop -->
+            <button id="upload-btn" onclick="document.getElementById('fileInput').click()" class="btn-m3 h-full bg-m3-primary text-m3-onPrimary hover:bg-[#93000A] p-6 md:p-8 rounded-m3-xl shadow-m3-elevation-3 flex flex-col items-center justify-center gap-3 md:gap-4 group transition-all">
+                <svg class="w-10 h-10 md:w-12 md:h-12 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                <div class="text-center pointer-events-none">
                     <span class="block text-xl md:text-2xl font-bold tracking-tight mb-1">Importar Arquivo HTML</span>
-                    <span class="block text-m3-primaryContainer opacity-90 font-medium text-sm md:text-base">Selecionar do dispositivo</span>
+                    <span class="block text-m3-primaryContainer opacity-90 font-medium text-sm md:text-base">Clique ou arraste o arquivo aqui</span>
                 </div>
             </button>
 
@@ -185,7 +186,7 @@
             <div class="mt-10 md:mt-12 flex flex-col md:flex-row justify-center gap-3 md:gap-4 bg-m3-surface p-4 md:p-6 rounded-m3-xl border border-m3-surfaceVariant">
                 <button onclick="app.updateCode()" class="btn-m3 bg-[#1F1B1A] text-white hover:bg-black px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 transition-colors">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    Atualizar
+                    Atualizar Código
                 </button>
                 <button id="btnDownload" disabled onclick="app.downloadCode()" class="btn-m3 bg-gray-400 text-white px-6 md:px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-m3-elevation-3 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all">
                     <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
@@ -355,7 +356,7 @@
     <!-- ================= SCRIPT CORE DE ALTA PERFORMANCE ================= -->
     <script>
         const app = (function() {
-            const defaultHeaderScript = `<!-- ========================================== -->\n<!-- ⚡ REDTRACKER MONITOR CODE                      -->\n<!-- ========================================== -->\n<script>\n  document.addEventListener("DOMContentLoaded", function() {\n    const paramsURL = new URLSearchParams(window.location.search);\n    \n    if (paramsURL.toString() !== "") {\n      const blindarLinksRedTracker = () => {\n        const todosLinks = document.querySelectorAll("a");\n        \n        todosLinks.forEach(link => {\n          if (link.href && link.href.includes("red=")) {\n            try {\n              const urlDestino = new URL(link.href);\n              \n              if (urlDestino.searchParams.has("red")) {\n                paramsURL.forEach((valor, chave) => {\n                  if (chave !== 'red') {\n                    urlDestino.searchParams.set(chave, valor);\n                  }\n                });\n                link.href = urlDestino.toString();\n              }\n            } catch (e) {\n              // Ignora links malformados\n            }\n          }\n        });\n      };\n\n      blindarLinksRedTracker();\n\n      const observadorDeDOM = new MutationObserver((mutations) => {\n        let detetouNovoLink = false;\n        mutations.forEach((mutation) => {\n          if (mutation.addedNodes.length > 0) detetouNovoLink = true;\n        });\n        \n        if (detetouNovoLink) blindarLinksRedTracker();\n      });\n\n      observadorDeDOM.observe(document.body, { childList: true, subtree: true });\n    }\n  });\n<\/script>`;
+            const defaultHeaderScript = `<!-- ========================================== -->\n<!-- ⚡ REDTRACKER MONITOR CODE                  -->\n<!-- ========================================== -->\n<script>\n  document.addEventListener("DOMContentLoaded", function() {\n    const paramsURL = new URLSearchParams(window.location.search);\n    \n    if (paramsURL.toString() !== "") {\n      const blindarLinksRedTracker = () => {\n        const todosLinks = document.querySelectorAll("a");\n        \n        todosLinks.forEach(link => {\n          if (link.href && link.href.includes("red=")) {\n            try {\n              const urlDestino = new URL(link.href);\n              \n              if (urlDestino.searchParams.has("red")) {\n                paramsURL.forEach((valor, chave) => {\n                  if (chave !== 'red') {\n                    urlDestino.searchParams.set(chave, valor);\n                  }\n                });\n                link.href = urlDestino.toString();\n              }\n            } catch (e) {\n              // Ignora links malformados\n            }\n          }\n        });\n      };\n\n      blindarLinksRedTracker();\n\n      const observadorDeDOM = new MutationObserver((mutations) => {\n        let detetouNovoLink = false;\n        mutations.forEach((mutation) => {\n          if (mutation.addedNodes.length > 0) detetouNovoLink = true;\n        });\n        \n        if (detetouNovoLink) blindarLinksRedTracker();\n      });\n\n      observadorDeDOM.observe(document.body, { childList: true, subtree: true });\n    }\n  });\n<\/script>`;
 
             let originalHTMLString = "";
             let masterParsedDocument = null; 
@@ -371,8 +372,18 @@
             let currentEditIndex = null;
             let currentInjectTarget = null;
 
-            const show = (id) => document.getElementById(id).classList.remove('hide');
-            const hide = (id) => document.getElementById(id).classList.add('hide');
+            // Tratamento de Scroll Lock nos modais
+            const show = (id) => {
+                const el = document.getElementById(id);
+                el.classList.remove('hide');
+                if(el.classList.contains('fixed')) document.body.style.overflow = 'hidden';
+            };
+            const hide = (id) => {
+                const el = document.getElementById(id);
+                el.classList.add('hide');
+                if(el.classList.contains('fixed')) document.body.style.overflow = '';
+            };
+            
             const toast = (message, isError = false) => {
                 const el = document.getElementById('toast');
                 el.textContent = message; el.style.backgroundColor = isError ? '#B3261E' : '#313033'; 
@@ -394,9 +405,25 @@
 
             const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 10));
 
+            // Utilitário de segurança (Escaping HTML)
+            const escapeHTML = (str) => {
+                return String(str).replace(/&/g, '&amp;')
+                                  .replace(/</g, '&lt;')
+                                  .replace(/>/g, '&gt;')
+                                  .replace(/"/g, '&quot;')
+                                  .replace(/'/g, '&#39;');
+            };
+
             // ================= CONTROLES ================= //
             const openPasteModal = () => show('pasteModal');
             const closeModal = (modalId) => hide(modalId);
+
+            // Fechar modais com "Esc"
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    ['pasteModal', 'itemModal', 'injectModal', 'pixelsModal', 'seoModal'].forEach(closeModal);
+                }
+            });
 
             const processHTMLString = (htmlStr) => {
                 if (!htmlStr || htmlStr.trim() === "") return toast("Cadê o código, patrão?", true);
@@ -412,7 +439,11 @@
                 const file = event.target.files[0]; if (!file) return;
                 currentFileName = file.name.replace(/\.[^/.]+$/, "") + "_redtracker.html";
                 const reader = new FileReader();
-                reader.onload = (e) => processHTMLString(e.target.result);
+                reader.onload = (e) => {
+                    processHTMLString(e.target.result);
+                    // Correção: Reseta o input file para permitir importar o mesmo arquivo depois de limpar a memória
+                    if (event.target.value !== undefined) event.target.value = '';
+                };
                 reader.onerror = () => toast("Arquivo engasgou!", true);
                 reader.readAsText(file);
             };
@@ -433,6 +464,22 @@
                 toggleExportButtons(false); show('step-input'); hide('step-actions'); hide('step-dashboard');
                 toast("Faxina feita! 🧹");
             };
+
+            // Drag & Drop Listeners
+            document.addEventListener('DOMContentLoaded', () => {
+                const uploadBtn = document.getElementById('upload-btn');
+                if(uploadBtn) {
+                    uploadBtn.addEventListener('dragover', (e) => { e.preventDefault(); uploadBtn.classList.add('ring-4', 'ring-m3-primary/50'); });
+                    uploadBtn.addEventListener('dragleave', (e) => { e.preventDefault(); uploadBtn.classList.remove('ring-4', 'ring-m3-primary/50'); });
+                    uploadBtn.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        uploadBtn.classList.remove('ring-4', 'ring-m3-primary/50');
+                        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                            handleFileUpload({ target: { files: e.dataTransfer.files } });
+                        }
+                    });
+                }
+            });
 
             // ================= ANÁLISE AUTOMÁTICA & PIXELS ================= //
             let analysisData = {};
@@ -540,7 +587,10 @@
                         const hasReplacement = replacements[categoryKey] && replacements[categoryKey][fullValue] !== undefined;
                         const bgClass = hasReplacement ? 'bg-m3-primaryContainer text-m3-onPrimaryContainer border-m3-primary/30' : 'bg-white text-[#1F1B1A] border-m3-surfaceVariant hover:bg-m3-surfaceVariant';
                         const badge = hasReplacement ? `<span class="ml-2 text-[10px] font-bold bg-m3-primary text-white px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">Alterado</span>` : '';
-                        const safeLabel = displayLabel.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        
+                        // Correção de segurança: Escaping avançado para não quebrar o HTML na grid
+                        const safeLabel = escapeHTML(displayLabel);
+                        
                         const index = itemsRegistry.length; itemsRegistry.push({ category: categoryKey, fullValue, displayLabel });
                         const undoBtn = hasReplacement ? `<button data-action="undo" data-index="${index}" class="shrink-0 text-m3-primary hover:text-[#93000A] bg-white/50 hover:bg-white rounded-full p-2 ml-2 shadow-sm border border-m3-primary/20"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg></button>` : '';
                         return `<div class="flex items-center justify-between p-3 rounded-m3-lg border ${bgClass} transition-colors mb-2 shadow-sm"><button data-action="edit" data-index="${index}" class="flex-1 text-left flex items-center min-w-0 font-medium cursor-pointer outline-none group"><span class="truncate pr-2 text-[13px] md:text-[14px] leading-tight group-hover:underline underline-offset-2 pointer-events-none">${safeLabel}</span>${badge}</button>${undoBtn}</div>`;
@@ -727,12 +777,19 @@
             const getFinalHTMLString = () => {
                 const tempDoc = masterParsedDocument.cloneNode(true);
                 applyUpdatesToDOM(tempDoc);
-                const serializer = new XMLSerializer();
-                let finalStr = serializer.serializeToString(tempDoc);
+                
+                // CORREÇÃO CRÍTICA: Substituição do XMLSerializer pela extração em HTML puro (outerHTML)
+                // Isso previne quebras nas páginas importadas do SingleFile
+                let finalStr = tempDoc.documentElement.outerHTML;
+
+                // Garante a presença e manutenção do DOCTYPE sem injetar lixo de XML
                 if (originalHTMLString.trim().toLowerCase().startsWith("<!doctype")) {
                     const doctypeMatch = originalHTMLString.match(/^<!doctype[^>]*>/i);
-                    finalStr = (doctypeMatch ? doctypeMatch[0] + "\n" : "<!DOCTYPE html>\n") + finalStr.replace(/^<!doctype[^>]*>/i, '');
+                    finalStr = (doctypeMatch ? doctypeMatch[0] + "\n" : "<!DOCTYPE html>\n") + finalStr;
+                } else {
+                    finalStr = "<!DOCTYPE html>\n" + finalStr;
                 }
+                
                 return finalStr;
             };
 
